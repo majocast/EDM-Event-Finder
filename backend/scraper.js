@@ -23,9 +23,11 @@ const Scraper = async () => {
       const events = document.querySelectorAll('.c50-table-row');
       return Array.from(events).map((event) => {
         const title = event.querySelector('.c50-title a').textContent;
-        const location = event.querySelector('.c50-description').textContent.replace(/\n/g, '');
-        const date = event.querySelector('.c50-block-date').textContent.replace(/\n/g, '');
-        return { title, location, date };
+        const location = event.querySelector('.c50-description').textContent.replace(/\n/g, '').trim();
+        const date = event.querySelector('.c50-block-date').textContent.replace(/\n/g, '').trim();
+        const photo = event.querySelector('.c50-block-photo a img').src;
+        const link = event.querySelector('.c50-table-button div button').getAttribute('x-url');
+        return { title, location, date, photo, link };
       });
     })
     pulledEvents.push(...eventsOnPage);
