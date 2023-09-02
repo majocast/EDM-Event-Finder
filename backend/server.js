@@ -10,7 +10,6 @@ app.use(cors());
 app.post('/load', async (req, res) => {
   try {
     const events = await Scraper();
-    console.log(`scraper completed: ${events[0].title}`);
     res.json(events);
   } catch (error) {
     console.log(error);
