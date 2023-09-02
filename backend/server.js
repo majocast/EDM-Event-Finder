@@ -20,5 +20,5 @@ app.post('/load', async (req, res) => {
 
 let PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
-  console.log(`listening on port ${PORT}`); 
+  console.log(`listening on port ${PORT}`);
 })
