@@ -6,9 +6,9 @@ const NavBar = () => {
     <nav className='navBar'>
       <h1>Item1</h1>
       <div>
-        <Link to='#'>Item2</Link>
-        <Link to='#'>Item3</Link>
-        <Link to='#'>Item4</Link>
+        <Link to='#'><h1>Item2</h1></Link>
+        <Link to='#'><h1>Item3</h1></Link>
+        <Link to='#'><h1>Item4</h1></Link>
       </div>
     </nav>
   )

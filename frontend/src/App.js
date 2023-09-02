@@ -5,6 +5,7 @@ import axios from 'axios';
 import Lottie from 'lottie-react';
 import loadingAnimation from './assets/loadingAnimation.json';
 import NavBar from './components/NavBar';
+import Event from './components/Event';
 
 function App() {
   const [data, setData] = useState();
@@ -25,6 +26,7 @@ function App() {
     }
 
   }, [])
+  const eventInstance = new Event('nghtmre', 'jan 1, 2024', 'here', 1234);
 
   if(!data) {
     return (
@@ -43,6 +45,7 @@ function App() {
     <BrowserRouter>
       <div className="App">
         <NavBar />
+        <p>{eventInstance.display()}</p>
         <div>
           <Routes>
             {routes.map((route, index) => {
