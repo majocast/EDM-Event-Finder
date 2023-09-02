@@ -3,7 +3,7 @@ const puppeteer = require('puppeteer');
 const baseUrl = `https://concerts50.com/upcoming-concerts-in-california/g/dance-electronic`;
 
 const Scraper = async () => {
-  const browser = await puppeteer.launch();
+  const browser = await puppeteer.launch({ headless: 'new' });
   const page = await browser.newPage();
   await page.goto(baseUrl);
   const numberOfPages = await page.evaluate(() => {

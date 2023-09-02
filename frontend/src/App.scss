@@ -1,0 +1,38 @@
+.App {
+  text-align: center;
+  background-color: #0d0d0d;
+  height: 100vh;
+  color:bisque;
+}
+
+.loadingScreen {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  background-color: #0d0d0d;
+  height: 100vh;
+}
+
+.loadingAnimation {
+  height: 150px;
+  width: 150px;
+}
+
+.navBar {
+  position: fixed !important;
+  display: flex;
+  justify-content: space-between;
+  width: 100vw;
+  border-bottom: 2px solid white;
+
+  h1 {
+    padding: 0 1rem;
+  }
+
+  div {
+    display: flex;
+    gap: 2rem;
+    padding: 0 1rem;
+  }
+}
