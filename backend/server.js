@@ -14,6 +14,7 @@ app.post('/load', async (req, res) => {
     res.json(events);
   } catch (error) {
     console.log(error);
+    res.status(500).json({ error: error.message });
   }
 })
 

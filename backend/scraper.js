@@ -10,7 +10,6 @@ const Scraper = async () => {
     const pageNumbers = document.querySelectorAll('.c50-page-link').innerHTML;
     return pageNumbers;
   });
-  console.log(numberOfPages);
   const allEvents = await page.evaluate(() => {
     const events = document.querySelectorAll('.c50-table-row');
     return Array.from(events).map((event) => {
