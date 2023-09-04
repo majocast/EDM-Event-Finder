@@ -3,6 +3,17 @@
   background-color: #1a1a1a;
   height: 100vh;
   color:bisque;
+  display: flex;
+  flex-direction: column;
+
+  h1 {
+    color: bisque !important;
+  }
+  
+  .page {
+    padding-top: 5rem;
+    flex-grow: 1;
+  }
 }
 
 .loadingScreen {
@@ -28,6 +39,11 @@
   width: 100vw;
   border-bottom: 2px solid white;
 
+  a {
+    text-decoration: none !important;
+    color:bisque !important;
+  }
+
   h1 {
     padding: 0 1rem;
   }
@@ -36,10 +52,5 @@
     display: flex;
     gap: 1rem;
     padding: 0 1rem;
-
-    a {
-      text-decoration: none !important;
-      color:bisque !important;
-    }
   }
 }

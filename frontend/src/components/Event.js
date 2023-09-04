@@ -12,11 +12,7 @@ class Event {
   }
 
   display = () => {
-    return (
-      <div>
-        <h1>This is an event class</h1>
-      </div>
-    )
+    console.log(this.name, this.date, this.location, this.eventID);
   }
 }
 

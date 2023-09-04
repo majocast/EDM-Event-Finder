@@ -6,10 +6,15 @@ import Lottie from 'lottie-react';
 import loadingAnimation from './assets/loadingAnimation.json';
 import NavBar from './components/NavBar';
 import Event from './components/Event';
+import Home from './pages/Home';
+import Account from './pages/Account';
 
 function App() {
   const [data, setData] = useState();
-  const routes = [];
+  const routes = [
+    {path: '/', component: Home},
+    {path: '/account', component: Account},
+  ];
 
   useEffect(() => {
     try {
@@ -43,10 +48,10 @@ function App() {
 
   return (
     <BrowserRouter>
-      <div className="App">
+      <div className='App'>
         <NavBar />
-        <p>{eventInstance.display()}</p>
-        <div>
+        <div>{eventInstance.display()}</div>
+        <div className='page'>
           <Routes>
             {routes.map((route, index) => {
               return (<Route key={route.path} path={route.path} element={<route.component />} />)

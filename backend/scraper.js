@@ -3,9 +3,14 @@ const puppeteer = require('puppeteer');
 const baseUrl = `https://concerts50.com/upcoming-concerts-in-california/g/dance-electronic`;
 
 const Scraper = async () => {
-  const browser = await puppeteer.launch({ headless: 'new' });
+  const browser = await puppeteer.launch({ 
+    headless: 'new',
+    defaultViewport: null, 
+  });
   const page = await browser.newPage();
-  await page.goto(baseUrl);
+  await page.goto(baseUrl, {
+    waitUntil: 'domcontentloaded',
+  });
   const numberOfPages = await page.evaluate(() => {
     const pageNumbers = document.querySelectorAll('.c50-page-item');
     const numOfPages = Array.from(pageNumbers).map(page => {
@@ -18,7 +23,9 @@ const Scraper = async () => {
   for(let i = 1; i <= numberOfPages; i++) {
     const pageUrl = i === 1 ? baseUrl : `${baseUrl}/${i}`;
     const urlPage = await browser.newPage();
-    await urlPage.goto(pageUrl);
+    await urlPage.goto(pageUrl, {
+      waitUntil: 'domcontentloaded',
+    });
     const eventsOnPage = await urlPage.evaluate(() => {
       const events = document.querySelectorAll('.c50-table-row');
       return Array.from(events).map((event) => {
