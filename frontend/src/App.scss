@@ -1,7 +1,10 @@
+/* The following line can be included in a src/App.scss */
+@import '~bootstrap/scss/bootstrap';
+
 .App {
   text-align: center;
   background-color: #1a1a1a;
-  height: 100vh;
+  min-height: 100vh;
   color:bisque;
   display: flex;
   flex-direction: column;
@@ -11,8 +14,13 @@
   }
   
   .page {
+    height: 100%;
     padding-top: 5rem;
     flex-grow: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
   }
 }
 
@@ -38,6 +46,7 @@
   justify-content: space-between;
   width: 100vw;
   border-bottom: 2px solid white;
+  z-index: 10;
 
   a {
     text-decoration: none !important;
@@ -52,5 +61,30 @@
     display: flex;
     gap: 1rem;
     padding: 0 1rem;
+  }
+}
+
+.home {
+  display: flex;
+  flex-direction: column;
+  justify-content: center !important;
+  align-items: center !important;
+  
+  .row {
+    max-width: 90vw !important;
+    
+    .col-md-4 {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+
+      div {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+      }
+    }
   }
 }

@@ -12,8 +12,8 @@ import Account from './pages/Account';
 function App() {
   const [data, setData] = useState();
   const routes = [
-    {path: '/', component: Home},
-    {path: '/account', component: Account},
+    {path: '/', component: Home, myData: data},
+    {path: '/account', component: Account, myData: data},
   ];
 
   useEffect(() => {
@@ -54,7 +54,7 @@ function App() {
         <div className='page'>
           <Routes>
             {routes.map((route, index) => {
-              return (<Route key={route.path} path={route.path} element={<route.component />} />)
+              return (<Route key={route.path} path={route.path} element={<route.component myData={route.myData}/>} />)
             })}
           </Routes>
         </div>
