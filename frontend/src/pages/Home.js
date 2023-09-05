@@ -8,9 +8,11 @@ const Home = (props) => {
   return (
     <div className='home'>
       <h1>Welcome!</h1>
+      <div className='filter'>
+        <h1>Filter</h1>
+      </div>
       <Row>
         {data.data.map((item, index) => {
-          console.log(data.data);
           return (
             <Col key={index} xs={12} sm={6} md={4}>
               <Card style={{ width: '18rem' }}>

@@ -8,11 +8,13 @@ import NavBar from './components/NavBar';
 import Event from './components/Event';
 import Home from './pages/Home';
 import Account from './pages/Account';
+import Events from './pages/Events';
 
 function App() {
   const [data, setData] = useState();
   const routes = [
     {path: '/', component: Home, myData: data},
+    {path: '/events', component: Events, myData: data},
     {path: '/account', component: Account, myData: data},
   ];
 
@@ -31,7 +33,6 @@ function App() {
     }
 
   }, [])
-  const eventInstance = new Event('nghtmre', 'jan 1, 2024', 'here', 1234);
 
   if(!data) {
     return (
@@ -50,7 +51,6 @@ function App() {
     <BrowserRouter>
       <div className='App'>
         <NavBar />
-        <div>{eventInstance.display()}</div>
         <div className='page'>
           <Routes>
             {routes.map((route, index) => {
