@@ -21,7 +21,7 @@ class Event {
 
   display = () => {
     return (
-      <Card style={{ width: '18rem', height: '100%' }}>
+      <Card style={{ width: '100%', height: '100%', backgroundColor: 'black', color:'bisque' }}>
         <Card.Img variant="top" src={this.photo} />
         <Card.Body>
           <Card.Title>{this.name}</Card.Title>

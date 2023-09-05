@@ -18,23 +18,27 @@
     padding-top: 5rem;
     flex-grow: 1;
     display: flex;
-    align-items: center;
     justify-content: center;
   }
 }
 
 .loadingScreen {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   text-align: center;
   background-color: #0d0d0d;
   height: 100vh;
-}
 
-.loadingAnimation {
-  height: 150px;
-  width: 150px;
+  h1 {
+    text-transform: uppercase;
+  }
+
+  .loadingAnimation {
+    height: 150px;
+    width: 150px;
+  }
 }
 
 .navBar {
@@ -44,6 +48,7 @@
   justify-content: space-between;
   width: 100vw;
   z-index: 10;
+  background-color: #1a1a1a;
 
   a {
     text-decoration: none !important;
@@ -64,8 +69,40 @@
 .home {
   display: flex;
   flex-direction: column;
-  justify-content: center !important;
-  align-items: center !important;
+  align-items: center;
+  gap: 2rem;
+  width: 90vw;
+
+  .nextFour {
+    padding-bottom: 1rem;
+    width: 100%;
+    .col {
+      display: flex;
+      justify-content: center;
+    }
+  }
+
+  .imageContainer {
+    position: relative;
+    width: 100%;
+    background-color: black;
+
+    img {
+      max-width: 100%;
+      height: auto;
+      opacity: 0.5;
+    }
+
+    h1 {
+      width: 100%;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: rgba(0, 0, 0, 0.8);
+      padding: 10px;
+    }
+  }
   
   .row {
     max-width: 60vw !important;
@@ -95,7 +132,7 @@
     height: 100%;
 
     .filterCol {
-      height: 100% !important;
+      max-height: 80vh !important;
       width: 20%;
       padding: 10px;
       background-color: #1a1a1a;

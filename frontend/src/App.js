@@ -37,6 +37,7 @@ function App() {
   if(!data) {
     return (
       <div className='loadingScreen'>
+        <h1>event scraper</h1>
         <Lottie
           id='loadingAnimation'
           animationData={loadingAnimation} 
