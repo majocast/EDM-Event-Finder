@@ -88,6 +88,28 @@ app.post('/addsaved', async(req, res) => {
   }
 })
 
+app.get('/account/:email', async(req, res) => {
+  const email = req.params.email;
+  console.log(email);
+  try {
+    //searches the user in the database
+    const user = await accounts.findOne({email: email});
+    if(user) {
+      const userData = {
+        email: user.email,
+        password: user.password,
+        saved: user.saved,
+      };
+      res.json(userData);
+    } else {
+      console.log('no user found');
+      res.json("user does not exist");
+    }
+  } catch (error) {
+    res.json("does not exist");
+  }
+})
+
 let PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`listening on port ${PORT}`);

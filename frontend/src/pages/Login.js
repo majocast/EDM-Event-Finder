@@ -44,7 +44,7 @@ const Account = () => {
 
   return (
     <Container className='account'>
-      <h1>Account</h1>
+      <h1>Login</h1>
       <Form action='POST'>
         <Form.Group className="mb-3" controlId="formBasicEmail">
           <Form.Label>Email address</Form.Label>

@@ -9,13 +9,15 @@ import Home from './pages/Home';
 import Login from './pages/Login';
 import Events from './pages/Events';
 import Register from './pages/Register';
+import Account from './pages/Account';
 
 function App() {
   const [data, setData] = useState();
   const routes = [
     {path: '/', component: Home, myData: data},
     {path: '/events', component: Events, myData: data},
-    {path: '/account', component: Login, myData: data},
+    {path: '/account', component: Account, myData: data},
+    {path: '/login', component: Login, myData: data},
     {path: '/register', component: Register, myData: data},
   ];
 
