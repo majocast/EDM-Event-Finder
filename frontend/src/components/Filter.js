@@ -21,6 +21,7 @@ const Filter = ( {data, onDataFiltered }) => {
 
   return (
     <div className="filter">
+      <h1>Type To Filter!</h1>
       <input
         type="text"
         className="form-control"

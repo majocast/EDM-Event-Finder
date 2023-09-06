@@ -5,17 +5,18 @@ import axios from 'axios';
 import Lottie from 'lottie-react';
 import loadingAnimation from './assets/loadingAnimation.json';
 import NavBar from './components/NavBar';
-import Event from './components/Event';
 import Home from './pages/Home';
-import Account from './pages/Account';
+import Login from './pages/Login';
 import Events from './pages/Events';
+import Register from './pages/Register';
 
 function App() {
   const [data, setData] = useState();
   const routes = [
     {path: '/', component: Home, myData: data},
     {path: '/events', component: Events, myData: data},
-    {path: '/account', component: Account, myData: data},
+    {path: '/account', component: Login, myData: data},
+    {path: '/register', component: Register, myData: data},
   ];
 
   useEffect(() => {
