@@ -57,6 +57,11 @@ app.get('/account/:email', async (req, res) => {
   }
 })
 
+//call to get account function 
+/*
+http://localhost:5000/account/test@mail.com
+*/
+
 
 //get all user saved events
 app.get('/userEvents/:email', async (req, res) => {
@@ -77,14 +82,13 @@ app.get('/userEvents/:email', async (req, res) => {
   }
 })
 
-/* JSON CONFIG INSERTION
-{
-    "accountID": 1
-}
+//call to get user events function 
+/*
+http://localhost:5000/userEvents/test@mail.com
 */
 
 //add an event
-app.post('/addEvent', async (req, res) => {
+app.post('/event', async (req, res) => {
   try {
     const { eventID, eventName, eventLocation, eventDate, accountID } = req.body;
     const newEvent = await pool.query(
@@ -107,11 +111,22 @@ app.post('/addEvent', async (req, res) => {
 }
 */
 
+//delete an event
+app.delete('/event', async (req, res) => {
+  try {
+    const { eventID } = req.body;
+    const deleteEvent = await pool.query(
+      'DELETE FROM events WHERE eventID = $1',
+      [eventID]
+    );
+    res.json('delete event success');
+  } catch (err) {
+    console.log(err.message);
+  }
+});
+
 //delete an account
 
-
-
-//delete an event
 
 
 let PORT = process.env.PORT || 5000;
