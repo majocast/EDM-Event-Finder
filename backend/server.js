@@ -1,10 +1,10 @@
 const express = require('express');
 const cors = require('cors');
 const app = express();
-const { url, Scraper } = require('./scraper.js');
-const { accounts } = require('./mongo');
+const pool = require('./db');
+const { Scraper } = require('./scraper.js');
 
-app.use(express.json());
+app.use(express.json()); //req.body
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 
@@ -18,97 +18,48 @@ app.post('/load', async (req, res) => {
   }
 })
 
-app.post('/login', async(req, res) => {
-  //axios passes email and password from login page
-  //server.js gets the email and pass from the req.body
-  const { email, password } = req.body;
+//ROUTES
 
+//create an account
+app.post('/create', async (req, res) => {
+  //AWAIT
   try {
-    //searches the user in the database
-    const check = await accounts.findOne({email: email});
-    if(check) {
-      //password is correct
-      if(check.password === password) {
-        res.json({status: "exists", email: check.email});
-      }
-      //password is incorrect
-      else {
-        res.json("mismatch");
-      }
-      
-    }
-    else {
-      res.json("does not exist");
-    }
-  } catch (error) {
-      res.json("does not exist");
+    console.log(req.body);
+    const { email } = req.body;
+    const newAccount = await pool.query(
+      "INSERT INTO accounts (email) VALUES($1) RETURNING *",
+      [email]
+    );
+    res.json(newAccount.rows[0]);
+  } catch (err) {
+    console.log(err.message);
   }
 })
 
-//registration code
-app.post('/register', async(req, res) => {
-  //axios passes email and password from login page
-  //server.js gets the email and pass from the req.body
-  const { email, password } = req.body;
-  const data = {
-    email: email,
-    password: password,
-    saved: [],
-  }
-
+//get all saved events if they exist
+app.get('/userEvents', async (req, res) => {
   try {
-    //searches the user in the database
-    const check = await accounts.findOne({email: email});
-    if(check) {
-      res.json("exists");
-    }
-    else {
-      await accounts.insertMany([data]);
-      res.json("created");
-    }
-  } catch (error) {
-      res.json("does not exist");
+    const allEvents = await pool.query('SELECT * FROM events');
+    res.json(allEvents.rows);
+  } catch (err) {
+    console.log(err.message);
   }
 })
 
-app.post('/addsaved', async(req, res) => {
-  const {cartValue, cartItem, user, price} = req.body;
-  const data = {
-    username: user,
-    item: cartItem,
-    price: price,
-    weight: cartValue,
-  }
+//add an event
+app.post('/addEvent', async (req, res) => {
   try {
-      await accounts.insertMany([data]);
-      res.json('item successfully added to cart!');
+    const { eventName, eventLocation, eventDate, accountID } = req.body;
+
+    const values = [eventName, eventLocation, eventDate, accountID];
+    const newEvent = await pool.query('INSERT INTO events (eventName, eventLocation, eventDate VALUES', values);
+    res.json(newEvent.rows);
   } catch (error) {
-      console.log(error)
-      res.json("could not complete add item");
+    
   }
 })
 
-app.get('/account/:email', async(req, res) => {
-  const email = req.params.email;
-  console.log(email);
-  try {
-    //searches the user in the database
-    const user = await accounts.findOne({email: email});
-    if(user) {
-      const userData = {
-        email: user.email,
-        password: user.password,
-        saved: user.saved,
-      };
-      res.json(userData);
-    } else {
-      console.log('no user found');
-      res.json("user does not exist");
-    }
-  } catch (error) {
-    res.json("does not exist");
-  }
-})
+//delete an account
 
 let PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
