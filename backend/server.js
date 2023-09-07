@@ -20,6 +20,7 @@ app.post('/load', async (req, res) => {
 
 //ROUTES
 
+//need to fix this to include passwords
 //create an account
 app.post('/create', async (req, res) => {
   //AWAIT
@@ -36,28 +37,45 @@ app.post('/create', async (req, res) => {
   }
 })
 
-//get all saved events if they exist
+//get all saved events
 app.get('/userEvents', async (req, res) => {
   try {
-    const allEvents = await pool.query('SELECT * FROM events');
+    const { accountID } = req.body;
+    const allEvents = await pool.query('SELECT * FROM events WHERE accountID = $1', [accountID]);
     res.json(allEvents.rows);
   } catch (err) {
     console.log(err.message);
   }
 })
 
+/* JSON CONFIG INSERTION
+{
+    "accountID": 1
+}
+*/
+
 //add an event
 app.post('/addEvent', async (req, res) => {
   try {
-    const { eventName, eventLocation, eventDate, accountID } = req.body;
+    const { eventID, eventName, eventLocation, eventDate, accountID } = req.body;
 
-    const values = [eventName, eventLocation, eventDate, accountID];
-    const newEvent = await pool.query('INSERT INTO events (eventName, eventLocation, eventDate VALUES', values);
+    const values = [eventID, eventName, eventLocation, eventDate, accountID];
+    const newEvent = await pool.query('INSERT INTO events (eventID, eventName, eventLocation, eventDate, accountID) VALUES ($1, $2, $3, $4, $5) RETURNING *', values);
     res.json(newEvent.rows);
   } catch (error) {
-    
+    console.log(error.message);
   }
 })
+
+/* JSON CONFIG INSERTION
+{
+    "eventID" : "1234",
+    "eventName": "nghtmre",
+    "eventLocation": "bill graham",
+    "eventDate": "2023-09-07",
+    "accountID": 1
+}
+*/
 
 //delete an account
 
