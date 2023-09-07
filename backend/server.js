@@ -21,7 +21,7 @@ app.post('/load', async (req, res) => {
 //ROUTES
 
 //create an account
-app.post('/create', async (req, res) => {
+app.post('/account', async (req, res) => {
   //AWAIT
   try {
     console.log(req.body);
@@ -124,9 +124,25 @@ app.delete('/event', async (req, res) => {
     console.log(err.message);
   }
 });
+/* JSON CONFIG DELETE CALL
+{
+  "eventID": 1
+}
+*/
 
 //delete an account
-
+app.delete('/account', async (req, res) => {
+  try {
+    const { email } = req.body;
+    const deleteAccount = await pool.query(
+      'DELETE FROM accounts WHERE email = $1',
+      [email]
+    );
+    res.json('delete event success');
+  } catch (err) {
+    console.log(err.message);
+  }
+});
 
 
 let PORT = process.env.PORT || 5000;
