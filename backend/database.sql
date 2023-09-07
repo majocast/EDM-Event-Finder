@@ -2,7 +2,8 @@ CREATE DATABASE edmeventfinder;
 
 CREATE TABLE accounts (
   accountID SERIAL PRIMARY KEY,
-  email VARCHAR(255) NOT NULL
+  email VARCHAR(255) NOT NULL,
+  pass VARCHAR(255) NOT NULL,
 );
 
 CREATE TABLE events (

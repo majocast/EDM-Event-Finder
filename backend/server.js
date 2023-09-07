@@ -26,10 +26,10 @@ app.post('/create', async (req, res) => {
   //AWAIT
   try {
     console.log(req.body);
-    const { email } = req.body;
+    const { email, pass } = req.body;
     const newAccount = await pool.query(
-      "INSERT INTO accounts (email) VALUES($1) RETURNING *",
-      [email]
+      "INSERT INTO accounts (email, pass) VALUES($1, $2) RETURNING *",
+      [email, pass]
     );
     res.json(newAccount.rows[0]);
   } catch (err) {
@@ -41,7 +41,10 @@ app.post('/create', async (req, res) => {
 app.get('/userEvents', async (req, res) => {
   try {
     const { accountID } = req.body;
-    const allEvents = await pool.query('SELECT * FROM events WHERE accountID = $1', [accountID]);
+    const allEvents = await pool.query(
+      'SELECT * FROM events WHERE accountID = $1', 
+      [accountID]
+    );
     res.json(allEvents.rows);
   } catch (err) {
     console.log(err.message);
@@ -60,7 +63,10 @@ app.post('/addEvent', async (req, res) => {
     const { eventID, eventName, eventLocation, eventDate, accountID } = req.body;
 
     const values = [eventID, eventName, eventLocation, eventDate, accountID];
-    const newEvent = await pool.query('INSERT INTO events (eventID, eventName, eventLocation, eventDate, accountID) VALUES ($1, $2, $3, $4, $5) RETURNING *', values);
+    const newEvent = await pool.query(
+      'INSERT INTO events (eventID, eventName, eventLocation, eventDate, accountID) VALUES ($1, $2, $3, $4, $5) RETURNING *',
+      [eventID, eventName, eventLocation, eventDate, accountID]
+    );
     res.json(newEvent.rows);
   } catch (error) {
     console.log(error.message);
