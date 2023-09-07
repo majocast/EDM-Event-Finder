@@ -20,7 +20,6 @@ app.post('/load', async (req, res) => {
 
 //ROUTES
 
-//need to fix this to include passwords
 //create an account
 app.post('/create', async (req, res) => {
   //AWAIT
@@ -37,10 +36,37 @@ app.post('/create', async (req, res) => {
   }
 })
 
-//get all saved events
-app.get('/userEvents', async (req, res) => {
+/* JSON CONFIG INSERTION
+{
+    "email": "test@example.com",
+    "pass": "example_pass"
+}
+*/
+
+//get an account
+app.get('/account/:email', async (req, res) => {
   try {
-    const { accountID } = req.body;
+    const { email } = req.params;
+    const account = await pool.query(
+      'SELECT * FROM accounts WHERE email = $1', 
+      [email]
+    );
+    res.json(account);
+  } catch (err) {
+    console.log(err.message);
+  }
+})
+
+
+//get all user saved events
+app.get('/userEvents/:email', async (req, res) => {
+  try {
+    const { email } = req.params;
+    let accountID = await pool.query(
+      'SELECT * FROM accounts WHERE email = $1', 
+      [email]
+    );
+    accountID = accountID ? accountID.rows[0].accountid : null;
     const allEvents = await pool.query(
       'SELECT * FROM events WHERE accountID = $1', 
       [accountID]
@@ -61,8 +87,6 @@ app.get('/userEvents', async (req, res) => {
 app.post('/addEvent', async (req, res) => {
   try {
     const { eventID, eventName, eventLocation, eventDate, accountID } = req.body;
-
-    const values = [eventID, eventName, eventLocation, eventDate, accountID];
     const newEvent = await pool.query(
       'INSERT INTO events (eventID, eventName, eventLocation, eventDate, accountID) VALUES ($1, $2, $3, $4, $5) RETURNING *',
       [eventID, eventName, eventLocation, eventDate, accountID]
@@ -84,6 +108,11 @@ app.post('/addEvent', async (req, res) => {
 */
 
 //delete an account
+
+
+
+//delete an event
+
 
 let PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
