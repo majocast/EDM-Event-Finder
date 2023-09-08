@@ -24,34 +24,22 @@ app.post('/load', async (req, res) => {
 app.post('/account', async (req, res) => {
   //AWAIT
   try {
-    console.log(req.body);
-    const { email, pass } = req.body;
-    const newAccount = await pool.query(
-      "INSERT INTO accounts (email, pass) VALUES($1, $2) RETURNING *",
-      [email, pass]
+    const { email, password } = req.body;
+    console.log(email, password);
+    //ensuring that email is unique to others
+    const exists = await pool.query(
+      "SELECT * FROM accounts WHERE email = $1",
+      [email]
     );
-    res.json(newAccount.rows[0]);
-  } catch (err) {
-    console.log(err.message);
-  }
-})
-
-/* JSON CONFIG INSERTION
-{
-    "email": "test@example.com",
-    "pass": "example_pass"
-}
-*/
-app.post('/account', async (req, res) => {
-  //AWAIT
-  try {
-    console.log(req.body);
-    const { email, pass } = req.body;
-    const newAccount = await pool.query(
-      "INSERT INTO accounts (email, pass) VALUES($1, $2) RETURNING *",
-      [email, pass]
-    );
-    res.json(newAccount.rows[0]);
+    if(exists.rows.length !== 0) {
+      res.json('exists');
+    } else {
+      const newAccount = await pool.query(
+        "INSERT INTO accounts (email, pass) VALUES($1, $2) RETURNING *",
+        [email, password]
+      );
+      res.json(newAccount.rows[0]);
+    }
   } catch (err) {
     console.log(err.message);
   }

@@ -14,7 +14,7 @@ function Register() {
     console.log(email, password);
     try {
       //we are posting the data to the server + '/register'
-      await axios.post(`http://localhost:5000/register`, {
+      await axios.post(`http://localhost:5000/account`, {
         email, password,
       })
       .then((res) => {
@@ -22,7 +22,7 @@ function Register() {
           alert('username or email has already registered');
           history('/login');
         }
-        else if(res.data === 'created') {
+        else {
           alert('successfully registered, redirecting to home');
           history('/');
         }
