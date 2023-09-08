@@ -6,7 +6,7 @@ function Account() {
   const location = useLocation();
   const history = useNavigate();
   const [saved, setSaved] = useState([]);
-  const [email, setEmail] = useState('');
+  const [email, setEmail] = useState(null);
   const [password, setPassword] = useState('');
 
   useEffect(() => {
@@ -16,18 +16,15 @@ function Account() {
   const pullInfo = async () => {
     try {
       console.log(localStorage.getItem('email'));
-      console.log(`http://localhost:5000/account/${email}`);
-      const response = await axios.get(`http://localhost:5000/account/${email}`);
-      setEmail(response.data.email);
-      setPassword(response.data.password);
-      setSaved(response.data.saved);
+      console.log(email);
+      const response = await axios.get(`http://localhost:5000/accountInfo/${email}`);
     } catch (error) {
       console.error("error fetching data: ", error);
     }
   }
 
   useEffect(() => {
-    if(email !== undefined) {
+    if(email !== null) {
       pullInfo();
     }
   }, [email])
@@ -37,7 +34,7 @@ function Account() {
     history('/');
   }
 
-  if(!password || !email) {
+  if(!email) {
     return (
       <div>
         <h1>Loading...</h1>

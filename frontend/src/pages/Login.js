@@ -5,7 +5,7 @@ import Form from 'react-bootstrap/Form';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
-const Account = () => {
+const Login = () => {
   const history = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -15,22 +15,16 @@ const Account = () => {
     e.preventDefault();
     try {
       //we are posting the data to the server + '/login'
-      await axios.post(`http://localhost:5000/login`, {
-        email, password
-      })
+      await axios.get(`http://localhost:5000/account/${email}/${password}`)
       .then((res) => {
-        if(res.data.status === 'exists') {
-          const returnedUser = res.data.email;
-          localStorage.setItem('email', returnedUser);
+        console.log(res.data);
+        if(res.data !== 'invalid') {
+          console.log(res.data);
+          localStorage.setItem('email', res.data[0].email);
+          alert('successfully logged in, redirecting to home');
           history('/');
-        }
-        else if(res.data === 'mismatch') {
-          alert('email or password is incorrect');
-          history('/login');
-        }
-        else if(res.data === 'does not exist') {
-          alert('user has not registered');
-          history('/register');
+        } else {
+          alert('invalid email or password');
         }
       })
       .catch((error) => {
@@ -64,4 +58,4 @@ const Account = () => {
   )
 }
 
-export default Account;
+export default Login;

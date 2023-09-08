@@ -42,16 +42,43 @@ app.post('/account', async (req, res) => {
     "pass": "example_pass"
 }
 */
-
-//get an account
-app.get('/account/:email', async (req, res) => {
+app.post('/account', async (req, res) => {
+  //AWAIT
   try {
-    const { email } = req.params;
+    console.log(req.body);
+    const { email, pass } = req.body;
+    const newAccount = await pool.query(
+      "INSERT INTO accounts (email, pass) VALUES($1, $2) RETURNING *",
+      [email, pass]
+    );
+    res.json(newAccount.rows[0]);
+  } catch (err) {
+    console.log(err.message);
+  }
+})
+
+/* JSON CONFIG INSERTION
+{
+    "email": "test@example.com",
+    "pass": "example_pass"
+}
+*/
+
+//login an account
+app.get('/account/:email/:password', async (req, res) => {
+  try {
+    const { email, password } = req.params;
+    console.log(email, password);
     const account = await pool.query(
       'SELECT * FROM accounts WHERE email = $1', 
       [email]
     );
-    res.json(account);
+    console.log(account.rows[0].pass);
+    if(account.rows[0].pass === password) {
+      res.json(account.rows);
+    } else {
+      res.json('invalid');
+    }
   } catch (err) {
     console.log(err.message);
   }
@@ -59,8 +86,49 @@ app.get('/account/:email', async (req, res) => {
 
 //call to get account function 
 /*
-http://localhost:5000/account/test@mail.com
+http://localhost:5000/account/test@mail.com/1234
 */
+
+//get an account
+app.get('/accountInfo/:email', async (req, res) => {
+  try {
+    const { email } = req.params;
+    console.log(email );
+    const account = await pool.query(
+      'SELECT * FROM accounts WHERE email = $1', 
+      [email]
+    );
+    console.log(account.rows[0].pass);
+  } catch (err) {
+    console.log(err.message);
+  }
+})
+
+//call to get account function 
+/*
+http://localhost:5000/account/test@mail.com/1234
+*/
+
+//delete an account
+app.delete('/account', async (req, res) => {
+  try {
+    const { email } = req.body;
+    const deleteAccount = await pool.query(
+      'DELETE FROM accounts WHERE email = $1',
+      [email]
+    );
+    res.json('delete event success');
+  } catch (err) {
+    console.log(err.message);
+  }
+});
+
+/* JSON CONFIG INSERTION
+{
+    "email": "test@mail.com"
+}
+*/
+
 
 
 //get all user saved events
@@ -129,21 +197,6 @@ app.delete('/event', async (req, res) => {
   "eventID": 1
 }
 */
-
-//delete an account
-app.delete('/account', async (req, res) => {
-  try {
-    const { email } = req.body;
-    const deleteAccount = await pool.query(
-      'DELETE FROM accounts WHERE email = $1',
-      [email]
-    );
-    res.json('delete event success');
-  } catch (err) {
-    console.log(err.message);
-  }
-});
-
 
 let PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
