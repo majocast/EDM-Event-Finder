@@ -7,10 +7,12 @@ CREATE TABLE accounts (
 );
 
 CREATE TABLE events (
-  eventID INT PRIMARY KEY, 
+  eventID INT PRIMARY KEY,
   eventName VARCHAR(255),
   eventLocation VARCHAR(255),
-  eventDate DATE,
+  eventDate VARCHAR(255),
+  eventLink VARCHAR(255),
+  eventPhoto VARCHAR(255),
   accountID INT,
 
   FOREIGN KEY (accountID) REFERENCES accounts(accountID)

@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
+import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 
 class Event {
   name;
@@ -9,6 +10,7 @@ class Event {
   link;
   photo;
   eventID;
+  loggedIn = false;
 
   constructor(name, date, location, link, photo, eventID) {
     this.name = name;
@@ -20,6 +22,7 @@ class Event {
   }
 
   display = () => {
+
     return (
       <Card style={{ width: '100%', height: '100%', backgroundColor: 'black', color:'bisque' }}>
         <Card.Img variant="top" src={this.photo} loading='lazy'/>
@@ -31,6 +34,7 @@ class Event {
               {this.date}
           </Card.Text>
           <Button variant="primary" href={this.link} target='_blank'>View Tickets</Button>
+          <BookmarkBorderIcon variant='primary'/>
         </Card.Body>
       </Card>
     )

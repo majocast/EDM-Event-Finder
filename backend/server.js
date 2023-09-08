@@ -20,7 +20,7 @@ app.post('/load', async (req, res) => {
 
 //ROUTES
 
-//create an account
+//create an unique account
 app.post('/account', async (req, res) => {
   //AWAIT
   try {
@@ -77,26 +77,6 @@ app.get('/account/:email/:password', async (req, res) => {
 http://localhost:5000/account/test@mail.com/1234
 */
 
-//get an account
-app.get('/accountInfo/:email', async (req, res) => {
-  try {
-    const { email } = req.params;
-    console.log(email );
-    const account = await pool.query(
-      'SELECT * FROM accounts WHERE email = $1', 
-      [email]
-    );
-    console.log(account.rows[0].pass);
-  } catch (err) {
-    console.log(err.message);
-  }
-})
-
-//call to get account function 
-/*
-http://localhost:5000/account/test@mail.com/1234
-*/
-
 //delete an account
 app.delete('/account', async (req, res) => {
   try {
@@ -117,14 +97,12 @@ app.delete('/account', async (req, res) => {
 }
 */
 
-
-
-//get all user saved events
-app.get('/userEvents/:email', async (req, res) => {
+//get an account's info such as events
+app.get('/accountInfo/:email', async (req, res) => {
   try {
     const { email } = req.params;
     let accountID = await pool.query(
-      'SELECT * FROM accounts WHERE email = $1', 
+      'SELECT * FROM accounts WHERE email = $1',
       [email]
     );
     accountID = accountID ? accountID.rows[0].accountid : null;
@@ -132,15 +110,16 @@ app.get('/userEvents/:email', async (req, res) => {
       'SELECT * FROM events WHERE accountID = $1', 
       [accountID]
     );
+    console.log(allEvents.rows);
     res.json(allEvents.rows);
   } catch (err) {
     console.log(err.message);
   }
 })
 
-//call to get user events function 
+//call to get account Info function 
 /*
-http://localhost:5000/userEvents/test@mail.com
+http://localhost:5000/accountInfo/test@mail.com
 */
 
 //add an event
