@@ -123,6 +123,8 @@ http://localhost:5000/accountInfo/test@mail.com
 */
 
 //add an event
+//fix add event to make sure that it adds the picture of the event and the link,
+//bind command to bookmark icon button press.
 app.post('/event', async (req, res) => {
   try {
     const { eventID, eventName, eventLocation, eventDate, accountID } = req.body;

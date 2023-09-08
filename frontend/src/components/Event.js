@@ -21,8 +21,9 @@ class Event {
     this.eventID = eventID;
   }
 
+  //finish checker for logged in and binding bookmark tab to add event.
+  //bookmark should be toggled if already saved in database for user
   display = () => {
-
     return (
       <Card style={{ width: '100%', height: '100%', backgroundColor: 'black', color:'bisque' }}>
         <Card.Img variant="top" src={this.photo} loading='lazy'/>
