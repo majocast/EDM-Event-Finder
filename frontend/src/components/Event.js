@@ -1,28 +1,33 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useLocation } from 'react-router-dom';
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
 
 const Event = (params) => {
+  const pageLocation = useLocation();
   const [saved, setSaved] = useState(false);
   const [loggedIn, setLoggedIn] = useState(false);
   const [name, date, location, link, photo] = params.data;
+  const inSaved = params.inSaved;
 
   useEffect(() => {
     console.log(localStorage.getItem('email'));
     if(localStorage.getItem('email')) {
       setLoggedIn(true);
+      if(inSaved) {
+        setSaved(true);
+      }
     } else {
       setLoggedIn(false);
+      setSaved(false);
     }
-  }, [location.pathname]);
+  }, [pageLocation.pathname]);
 
   const toggleSaved = async () => {
     const email = localStorage.getItem('email');
-    console.log(name);
-    console.log(email);
     if(!saved) {
       await axios.post(`http://localhost:5000/event/${email}`,{ 
         name, location, date, link, photo 

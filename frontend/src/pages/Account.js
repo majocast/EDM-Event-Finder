@@ -51,13 +51,15 @@ function Account() {
         <Link onClick={signOut} to='/'>Log Out</Link>
       </div>
       <div>
+        <h1>My Saved Events</h1>
         {saved ? 
           <div>
             {saved.map((item, index) => {
-              const event = [item.title, item.date, item.location, item.link, item.photo];
+              const event = [item.eventname, item.eventdate, item.eventlocation, item.eventlink, item.eventphoto];
+              console.log(event);
               return (
                 <Col key={index} xs={12} sm={6} md={4}>
-                  <Event data={event} />
+                  <Event data={event} inSaved={true}/>
                 </Col>
               )
             })}

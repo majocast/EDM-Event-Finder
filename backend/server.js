@@ -145,7 +145,7 @@ app.post('/event/:email', async (req, res) => {
       'INSERT INTO events (eventName, eventLocation, eventDate, eventLink, eventPhoto, accountID) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *',
       [name, location, date, link, photo, accountID]
     );
-    res.json(newEvent.rows);
+    res.json('added');
   } catch (error) {
     console.log(error.message);
   }
