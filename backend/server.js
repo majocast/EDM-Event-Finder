@@ -131,9 +131,8 @@ http://localhost:5000/accountInfo/test@mail.com
 app.post('/event/:email', async (req, res) => {
   try {
     const { email } = req.params;
-    const { name, location, date, link, photo} = req.body;
-    console.log(email);
-    console.log(name, location, date, link, photo);
+    const { name, location, date, link, photo } = req.body;
+    console.log(req.body);
     
     let accountID = await pool.query(
       'SELECT * FROM accounts WHERE email = $1',
@@ -162,14 +161,23 @@ app.post('/event/:email', async (req, res) => {
 */
 
 //delete an event
-app.delete('/event', async (req, res) => {
+app.delete('/event/:email', async (req, res) => {
   try {
-    const { eventID } = req.body;
-    const deleteEvent = await pool.query(
-      'DELETE FROM events WHERE eventID = $1',
-      [eventID]
+    const { email } = req.params;
+    console.log(email);
+    const { name, location, date, link, photo } = req.body;
+    console.log(req.body);
+    let accountID = await pool.query(
+      'SELECT * FROM accounts WHERE email = $1',
+      [email]
     );
-    res.json('delete event success');
+    accountID = accountID ? accountID.rows[0].accountid : null;
+
+    const deleteEvent = await pool.query(
+      'DELETE FROM events WHERE eventname = $1 AND eventlocation = $2 AND eventdate = $3 AND eventlink = $4 AND eventphoto = $5 AND accountid = $6',
+      [name, location, date, link, photo, accountID]
+    );
+    res.json('deleted');
   } catch (err) {
     console.log(err.message);
   }

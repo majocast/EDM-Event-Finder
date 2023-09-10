@@ -11,6 +11,7 @@ const Event = (params) => {
   const [saved, setSaved] = useState(false);
   const [loggedIn, setLoggedIn] = useState(false);
   const [name, date, location, link, photo] = params.data;
+  const [isDeleted, setIsDeleted] = useState(false);
   const inSaved = params.inSaved;
 
   useEffect(() => {
@@ -29,6 +30,7 @@ const Event = (params) => {
   const toggleSaved = async () => {
     const email = localStorage.getItem('email');
     if(!saved) {
+      console.log('in false saved');
       await axios.post(`http://localhost:5000/event/${email}`,{ 
         name, location, date, link, photo 
       })
@@ -40,9 +42,27 @@ const Event = (params) => {
         }
       })
     } else {
-      
+      console.log(params.data);
+      console.log(name);
+      await axios.delete(`http://localhost:5000/event/${email}`,{
+        data: {name, location, date, link, photo}
+      })
+      .then((res) => {
+        if(res.data !== 'deleted') {
+          alert('error in removing event');
+        } else {
+          alert('successfully removed');
+          if(pageLocation.pathname === '/account') {
+            setIsDeleted(true);
+          }
+        }
+      })
     }
     setSaved(!saved);
+  }
+
+  if(isDeleted) {
+    return null;
   }
 
   return (
