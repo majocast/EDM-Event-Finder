@@ -15,7 +15,6 @@ const Event = (params) => {
   const inSaved = params.inSaved;
 
   useEffect(() => {
-    console.log(localStorage.getItem('email'));
     if(localStorage.getItem('email')) {
       setLoggedIn(true);
       if(inSaved) {
@@ -42,10 +41,8 @@ const Event = (params) => {
         }
       })
     } else {
-      console.log(params.data);
-      console.log(name);
       await axios.delete(`http://localhost:5000/event/${email}`,{
-        data: {name, location, date, link, photo}
+        data: { name, location, date, link, photo }
       })
       .then((res) => {
         if(res.data !== 'deleted') {
