@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
@@ -7,7 +7,17 @@ import BookmarkIcon from '@mui/icons-material/Bookmark';
 
 const Event = (params) => {
   const [saved, setSaved] = useState(false);
+  const [loggedIn, setLoggedIn] = useState(false);
   const [name, date, location, link, photo] = params.data;
+
+  useEffect(() => {
+    console.log(localStorage.getItem('email'));
+    if(localStorage.getItem('email')) {
+      setLoggedIn(true);
+    } else {
+      setLoggedIn(false);
+    }
+  }, [location.pathname]);
 
   const toggleSaved = async () => {
     const email = localStorage.getItem('email');
@@ -39,7 +49,7 @@ const Event = (params) => {
           {date}
         </Card.Text>
         <Button variant="primary" href={link} target='_blank'>View Tickets</Button>
-        {saved ? <BookmarkIcon onClick={toggleSaved} variant='primary'/> : <BookmarkBorderIcon onClick={toggleSaved} variant='primary'/>}
+        {loggedIn ? (saved ? <BookmarkIcon onClick={toggleSaved} variant='primary'/> : <BookmarkBorderIcon onClick={toggleSaved} variant='primary'/>) : null}
       </Card.Body>
     </Card>
   )
