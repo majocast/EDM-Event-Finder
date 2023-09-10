@@ -18,13 +18,16 @@ const Login = () => {
       await axios.get(`http://localhost:5000/account/${email}/${password}`)
       .then((res) => {
         console.log(res.data);
-        if(res.data !== 'invalid') {
+        if(res.data === 'invalid') {
+          alert('invalid email or password');
+        } else if(res.data === 'not exist') {
+          alert('login does not exist, redirecting to register');
+          history('/register');
+        } else {
           console.log(res.data);
           localStorage.setItem('email', res.data[0].email);
           alert('successfully logged in, redirecting to home');
           history('/');
-        } else {
-          alert('invalid email or password');
         }
       })
       .catch((error) => {

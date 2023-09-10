@@ -2,7 +2,6 @@
   "dependencies": {
     "cors": "^2.8.5",
     "express": "^4.18.2",
-    "mongoose": "^7.5.0",
     "nodemon": "^3.0.1",
     "pg": "^8.11.3",
     "puppeteer": "^21.1.1"
@@ -12,7 +11,7 @@
   },
   "name": "backend",
   "version": "1.0.0",
-  "main": "scraper.js",
+  "main": "server.js",
   "author": "",
   "license": "ISC",
   "description": ""

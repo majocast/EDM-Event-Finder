@@ -61,11 +61,14 @@ app.get('/account/:email/:password', async (req, res) => {
       'SELECT * FROM accounts WHERE email = $1', 
       [email]
     );
-    console.log(account.rows[0].pass);
-    if(account.rows[0].pass === password) {
-      res.json(account.rows);
+    if(account.rows.length === 0) {
+      res.json('not exist');
     } else {
-      res.json('invalid');
+      if(account.rows[0].pass === password) {
+        res.json(account.rows);
+      } else {
+        res.json('invalid');
+      }
     }
   } catch (err) {
     console.log(err.message);
