@@ -34,6 +34,8 @@ const Event = (params) => {
           alert('successfully added');
         }
       })
+    } else {
+      
     }
     setSaved(!saved);
   }
@@ -49,7 +51,7 @@ const Event = (params) => {
           {date}
         </Card.Text>
         <Button variant="primary" href={link} target='_blank'>View Tickets</Button>
-        {loggedIn ? (saved ? <BookmarkIcon onClick={toggleSaved} variant='primary'/> : <BookmarkBorderIcon onClick={toggleSaved} variant='primary'/>) : null}
+        {loggedIn ? (saved ? <BookmarkIcon style={{ margin: '0 0.5rem' }} onClick={toggleSaved} variant='primary'/> : <BookmarkBorderIcon style={{ margin: '0 0.5rem' }} onClick={toggleSaved} variant='primary'/>) : null}
       </Card.Body>
     </Card>
   )

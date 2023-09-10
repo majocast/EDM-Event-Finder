@@ -134,8 +134,7 @@ app.post('/event/:email', async (req, res) => {
     const { name, location, date, link, photo} = req.body;
     console.log(email);
     console.log(name, location, date, link, photo);
-    res.json('added');
-    /*
+    
     let accountID = await pool.query(
       'SELECT * FROM accounts WHERE email = $1',
       [email]
@@ -143,11 +142,10 @@ app.post('/event/:email', async (req, res) => {
     accountID = accountID ? accountID.rows[0].accountid : null;
 
     const newEvent = await pool.query(
-      'INSERT INTO events (eventID, eventName, eventLocation, eventDate, eventLink, eventPhoto, accountID) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *',
-      [eventID, eventName, eventLocation, eventDate, eventLink, eventPhoto, accountID]
+      'INSERT INTO events (eventName, eventLocation, eventDate, eventLink, eventPhoto, accountID) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *',
+      [name, location, date, link, photo, accountID]
     );
     res.json(newEvent.rows);
-    */
   } catch (error) {
     console.log(error.message);
   }
