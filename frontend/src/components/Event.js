@@ -1,45 +1,32 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
+import BookmarkIcon from '@mui/icons-material/Bookmark';
 
-class Event {
-  name;
-  date;
-  location;
-  link;
-  photo;
-  eventID;
-  loggedIn = false;
+const Event = (params) => {
+  const [saved, setSaved] = useState(false);
+  const [name, date, location, link, photo] = params.data;
 
-  constructor(name, date, location, link, photo, eventID) {
-    this.name = name;
-    this.date = date;
-    this.location = location;
-    this.link = link;
-    this.photo = photo;
-    this.eventID = eventID;
+  const toggleSaved = () => {
+    setSaved(!saved);
   }
 
-  //finish checker for logged in and binding bookmark tab to add event.
-  //bookmark should be toggled if already saved in database for user
-  display = () => {
-    return (
-      <Card style={{ width: '100%', height: '100%', backgroundColor: 'black', color:'bisque' }}>
-        <Card.Img variant="top" src={this.photo} loading='lazy'/>
-        <Card.Body>
-          <Card.Title>{this.name}</Card.Title>
-          <Card.Text>
-            {this.location}
-            <br />
-            {this.date}
-          </Card.Text>
-          <Button variant="primary" href={this.link} target='_blank'>View Tickets</Button>
-          <BookmarkBorderIcon style={{ position: 'absolute', bottom: '1rem', right: '1rem' }} variant='primary'/>
-        </Card.Body>
-      </Card>
-    )
-  }
+  return (
+    <Card style={{ width: '100%', height: '100%', backgroundColor: 'black', color:'bisque' }}>
+      <Card.Img variant="top" src={photo} loading='lazy'/>
+      <Card.Body>
+        <Card.Title>{name}</Card.Title>
+        <Card.Text>
+          {location}
+          <br />
+          {date}
+        </Card.Text>
+        <Button variant="primary" href={link} target='_blank'>View Tickets</Button>
+        {saved ? <BookmarkIcon onClick={toggleSaved} variant='primary'/> : <BookmarkBorderIcon onClick={toggleSaved} variant='primary'/>}
+      </Card.Body>
+    </Card>
+  )
 }
 
 export default Event;

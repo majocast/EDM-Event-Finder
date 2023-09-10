@@ -31,10 +31,10 @@ const Events = (props) => {
         <Col sm={8} className='eventTable'>
           <Row>
             {filteredData.map((item, index) => {
-              const event = new Event(item.title, item.date, item.location, item.link, item.photo, index);
+              const event = [item.title, item.date, item.location, item.link, item.photo];
               return (
                 <Col key={index} xs={12} sm={6} md={4}>
-                  {event.display()}
+                  <Event data={event} />
                 </Col>
               )
             })}
