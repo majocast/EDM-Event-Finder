@@ -128,14 +128,26 @@ http://localhost:5000/accountInfo/test@mail.com
 //add an event
 //fix add event to make sure that it adds the picture of the event and the link,
 //bind command to bookmark icon button press.
-app.post('/event', async (req, res) => {
+app.post('/event/:email', async (req, res) => {
   try {
-    const { eventID, eventName, eventLocation, eventDate, accountID } = req.body;
+    const { email } = req.params;
+    const { name, location, date, link, photo} = req.body;
+    console.log(email);
+    console.log(name, location, date, link, photo);
+    res.json('added');
+    /*
+    let accountID = await pool.query(
+      'SELECT * FROM accounts WHERE email = $1',
+      [email]
+    );
+    accountID = accountID ? accountID.rows[0].accountid : null;
+
     const newEvent = await pool.query(
-      'INSERT INTO events (eventID, eventName, eventLocation, eventDate, accountID) VALUES ($1, $2, $3, $4, $5) RETURNING *',
-      [eventID, eventName, eventLocation, eventDate, accountID]
+      'INSERT INTO events (eventID, eventName, eventLocation, eventDate, eventLink, eventPhoto, accountID) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *',
+      [eventID, eventName, eventLocation, eventDate, eventLink, eventPhoto, accountID]
     );
     res.json(newEvent.rows);
+    */
   } catch (error) {
     console.log(error.message);
   }

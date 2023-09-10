@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from "react";
 import axios from "axios";
-import { Row, Col } from 'react-bootstrap';
+import { Col } from 'react-bootstrap';
 import Event from '../components/Event';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 
@@ -9,7 +9,6 @@ function Account() {
   const history = useNavigate();
   const [saved, setSaved] = useState([]);
   const [email, setEmail] = useState(null);
-  const [password, setPassword] = useState('');
 
   useEffect(() => {
     setEmail(localStorage.getItem('email'));
@@ -55,10 +54,10 @@ function Account() {
         {saved ? 
           <div>
             {saved.map((item, index) => {
-              const event = new Event(item.eventname, item.eventdate, item.eventlocation, item.link, item.photo, index);
+              const event = [item.title, item.date, item.location, item.link, item.photo];
               return (
                 <Col key={index} xs={12} sm={6} md={4}>
-                  {event.display()}
+                  <Event data={event} />
                 </Col>
               )
             })}

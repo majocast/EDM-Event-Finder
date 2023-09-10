@@ -7,7 +7,7 @@ CREATE TABLE accounts (
 );
 
 CREATE TABLE events (
-  eventID INT PRIMARY KEY,
+  eventID SERIAL PRIMARY KEY,
   eventName VARCHAR(255),
   eventLocation VARCHAR(255),
   eventDate VARCHAR(255),
