@@ -40,7 +40,7 @@ const Login = () => {
   }
 
   return (
-    <Container className='account'>
+    <Container className='loginRegistration'>
       <h1>Login</h1>
       <Form action='POST'>
         <Form.Group className="mb-3" controlId="formBasicEmail">
@@ -52,7 +52,7 @@ const Login = () => {
           <Form.Control type="password" placeholder="Password" onChange={(e) => { setPassword(e.target.value) }}/>
         </Form.Group>
         <Button variant="primary" type="submit" onClick={submit}>
-          Submit
+          Log In
         </Button>
       </Form>
       <p className='py-2 font-bold'>OR</p>

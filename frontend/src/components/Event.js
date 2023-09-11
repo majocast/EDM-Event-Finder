@@ -35,9 +35,9 @@ const Event = (params) => {
       })
       .then((res) => {
         if(res.data !== 'added') {
-          alert('error in saving event');
+          console.log('error in saving event');
         } else {
-          alert('successfully added');
+          console.log('successfully added');
         }
       })
     } else {
@@ -46,9 +46,9 @@ const Event = (params) => {
       })
       .then((res) => {
         if(res.data !== 'deleted') {
-          alert('error in removing event');
+          console.log('error in removing event');
         } else {
-          alert('successfully removed');
+          console.log('successfully removed');
           if(pageLocation.pathname === '/account') {
             setIsDeleted(true);
           }
@@ -73,7 +73,7 @@ const Event = (params) => {
           <br />
           {date}
         </Card.Text>
-        <Button variant="primary" href={link} target='_blank'>View Tickets</Button>
+        <Button className='ticketButton' variant="primary" href={link} target='_blank'>View Tickets</Button>
         {loggedIn ? (saved ? <BookmarkIcon style={{ margin: '0 0.5rem' }} onClick={toggleSaved} variant='primary'/> : <BookmarkBorderIcon style={{ margin: '0 0.5rem' }} onClick={toggleSaved} variant='primary'/>) : null}
       </Card.Body>
     </Card>

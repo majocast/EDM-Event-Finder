@@ -10,6 +10,7 @@ import { useLocation } from 'react-router-dom';
 
 const Events = (props) => {
   const location = useLocation();
+  const [notification, setNotification] = useState('');
   const data = props.myData;
   const [filteredData, setFilteredData] = useState(data.data);
   const [email, setEmail] = useState();
@@ -22,7 +23,8 @@ const Events = (props) => {
   }
 
   useEffect(() => {
-    if(localStorage.getItem('email') !== undefined) {
+    if((localStorage.getItem('email') !== null)) {
+      console.log(localStorage.getItem('email'));
       setEmail(localStorage.getItem('email'));
       setLoggedIn(true);
       pullInfo(localStorage.getItem('email'));
@@ -60,7 +62,7 @@ const Events = (props) => {
   if(isLoading) {
     return (
       <div className='loadingScreen'>
-        <h1>event scraper</h1>
+        <h1>loading events</h1>
         <Lottie
           id='loadingAnimation'
           animationData={loadingAnimation} 

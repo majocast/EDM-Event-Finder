@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import Container from 'react-bootstrap/Container';
 import { Link, useNavigate } from'react-router-dom';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
@@ -37,26 +38,24 @@ function Register() {
   }
 
   return (
-    <div>
-      <div>
-        <h1>Register</h1>
-        <Form action='POST'>
-          <Form.Group controlId="formBasicEmail">
-            <Form.Label>Email address</Form.Label>
-            <Form.Control type="email" placeholder="Enter email" onChange={(e) => { setEmail(e.target.value) }}/>
-          </Form.Group>
-          <Form.Group className="mb-3" controlId="formBasicPassword">
-            <Form.Label>Password</Form.Label>
-            <Form.Control type="password" placeholder="Password" onChange={(e) => { setPassword(e.target.value) }}/>
-          </Form.Group>
-          <Button variant="primary" type="submit" onClick={submit}>
-            Submit
-          </Button>
-        </Form>
-        <p>OR</p>
-        <Link to='/account'>Login</Link>
-      </div>
-    </div>
+    <Container className='loginRegistration'>
+      <h1>Register</h1>
+      <Form action='POST'>
+        <Form.Group className="mb-3" controlId="formBasicEmail">
+          <Form.Label>Email address</Form.Label>
+          <Form.Control type="email" placeholder="Enter email" onChange={(e) => { setEmail(e.target.value) }}/>
+        </Form.Group>
+        <Form.Group className="mb-3" controlId="formBasicPassword">
+          <Form.Label>Password</Form.Label>
+          <Form.Control type="password" placeholder="Password" onChange={(e) => { setPassword(e.target.value) }}/>
+        </Form.Group>
+        <Button variant="primary" type="submit" onClick={submit}>
+          Register
+        </Button>
+      </Form>
+      <p className='py-2 font-bold'>OR</p>
+      <Link to='/login'>Login</Link>
+    </Container>
   );
 }
 
