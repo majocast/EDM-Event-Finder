@@ -18,13 +18,13 @@ const Event = (params) => {
     if(localStorage.getItem('email')) {
       setLoggedIn(true);
       if(inSaved) {
+        console.log(name);
         setSaved(true);
       }
     } else {
       setLoggedIn(false);
-      setSaved(false);
     }
-  }, [pageLocation.pathname]);
+  }, []);
 
   const toggleSaved = async () => {
     const email = localStorage.getItem('email');
@@ -62,6 +62,7 @@ const Event = (params) => {
     return null;
   }
 
+  console.log(saved);
   return (
     <Card style={{ width: '100%', height: '100%', backgroundColor: 'black', color:'bisque' }}>
       <Card.Img variant="top" src={photo} loading='lazy'/>

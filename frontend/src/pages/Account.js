@@ -1,5 +1,7 @@
 import React, {useState, useEffect} from "react";
 import axios from "axios";
+import Lottie from 'lottie-react';
+import loadingAnimation from '../assets/loadingAnimation.json';
 import { Col } from 'react-bootstrap';
 import Event from '../components/Event';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
@@ -16,8 +18,6 @@ function Account() {
 
   const pullInfo = async () => {
     try {
-      console.log(localStorage.getItem('email'));
-      console.log(email);
       const res = await axios.get(`http://localhost:5000/accountInfo/${email}`);
       setSaved(res.data);
     } catch (error) {
@@ -38,11 +38,18 @@ function Account() {
 
   if(!email) {
     return (
-      <div>
-        <h1>Loading...</h1>
+      <div className='loadingScreen'>
+        <h1>event scraper</h1>
+        <Lottie
+          id='loadingAnimation'
+          animationData={loadingAnimation} 
+          loop
+          autoplay
+        />
       </div>
     )
   }
+
   console.log(saved);
   return (
     <div>

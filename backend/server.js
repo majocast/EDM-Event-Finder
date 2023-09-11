@@ -104,6 +104,7 @@ app.delete('/account', async (req, res) => {
 app.get('/accountInfo/:email', async (req, res) => {
   try {
     const { email } = req.params;
+    console.log(email);
     let accountID = await pool.query(
       'SELECT * FROM accounts WHERE email = $1',
       [email]
