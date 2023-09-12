@@ -29,13 +29,15 @@ const Scraper = async () => {
       return numOfPages[numOfPages.length - 1];
     });
     const pulledEvents = [];
-    for(let i = 1; i <= numberOfPages; i++) {
+    /*formerly:  for(let i = 1; i <= numberOfPages; i++) {*/
+    for(let i = 1; i <= 2; i++) {
       const pageUrl = i === 1 ? baseUrl : `${baseUrl}/${i}`;
       const urlPage = await browser.newPage();
       await urlPage.goto(pageUrl, {
         waitUntil: 'load',
         timeout: 0,
       });
+      /*formerly:  const eventsOnPage = await urlPage.evaluate(() => {*/
       const eventsOnPage = await urlPage.evaluate(() => {
         const events = document.querySelectorAll('.c50-table-row');
         return Array.from(events).map((event) => {
