@@ -13,7 +13,6 @@ const Scraper = async () => {
         "--disable-setuid-sandbox",
       ],
       headless: 'true',
-      executablePath: process.env.PUPPETEER_EXECUTABLE_PATH,
     });
     const page = await browser.newPage();
     await page.goto(baseUrl, {
