@@ -1,11 +1,19 @@
 const puppeteer = require('puppeteer');
+require('dotenv').config();
 
 const baseUrl = `https://concerts50.com/upcoming-concerts-in-california/g/dance-electronic`;
 
 const Scraper = async () => {
   try {
     const browser = await puppeteer.launch({ 
-      headless: 'new',
+      args: [
+        "--no-sandbox",
+        "--no-zygote",
+        "--single-process",
+        "--disable-setuid-sandbox",
+      ],
+      headless: 'true',
+      executablePath: process.env.PUPPETEER_EXECUTABLE_PATH,
     });
     const page = await browser.newPage();
     await page.goto(baseUrl, {
