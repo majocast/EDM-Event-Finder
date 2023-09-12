@@ -18,7 +18,7 @@ function Account() {
 
   const pullInfo = async () => {
     try {
-      const res = await axios.get(`http://localhost:5000/accountInfo/${email}`);
+      const res = await axios.get(`${process.env.REACT_APP_EEF_SERVER}/accountInfo/${email}`);
       setSaved(res.data);
     } catch (error) {
       console.error("error fetching data: ", error);

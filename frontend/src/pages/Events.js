@@ -36,7 +36,7 @@ const Events = (props) => {
 
   const pullInfo = async (currEmail) => {
     try {
-      const res = await axios.get(`http://localhost:5000/accountInfo/${currEmail}`);
+      const res = await axios.get(`${process.env.REACT_APP_EEF_SERVER}/accountInfo/${currEmail}`);
       setSavedData(res.data);
       setIsLoading(false);
     } catch (error) {
