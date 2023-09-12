@@ -30,7 +30,7 @@ const Scraper = async () => {
     });
     const pulledEvents = [];
     /*formerly:  for(let i = 1; i <= numberOfPages; i++) {*/
-    for(let i = 1; i <= 2; i++) {
+    for(let i = 1; i <= 1; i++) {
       const pageUrl = i === 1 ? baseUrl : `${baseUrl}/${i}`;
       const urlPage = await browser.newPage();
       await urlPage.goto(pageUrl, {
