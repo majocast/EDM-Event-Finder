@@ -17,7 +17,8 @@ const Scraper = async () => {
     });
     const page = await browser.newPage();
     await page.goto(baseUrl, {
-      waitUntil: 'domcontentloaded',
+      waitUntil: 'load',
+      timeout: 0,
     });
     const numberOfPages = await page.evaluate(() => {
       const pageNumbers = document.querySelectorAll('.c50-page-item');
@@ -32,7 +33,8 @@ const Scraper = async () => {
       const pageUrl = i === 1 ? baseUrl : `${baseUrl}/${i}`;
       const urlPage = await browser.newPage();
       await urlPage.goto(pageUrl, {
-        waitUntil: 'domcontentloaded',
+        waitUntil: 'load',
+        timeout: 0,
       });
       const eventsOnPage = await urlPage.evaluate(() => {
         const events = document.querySelectorAll('.c50-table-row');
