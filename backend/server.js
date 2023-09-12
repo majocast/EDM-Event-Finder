@@ -189,7 +189,7 @@ app.delete('/event/:email', async (req, res) => {
 }
 */
 
-let PORT = process.env.SERVERPORT || 5000;
+let PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`listening on port ${PORT}`);
 })
