@@ -20,6 +20,7 @@ const Scraper = async () => {
       waitUntil: 'load',
       timeout: 0,
     });
+    /*
     const numberOfPages = await page.evaluate(() => {
       const pageNumbers = document.querySelectorAll('.c50-page-item');
       const numOfPages = Array.from(pageNumbers).map(page => {
@@ -28,6 +29,7 @@ const Scraper = async () => {
       }).sort((a, b) => a - b);
       return numOfPages[numOfPages.length - 1];
     });
+    */
     const pulledEvents = [];
     const eventsOnPage = await page.evaluate(() => {
       const events = document.querySelectorAll('.c50-table-row');
