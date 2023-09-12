@@ -29,7 +29,21 @@ const Scraper = async () => {
       return numOfPages[numOfPages.length - 1];
     });
     const pulledEvents = [];
-    /*formerly:  for(let i = 1; i <= numberOfPages; i++) {*/
+    const eventsOnPage = await page.evaluate(() => {
+      const events = document.querySelectorAll('.c50-table-row');
+      return Array.from(events).map((event) => {
+        const title = event.querySelector('.c50-title a').textContent;
+        const location = event.querySelector('.c50-description').textContent.replace(/\n/g, '').trim();
+        const date = event.querySelector('.c50-block-date').textContent.replace(/\n/g, '').trim();
+        const photo = event.querySelector('.c50-block-photo a img').src;
+        const link = event.querySelector('.c50-table-button div button').getAttribute('x-url');
+        return { title, location, date, photo, link };
+      });
+    })
+    pulledEvents.push(...eventsOnPage);
+    /*formerly:  for(let i = 1; i <= numberOfPages; i++) {
+
+
     for(let i = 1; i <= 1; i++) {
       const pageUrl = i === 1 ? baseUrl : `${baseUrl}/${i}`;
       const urlPage = await browser.newPage();
@@ -37,7 +51,7 @@ const Scraper = async () => {
         waitUntil: 'load',
         timeout: 0,
       });
-      /*formerly:  const eventsOnPage = await urlPage.evaluate(() => {*/
+      /*formerly:  const eventsOnPage = await urlPage.evaluate(() => {
       const eventsOnPage = await urlPage.evaluate(() => {
         const events = document.querySelectorAll('.c50-table-row');
         return Array.from(events).map((event) => {
@@ -51,6 +65,7 @@ const Scraper = async () => {
       })
       pulledEvents.push(...eventsOnPage);
     }
+    */
     await browser.close();
     return pulledEvents;
   } catch (error) {
