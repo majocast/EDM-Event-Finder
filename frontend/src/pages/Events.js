@@ -77,11 +77,11 @@ const Events = (props) => {
   console.log(savedData);
   return (
     <Container className='events'>
-      <Row>
-        <Col sm={4} className='filterCol'>
+      <div>
+        <div xs={12} sm={4} className='filterCol'>
           <Filter data={data.data} onDataFiltered={handleDataFiltered}/>
-        </Col>
-        <Col sm={8} className='eventTable'>
+        </div>
+        <div xs={12} sm={8} className='eventTable'>
           <Row>
             {filteredData.map((item, index) => {
               const event = [item.title, item.date, item.location, item.link, item.photo];
@@ -94,8 +94,8 @@ const Events = (props) => {
               )
             })}
           </Row>
-        </Col>
-      </Row>
+        </div>
+      </div>
     </Container>
   )
 }

@@ -26,8 +26,7 @@ const Login = () => {
         } else {
           console.log(res.data);
           localStorage.setItem('email', res.data[0].email);
-          alert('successfully logged in, redirecting to home');
-          history('/');
+          history('/account');
         }
       })
       .catch((error) => {

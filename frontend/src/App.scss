@@ -1,6 +1,41 @@
 /* The following line can be included in a src/App.scss */
 @import '~bootstrap/scss/bootstrap';
 
+/* Define the styles for the scrollbar */
+::-webkit-scrollbar {
+  width: 12px; /* Width of the scrollbar */
+}
+
+/* Track - the area behind the scrollbar thumb */
+::-webkit-scrollbar-track {
+  background: #1a1a1a; /* Background color of the track */
+  border: 1px solid bisque;
+  border-radius: 6px;
+}
+
+/* Thumb - the draggable scrolling element */
+::-webkit-scrollbar-thumb {
+  background: bisque; /* Background color of the thumb */
+  border-radius: 6px; /* Rounded corners of the thumb */
+}
+
+/* On hover, style the thumb */
+::-webkit-scrollbar-thumb:hover {
+  background: #555; /* Background color of the thumb on hover */
+}
+
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 .App {
   text-align: center;
   background-color: #1a1a1a;
@@ -67,12 +102,28 @@
   }
 }
 
+@media screen and (max-width: 767px) {
+  .navBar {
+    h1 {
+      padding: 0.5rem 0.5rem;
+    }
+    div {
+      padding: unset;
+    }
+    * {
+      align-items: center;
+      font-size: large !important;
+    }
+  }
+}
+
 .home {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 2rem;
   width: 90vw;
+  animation: fadeUp 0.5s ease-in-out forwards;
 
   .nextFour {
     padding-bottom: 1rem;
@@ -125,12 +176,13 @@
 }
 
 .events {
-  display: grid;
+  display: flex;
   width: 100vw;
 
-  .row {
-    overflow-y: auto;
-    height: 100%;
+  div {
+    display: flex;
+    justify-content: center;
+    animation: fadeUp 0.5s ease-in-out forwards;
 
     .filterCol {
       height: 80%;
@@ -143,16 +195,85 @@
 
     .eventTable {
       margin-left: 1rem;
-      width: 75%;
-      max-height: 80vh;
+      width: 80%;
+      height: 80vh;
       overflow-y: auto;
+      border-bottom: 2px solid bisque;
 
       .row {
+        width: 100%;
+        overflow-x: hidden;
         .col-md-4 {
           margin-bottom: 1rem;
+          .card {
+            .card-body {
+              display: flex;
+              flex-direction: column;
+              gap: 0;
+            }
+          }
         }
       }
     }
+
+    .filter {
+      flex-direction: column !important;
+    }
+  }
+}
+
+@media screen and (max-width: 787px) {
+
+  .App {
+    .page {
+      padding-top: 3rem;
+    }
+  }
+
+  .events {
+    max-height: 90vh;
+    div {
+      flex-direction: column !important;
+      overflow-x: auto;
+      overflow-y: hidden;
+      .filterCol {
+        height: unset !important;
+        width: 100%;
+        background-color: #1a1a1a;
+        z-index: 1;
+      }
+
+      .eventTable {
+        margin: unset !important;
+        width: 100%;
+        overflow-y: auto;
+        align-items: center;
+  
+        .row {
+          width: 100%;
+          overflow-x: scroll;
+          .col-md-4 {
+            margin-bottom: 1rem;
+            .card {
+              .card-body {
+                display: flex;
+                flex-direction: column;
+                gap: 0;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .account {
+    display: flex;
+    width: 80vw;
+    height: 80vh;
+    align-items: center;
+    justify-content: center;
+    animation: fadeUp 0.5s ease-in-out forwards;
   }
 }
 
@@ -163,6 +284,7 @@
   height: 80vh;
   align-items: center;
   justify-content: center;
+  animation: fadeUp 0.5s ease-in-out forwards;
 
   h1 {
     margin: 1rem 0;
@@ -219,35 +341,39 @@
   align-items: center;
   width: 80%;
 
-  input {
-    background-color: #0d0d0d;
-    color: bisque;
-  }
+  form {
+    animation: fadeUp 0.5s ease-in-out forwards;
 
-  input:focus {
-    border: 2px solid bisque;
-    background-color: bisque;
-    color: #0d0d0d;
-  }
+    input {
+      background-color: #0d0d0d;
+      color: bisque;
+    }
+  
+    input:focus {
+      border: 2px solid bisque;
+      background-color: bisque;
+      color: #0d0d0d;
+    }
+  
+    input::placeholder {
+      color: bisque;
+    }
 
-  input::placeholder {
-    color: bisque;
-  }
-
-  button {
-    text-decoration: none;
-    padding: 0.5rem 1rem;
-    border-radius: 10px;
-    max-width: 10rem;
-    color: bisque;
-    border: 2px solid bisque;
-    background-color: #0d0d0d;
-    transition: 0.1s ease-in-out;
-  }
-
-  button:hover {
-    background-color: bisque;
-    color: #1a1a1a;
+    button {
+      text-decoration: none;
+      padding: 0.5rem 1rem;
+      border-radius: 10px;
+      max-width: 10rem;
+      color: bisque;
+      border: 2px solid bisque;
+      background-color: #0d0d0d;
+      transition: 0.1s ease-in-out;
+    }
+  
+    button:hover {
+      background-color: bisque;
+      color: #1a1a1a;
+    }
   }
 
   a {
