@@ -17,8 +17,8 @@ function App() {
     {path: '/', component: Home, myData: data},
     {path: '/events', component: Events, myData: data},
     {path: '/account', component: Account, myData: data},
-    {path: '/login', component: Login, myData: data},
-    {path: '/register', component: Register, myData: data},
+    {path: '/login', component: Login, myData: null},
+    {path: '/register', component: Register, myData: null},
   ];
 
   useEffect(() => {

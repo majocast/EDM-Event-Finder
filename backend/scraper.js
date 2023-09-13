@@ -17,7 +17,7 @@ const Scraper = async () => {
     });
     const page = await browser.newPage();
     await page.goto(baseUrl, {
-      waitUntil: 'load',
+      waitUntil: 'domcontentloaded',
       timeout: 0,
     });
     /*
