@@ -73,6 +73,7 @@ const Scraper = async () => {
   } catch (error) {
     console.log(error);    
   }
+  /*
   const browser = await puppeteer.launch({ 
     headless: 'true',
     defaultViewport: null,
@@ -114,6 +115,7 @@ const Scraper = async () => {
   }
   await browser.close();
   return pulledEvents;
+  */
 };
 
 module.exports = { Scraper };
