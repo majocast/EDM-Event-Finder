@@ -45,7 +45,9 @@ const Scraper = async () => {
     */
 
     const pulledEvents = await page.$$eval('.c50-table-row', (events) => {
-      return events.map((event) => {
+      const eventsToProcess = Array.from(events).slice(0, 25);
+
+      return eventsToProcess.map((event) => {
         const title = event.querySelector('.c50-title a').textContent;
         const location = event.querySelector('.c50-description').textContent.replace(/\n/g, '').trim();
         const date = event.querySelector('.c50-block-date').textContent.replace(/\n/g, '').trim();
