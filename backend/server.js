@@ -170,6 +170,24 @@ app.delete('/event/:email', async (req, res) => {
 }
 */
 
+app.delete('/account', async (req, res) => {
+  try {
+    const { email } = req.body;
+    const deleteAccount = await pool.query(
+      'DELETE FROM accounts WHERE email = $1',
+      [email]
+    );
+    res.json('delete event success');
+  } catch (err) {
+    console.log(err.message);
+  }
+});
+
+/* JSON CONFIG INSERTION
+{
+    "email": "test@mail.com"
+*/
+
 let PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`listening on port ${PORT}`);
