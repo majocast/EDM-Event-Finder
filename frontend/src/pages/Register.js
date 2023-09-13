@@ -25,7 +25,7 @@ function Register() {
         }
         else {
           alert('successfully registered, redirecting to home');
-          history('/');
+          history('/login');
         }
       })
       .catch((error) => {
