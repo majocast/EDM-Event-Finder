@@ -170,6 +170,7 @@ app.delete('/event/:email', async (req, res) => {
 }
 */
 
+/*needs frontend implementation*/
 app.delete('/account', async (req, res) => {
   try {
     const { email } = req.body;

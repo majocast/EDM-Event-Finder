@@ -35,6 +35,8 @@ const Scraper = async () => {
       });
     });
 
+
+    //needs optimization rework for loading on request
     /*
     const numberOfPages = await page.evaluate(() => {
       const pageNumbers = document.querySelectorAll('.c50-page-item');
