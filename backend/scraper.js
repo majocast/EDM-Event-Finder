@@ -29,7 +29,6 @@ const Scraper = async () => {
       }).sort((a, b) => a - b);
       return numOfPages[numOfPages.length - 1];
     });
-    */
     const pulledEvents = [];
     const eventsOnPage = await page.evaluate(() => {
       const events = document.querySelectorAll('.c50-table-row');
@@ -43,6 +42,20 @@ const Scraper = async () => {
       });
     })
     pulledEvents.push(...eventsOnPage);
+    */
+
+    const pulledEvents = await page.$$eval('.c50-table-row', (events) => {
+      return events.map((event) => {
+        const title = event.querySelector('.c50-title a').textContent;
+        const location = event.querySelector('.c50-description').textContent.replace(/\n/g, '').trim();
+        const date = event.querySelector('.c50-block-date').textContent.replace(/\n/g, '').trim();
+        const photo = event.querySelector('.c50-block-photo a img').src;
+        const link = event.querySelector('.c50-table-button div button').getAttribute('x-url');
+        return { title, location, date, photo, link };
+      });
+    });
+
+
     /*formerly:  for(let i = 1; i <= numberOfPages; i++) {
 
 
