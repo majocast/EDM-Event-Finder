@@ -8,6 +8,7 @@ app.use(express.json()); //req.body
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 
+//initial load sequence that activates scraper, sends array of events back in JSON format.
 app.post('/load', async (req, res) => {
   try {
     const events = await Scraper();
@@ -78,26 +79,6 @@ app.get('/account/:email/:password', async (req, res) => {
 //call to get account function 
 /*
 http://localhost:5000/account/test@mail.com/1234
-*/
-
-//delete an account
-app.delete('/account', async (req, res) => {
-  try {
-    const { email } = req.body;
-    const deleteAccount = await pool.query(
-      'DELETE FROM accounts WHERE email = $1',
-      [email]
-    );
-    res.json('delete event success');
-  } catch (err) {
-    console.log(err.message);
-  }
-});
-
-/* JSON CONFIG INSERTION
-{
-    "email": "test@mail.com"
-}
 */
 
 //get an account's info such as events
