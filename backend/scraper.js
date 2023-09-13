@@ -43,7 +43,7 @@ const Scraper = async () => {
     })
     pulledEvents.push(...eventsOnPage);
     */
-
+    /**Optimized code */
     const pulledEvents = await page.$$eval('.c50-table-row', (events) => {
       const eventsToProcess = Array.from(events).slice(0, 25);
 
