@@ -30,7 +30,7 @@ const Event = (params) => {
     const email = localStorage.getItem('email');
     if(!saved) {
       console.log('in false saved');
-      await axios.post(`http://localhost:5000/event/${email}`,{ 
+      await axios.post(`${process.env.REACT_APP_EEF_SERVER}/event/${email}`,{ 
         name, location, date, link, photo 
       })
       .then((res) => {
@@ -41,7 +41,7 @@ const Event = (params) => {
         }
       })
     } else {
-      await axios.delete(`http://localhost:5000/event/${email}`,{
+      await axios.delete(`${process.env.REACT_APP_EEF_SERVER}/event/${email}`,{
         data: { name, location, date, link, photo }
       })
       .then((res) => {
