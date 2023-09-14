@@ -36,7 +36,8 @@ const Events = (props) => {
 
   const pullInfo = async (currEmail) => {
     try {
-      const res = await axios.get(`${process.env.REACT_APP_EEF_SERVER}/accountInfo/${currEmail}`);
+      //${process.env.REACT_APP_EEF_SERVER}
+      const res = await axios.get(`http://localhost:5000/accountInfo/${currEmail}`);
       setSavedData(res.data);
       setIsLoading(false);
     } catch (error) {
@@ -57,6 +58,10 @@ const Events = (props) => {
       );
     });
     return eventExists;
+  }
+
+  const pullMore = () => {
+    console.log('pulling more');
   }
 
   if(isLoading) {
@@ -85,14 +90,17 @@ const Events = (props) => {
           <Row>
             {filteredData.map((item, index) => {
               const event = [item.title, item.date, item.location, item.link, item.photo];
-              const check = checkEvent(event);
-              console.log(check);
+              let check = false;
+              if(loggedIn) {
+                check = checkEvent(event);
+              }
               return (
                 <Col key={index} xs={12} sm={6} md={4}>
                   <Event data={event} inSaved={check}/>
                 </Col>
               )
             })}
+            <button onClick={pullMore}>Pull More Events</button>
           </Row>
         </div>
       </div>

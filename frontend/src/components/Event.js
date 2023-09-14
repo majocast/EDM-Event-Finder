@@ -18,7 +18,6 @@ const Event = (params) => {
     if(localStorage.getItem('email')) {
       setLoggedIn(true);
       if(inSaved) {
-        console.log(name);
         setSaved(true);
       }
     } else {
@@ -30,7 +29,8 @@ const Event = (params) => {
     const email = localStorage.getItem('email');
     if(!saved) {
       console.log('in false saved');
-      await axios.post(`${process.env.REACT_APP_EEF_SERVER}/event/${email}`,{ 
+      ////${process.env.REACT_APP_EEF_SERVER}
+      await axios.post(`http://localhost:5000/event/${email}`,{ 
         name, location, date, link, photo 
       })
       .then((res) => {
@@ -41,7 +41,8 @@ const Event = (params) => {
         }
       })
     } else {
-      await axios.delete(`${process.env.REACT_APP_EEF_SERVER}/event/${email}`,{
+      ////${process.env.REACT_APP_EEF_SERVER}
+      await axios.delete(`http://localhost:5000/event/${email}`,{
         data: { name, location, date, link, photo }
       })
       .then((res) => {
@@ -61,8 +62,7 @@ const Event = (params) => {
   if(isDeleted) {
     return null;
   }
-
-  console.log(saved);
+  
   return (
     <Card style={{ width: '100%', height: '100%', backgroundColor: 'black', color:'bisque' }}>
       <Card.Img variant="top" src={photo} loading='lazy'/>

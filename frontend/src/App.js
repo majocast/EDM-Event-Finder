@@ -23,7 +23,8 @@ function App() {
 
   useEffect(() => {
     try {
-      axios.post(`${process.env.REACT_APP_EEF_SERVER}/load`)
+      ////${process.env.REACT_APP_EEF_SERVER}
+      axios.post(`http://localhost:5000/load`)
       .then((response) => {
         console.log(response);
         setData(response);

@@ -14,8 +14,9 @@ function Register() {
     e.preventDefault();
     console.log(email, password);
     try {
+      //${process.env.REACT_APP_EEF_SERVER}
       //we are posting the data to the server + '/register'
-      await axios.post(`${process.env.REACT_APP_EEF_SERVER}/account`, {
+      await axios.post(`http://localhost:5000/account`, {
         email, password,
       })
       .then((res) => {
@@ -24,7 +25,7 @@ function Register() {
           history('/login');
         }
         else {
-          alert('successfully registered, redirecting to home');
+          alert('successfully registered, please log in');
           history('/login');
         }
       })

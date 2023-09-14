@@ -8,6 +8,7 @@ app.use(express.json()); //req.body
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 
+
 //initial load sequence that activates scraper, sends array of events back in JSON format.
 app.post('/load', async (req, res) => {
   try {

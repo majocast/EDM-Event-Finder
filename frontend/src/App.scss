@@ -131,6 +131,17 @@
     .col {
       display: flex;
       justify-content: center;
+      a {
+        color: bisque;
+        border: 2px solid bisque;
+        background-color: #0d0d0d;
+        transition: 0.1s ease-in-out;
+      }
+  
+      a:hover {
+        background-color: bisque;
+        color: #1a1a1a;
+      }
     }
   }
 
@@ -323,6 +334,22 @@
     overflow-y: auto;
     padding: 1rem;
     border-bottom: 2px solid bisque;
+
+    .eventsBtn {
+      a {
+        border: 2px solid bisque;
+        padding: 0.5rem;
+        border-radius: 10px;
+        text-decoration: none !important;
+        color: bisque !important;
+        transition: 0.1s ease-in-out;
+      }
+      a:hover {
+        border-radius: 10px;
+        background-color: bisque;
+        color: #0d0d0d !important;
+      }
+    }
 
     .row {
       width: 90%;

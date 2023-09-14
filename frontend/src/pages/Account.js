@@ -7,6 +7,7 @@ import Event from '../components/Event';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 
 function Account() {
+  //${process.env.REACT_APP_EEF_SERVER}
   const location = useLocation();
   const history = useNavigate();
   const [saved, setSaved] = useState([]);
@@ -18,7 +19,7 @@ function Account() {
 
   const pullInfo = async () => {
     try {
-      const res = await axios.get(`${process.env.REACT_APP_EEF_SERVER}/accountInfo/${email}`);
+      const res = await axios.get(`http://localhost:5000/accountInfo/${email}`);
       setSaved(res.data);
     } catch (error) {
       console.error("error fetching data: ", error);
@@ -50,16 +51,18 @@ function Account() {
     )
   }
 
+
+  console.log(saved);
   return (
     <div className='account'>
       <div className='accountInfo'>
         <h2>{email}</h2>
         <Link onClick={signOut} to='/'>Log Out</Link>
       </div>
-      <h1>My Saved Events</h1>
       <div className="eventTable">
-        {saved ? 
+        {saved.length > 0 ? 
           <Row>
+            <h1>My Saved Events</h1>
             {saved.map((item, index) => {
               const event = [item.eventname, item.eventdate, item.eventlocation, item.eventlink, item.eventphoto];
               console.log(event);
@@ -71,9 +74,9 @@ function Account() {
             })}
           </Row>
         :
-          <div>
-            <Link to='/events'></Link>
-          </div>
+        <div className='eventsBtn'>
+          <Link to='/events'>Visit Events Page!</Link>
+        </div>
         }
       </div>
     </div>
