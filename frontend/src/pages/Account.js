@@ -37,7 +37,7 @@ function Account() {
       const currentDate = new Date();
       saved.forEach((event) => {
         const eventDate = new Date(event.eventdate);
-
+        //bind to backend to auto-delete past events
         if (eventDate < currentDate) {
           console.log("This event has passed");
         } else {
