@@ -23,7 +23,7 @@ app.post('/load', async (req, res) => {
     res.json(events);
   } catch (err) {
     console.error(err);
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ error: err.message });
   }
 })
 
