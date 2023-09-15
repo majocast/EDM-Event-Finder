@@ -10,10 +10,10 @@ import { useLocation } from 'react-router-dom';
 
 const Events = (props) => {
   const location = useLocation();
+  var data = props.myData.data;
+  const [pageNum, setPageNum] = useState(2);
   const [notification, setNotification] = useState('');
-  const data = props.myData;
-  const [filteredData, setFilteredData] = useState(data.data);
-  const [email, setEmail] = useState();
+  const [filteredData, setFilteredData] = useState(data);
   const [savedData, setSavedData] = useState([]);
   const [loggedIn, setLoggedIn] = useState(false);
   const [isLoading, setIsLoading] = useState(true); // Add loading state
@@ -24,8 +24,6 @@ const Events = (props) => {
 
   useEffect(() => {
     if((localStorage.getItem('email') !== null)) {
-      console.log(localStorage.getItem('email'));
-      setEmail(localStorage.getItem('email'));
       setLoggedIn(true);
       pullInfo(localStorage.getItem('email'));
     } else {
@@ -60,8 +58,23 @@ const Events = (props) => {
     return eventExists;
   }
 
-  const pullMore = () => {
-    console.log('pulling more');
+  const pullMore = async () => {
+    setFilteredData(data);
+    try {
+      ////${process.env.REACT_APP_EEF_SERVER}
+      await axios.post(`http://localhost:5000/load`, { pageNum, filteredData })
+      .then((response) => {
+        console.log(response.data);
+        setPageNum(pageNum + 1);
+        setFilteredData(response.data);
+        data = response.data;
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   if(isLoading) {
@@ -78,8 +91,6 @@ const Events = (props) => {
     )
   }
 
-  console.log(email);
-  console.log(savedData);
   return (
     <Container className='events'>
       <div>
@@ -96,7 +107,7 @@ const Events = (props) => {
               }
               return (
                 <Col key={index} xs={12} sm={6} md={4}>
-                  <Event data={event} inSaved={check}/>
+                  <Event data={event} inSaved={check} />
                 </Col>
               )
             })}

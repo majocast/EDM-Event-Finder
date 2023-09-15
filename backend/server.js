@@ -12,10 +12,17 @@ app.use(cors());
 //initial load sequence that activates scraper, sends array of events back in JSON format.
 app.post('/load', async (req, res) => {
   try {
-    const events = await Scraper();
+    var events;
+    if(req.body.pageNum && req.body.data) {
+      const { pageNum, data } = req.body;
+      console.log('in scraper w/ data and pageNum');
+      events = await Scraper(data, pageNum);
+    } else {
+      events = await Scraper();
+    }
     res.json(events);
-  } catch (error) {
-    console.log(error);
+  } catch (err) {
+    console.error(err);
     res.status(500).json({ error: error.message });
   }
 })

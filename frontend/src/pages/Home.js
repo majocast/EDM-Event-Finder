@@ -1,12 +1,12 @@
 import React from 'react';
 import Card from 'react-bootstrap/Card';
-import Image from 'react-bootstrap/Image';
 import HomeLanding from '../assets/homeLanding.jpg';
 import Button from 'react-bootstrap/Button';
 import { Row, Col } from 'react-bootstrap';
 
 const Home = (props) => {
   const data = props.myData;
+  console.log(data);
   return (
     <div className='home'>
       <div className='imageContainer'>

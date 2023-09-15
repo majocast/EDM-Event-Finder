@@ -26,7 +26,6 @@ function App() {
       ////${process.env.REACT_APP_EEF_SERVER}
       axios.post(`http://localhost:5000/load`)
       .then((response) => {
-        console.log(response);
         setData(response);
       })
       .catch((error) => {
@@ -35,7 +34,6 @@ function App() {
     } catch (error) {
       console.log(error);
     }
-
   }, [])
 
   if(!data) {
