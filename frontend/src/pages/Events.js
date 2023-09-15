@@ -12,6 +12,7 @@ const Events = (props) => {
   const location = useLocation();
   let data = props.myData.data;
   const [pageNum, setPageNum] = useState(2);
+  const [canPull, setCanPull] = useState(true);
   const [notification, setNotification] = useState('');
   const [filteredData, setFilteredData] = useState(data);
   const [savedData, setSavedData] = useState([]);
@@ -61,11 +62,13 @@ const Events = (props) => {
   const pullMore = async () => {
     try {
       ////${process.env.REACT_APP_EEF_SERVER}
-      await axios.post(`http://localhost:5000/load`, { pageNum, data })
+      await axios.post(`http://localhost:5000/load`, { pageNum })
       .then((response) => {
-        console.log(response.data);
+        if(response.data.length % 50 !== 0) {
+          setCanPull(false);
+        }
         setPageNum(pageNum + 1);
-        setFilteredData(response.data);
+        setFilteredData([...filteredData, ...response.data]);
         console.log(data);
       })
       .catch((error) => {
@@ -115,7 +118,7 @@ const Events = (props) => {
                 </Col>
               )
             })}
-            <button onClick={pullMore}>Pull More Events</button>
+            {canPull ? <button onClick={pullMore}>Pull More Events</button> : null}
           </Row>
         </div>
       </div>

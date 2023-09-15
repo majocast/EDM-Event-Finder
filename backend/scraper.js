@@ -1,7 +1,7 @@
 const puppeteer = require('puppeteer');
 require('dotenv').config();
 
-const Scraper = async (data, pageNum) => {
+const Scraper = async (pageNum) => {
   let url = `https://concerts50.com/upcoming-concerts-in-california/g/dance-electronic`;
   try {
     //browser launches for puppeteer under parameters specified
@@ -90,10 +90,6 @@ const Scraper = async (data, pageNum) => {
       pulledEvents.push(...eventsOnPage);
     }
     */
-    if(data) {
-      console.log(data[data.length - 1]);
-      pulledEvents = [...data, ...pulledEvents];
-    }
     await browser.close();
     //pushes data back to server
     return pulledEvents;

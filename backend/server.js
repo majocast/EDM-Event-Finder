@@ -6,17 +6,17 @@ const { Scraper } = require('./scraper.js');
 
 app.use(express.json()); //req.body
 app.use(express.urlencoded({ extended: true }));
-app.use(cors());
+app.use(cors({origin: 'http://localhost:3000'}));
 
 
 //initial load sequence that activates scraper, sends array of events back in JSON format.
 app.post('/load', async (req, res) => {
   try {
     var events;
-    if(req.body.pageNum && req.body.data) {
-      const { pageNum, data } = req.body;
+    if(req.body.pageNum) {
+      const { pageNum } = req.body;
       console.log('in scraper w/ data and pageNum');
-      events = await Scraper(data, pageNum);
+      events = await Scraper(pageNum);
     } else {
       events = await Scraper();
     }
