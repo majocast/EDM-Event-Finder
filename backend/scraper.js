@@ -25,6 +25,19 @@ const Scraper = async (pageNum) => {
       timeout: 0,
     });
 
+    const numberOfPages = await page.evaluate(() => {
+      const pageNumbers = document.querySelectorAll('.c50-page-item');
+      const numOfPages = Array.from(pageNumbers).map(page => {
+        const number = page.getAttribute('page');
+        return number; 
+      }).sort((a, b) => a - b);
+      return numOfPages[numOfPages.length - 1];
+    });
+
+    if(numberOfPages === pageNum) {
+      return [];
+    }
+
     /**Optimized code */
     //looks into DOM content of the page and finds specified properties of '.c50-table-row' and pulls information from them for storage
     var pulledEvents = await page.$$eval('.c50-table-row', (events) => {

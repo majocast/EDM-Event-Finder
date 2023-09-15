@@ -64,7 +64,7 @@ const Events = (props) => {
       ////${process.env.REACT_APP_EEF_SERVER}
       await axios.post(`http://localhost:5000/load`, { pageNum })
       .then((response) => {
-        if(response.data.length % 50 !== 0) {
+        if(response.data.length % 50 !== 0 || response.data.length === 0) {
           setCanPull(false);
         }
         setPageNum(pageNum + 1);
@@ -102,7 +102,7 @@ const Events = (props) => {
     <Container className='events'>
       <div>
         <div xs={12} sm={4} className='filterCol'>
-          <Filter data={data.data} onDataFiltered={handleDataFiltered}/>
+          <Filter data={data} onDataFiltered={handleDataFiltered}/>
         </div>
         <div xs={12} sm={8} className='eventTable'>
           <Row>
