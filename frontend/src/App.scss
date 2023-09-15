@@ -436,3 +436,19 @@
   color: #1a1a1a;
   border-color: bisque;
 }
+
+.pullMore {
+  button {
+    color: bisque;
+    border: 2px solid bisque;
+    background-color: #0d0d0d;
+    margin-top: 0.5rem;
+    margin-bottom: 1rem;
+    transition: 0.1s ease-in-out;
+  }
+
+  button:hover {
+    background-color: bisque;
+    color: #1a1a1a;
+  }
+}

@@ -73,7 +73,7 @@ const Event = (params) => {
           <br />
           {date}
         </Card.Text>
-        <div style={{ display: 'flex', alignItems: 'center' }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
           <Button className='ticketButton' variant="primary" href={link} target='_blank'>View Tickets</Button>
           {loggedIn ? (saved ? <BookmarkIcon style={{ margin: '0 0.5rem' }} onClick={toggleSaved} variant='primary'/> : <BookmarkBorderIcon style={{ margin: '0 0.5rem' }} onClick={toggleSaved} variant='primary'/>) : null}
         </div>

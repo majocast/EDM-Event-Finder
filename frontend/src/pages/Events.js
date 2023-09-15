@@ -118,7 +118,9 @@ const Events = (props) => {
                 </Col>
               )
             })}
-            {canPull ? <button onClick={pullMore}>Pull More Events</button> : null}
+            <div className='pullMore' xs={12} sm={6} md={4}>
+              {canPull ? <button onClick={pullMore}>Load More Events</button> : null}
+            </div>
           </Row>
         </div>
       </div>

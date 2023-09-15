@@ -30,7 +30,22 @@ function Account() {
     if(email !== null) {
       pullInfo();
     }
-  }, [email])
+  }, [email]);
+
+  useEffect(() => {
+    if(saved.length > 0) {
+      const currentDate = new Date();
+      saved.forEach((event) => {
+        const eventDate = new Date(event.eventdate);
+
+        if (eventDate < currentDate) {
+          console.log("This event has passed");
+        } else {
+          console.log("This event has not passed");
+        }
+      })
+    }
+  }, [saved])
 
   const signOut = () => {
     localStorage.clear();
