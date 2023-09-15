@@ -94,7 +94,6 @@ const Scraper = async (data, pageNum) => {
       console.log(data[data.length - 1]);
       pulledEvents = [...data, ...pulledEvents];
     }
-    console.log(pulledEvents[pulledEvents.length - 1]);
     await browser.close();
     //pushes data back to server
     return pulledEvents;

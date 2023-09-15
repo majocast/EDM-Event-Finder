@@ -10,7 +10,7 @@ import { useLocation } from 'react-router-dom';
 
 const Events = (props) => {
   const location = useLocation();
-  var data = props.myData.data;
+  let data = props.myData.data;
   const [pageNum, setPageNum] = useState(2);
   const [notification, setNotification] = useState('');
   const [filteredData, setFilteredData] = useState(data);
@@ -59,15 +59,14 @@ const Events = (props) => {
   }
 
   const pullMore = async () => {
-    setFilteredData(data);
     try {
       ////${process.env.REACT_APP_EEF_SERVER}
-      await axios.post(`http://localhost:5000/load`, { pageNum, filteredData })
+      await axios.post(`http://localhost:5000/load`, { pageNum, data })
       .then((response) => {
         console.log(response.data);
         setPageNum(pageNum + 1);
         setFilteredData(response.data);
-        data = response.data;
+        console.log(data);
       })
       .catch((error) => {
         console.log(error);
@@ -76,6 +75,11 @@ const Events = (props) => {
       console.log(error);
     }
   }
+
+  useEffect(() => {
+    data = [...filteredData];
+    console.log(data)
+  }, [filteredData])
 
   if(isLoading) {
     return (
