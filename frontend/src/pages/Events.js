@@ -32,7 +32,6 @@ const Events = (props) => {
 
   const pullInfo = async (currEmail) => {
     try {
-      //${process.env.REACT_APP_EEF_SERVER}
       const res = await axios.get(`${process.env.REACT_APP_EEF_SERVER}/accountInfo/${currEmail}`);
       setSavedData(res.data);
       setIsLoading(false);
@@ -44,7 +43,6 @@ const Events = (props) => {
 
   const checkEvent = (event) => {
     const eventExists = savedData.some((dbEvent) => {
-      // Compare the dbEvent properties (title, date, location, etc.)
       return (
         dbEvent.eventname === event[0] &&
         dbEvent.eventdate === event[1] &&
@@ -58,7 +56,6 @@ const Events = (props) => {
 
   const pullMore = async () => {
     try {
-      ////${process.env.REACT_APP_EEF_SERVER}
       await axios.post(`${process.env.REACT_APP_EEF_SERVER}/load`, { pageNum })
       .then((response) => {
         if(response.data.length % 50 !== 0 || response.data.length === 0) {
@@ -78,7 +75,6 @@ const Events = (props) => {
 
   useEffect(() => {
     data = [...filteredData];
-    console.log(data)
   }, [filteredData])
 
   if(isLoading) {
