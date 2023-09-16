@@ -6,14 +6,11 @@ import loadingAnimation from '../assets/loadingAnimation.json';
 import Filter from '../components/Filter';
 import { Row, Col } from 'react-bootstrap';
 import Container from 'react-bootstrap/Container';
-import { useLocation } from 'react-router-dom';
 
 const Events = (props) => {
-  const location = useLocation();
   let data = props.myData.data;
   const [pageNum, setPageNum] = useState(2);
   const [canPull, setCanPull] = useState(true);
-  const [notification, setNotification] = useState('');
   const [filteredData, setFilteredData] = useState(data);
   const [savedData, setSavedData] = useState([]);
   const [loggedIn, setLoggedIn] = useState(false);
@@ -36,7 +33,7 @@ const Events = (props) => {
   const pullInfo = async (currEmail) => {
     try {
       //${process.env.REACT_APP_EEF_SERVER}
-      const res = await axios.get(`http://localhost:5000/accountInfo/${currEmail}`);
+      const res = await axios.get(`${process.env.REACT_APP_EEF_SERVER}/accountInfo/${currEmail}`);
       setSavedData(res.data);
       setIsLoading(false);
     } catch (error) {
@@ -62,7 +59,7 @@ const Events = (props) => {
   const pullMore = async () => {
     try {
       ////${process.env.REACT_APP_EEF_SERVER}
-      await axios.post(`http://localhost:5000/load`, { pageNum })
+      await axios.post(`${process.env.REACT_APP_EEF_SERVER}/load`, { pageNum })
       .then((response) => {
         if(response.data.length % 50 !== 0 || response.data.length === 0) {
           setCanPull(false);
