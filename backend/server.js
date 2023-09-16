@@ -6,7 +6,7 @@ const { Scraper } = require('./scraper.js');
 
 app.use(express.json()); //req.body
 app.use(express.urlencoded({ extended: true }));
-app.use(cors({origin: 'http://localhost:3000'}));
+app.use(cors({origin: `${process.env.EEF_HOME}`}));
 
 
 //initial load sequence that activates scraper, sends array of events back in JSON format.

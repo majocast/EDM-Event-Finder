@@ -4,11 +4,10 @@ import Lottie from 'lottie-react';
 import loadingAnimation from '../assets/loadingAnimation.json';
 import { Row, Col } from 'react-bootstrap';
 import Event from '../components/Event';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 function Account() {
   //${process.env.REACT_APP_EEF_SERVER}
-  const location = useLocation();
   const history = useNavigate();
   const [saved, setSaved] = useState([]);
   const [email, setEmail] = useState(null);
@@ -19,7 +18,7 @@ function Account() {
 
   const pullInfo = async () => {
     try {
-      const res = await axios.get(`http://localhost:5000/accountInfo/${email}`);
+      const res = await axios.get(`${process.env.REACT_APP_EEF_SERVER}/accountInfo/${email}`);
       setSaved(res.data);
     } catch (error) {
       console.error("error fetching data: ", error);
