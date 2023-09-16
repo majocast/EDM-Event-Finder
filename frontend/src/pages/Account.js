@@ -7,7 +7,6 @@ import Event from '../components/Event';
 import { Link, useNavigate } from 'react-router-dom';
 
 function Account() {
-  //${process.env.REACT_APP_EEF_SERVER}
   const history = useNavigate();
   const [saved, setSaved] = useState([]);
   const [email, setEmail] = useState(null);
@@ -65,8 +64,6 @@ function Account() {
     )
   }
 
-
-  console.log(saved);
   return (
     <div className='account'>
       <div className='accountInfo'>
