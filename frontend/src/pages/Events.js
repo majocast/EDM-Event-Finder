@@ -63,7 +63,6 @@ const Events = (props) => {
         }
         setPageNum(pageNum + 1);
         setFilteredData([...filteredData, ...response.data]);
-        console.log(data);
       })
       .catch((error) => {
         console.log(error);
