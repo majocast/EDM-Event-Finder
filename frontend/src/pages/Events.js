@@ -6,14 +6,12 @@ import loadingAnimation from '../assets/loadingAnimation.json';
 import Filter from '../components/Filter';
 import { Row, Col } from 'react-bootstrap';
 import Container from 'react-bootstrap/Container';
-import { useLocation } from 'react-router-dom';
 
 const Events = (props) => {
-  const location = useLocation();
-  const [notification, setNotification] = useState('');
-  const data = props.myData;
-  const [filteredData, setFilteredData] = useState(data.data);
-  const [email, setEmail] = useState();
+  let data = props.myData.data;
+  const [pageNum, setPageNum] = useState(2);
+  const [canPull, setCanPull] = useState(true);
+  const [filteredData, setFilteredData] = useState(data);
   const [savedData, setSavedData] = useState([]);
   const [loggedIn, setLoggedIn] = useState(false);
   const [isLoading, setIsLoading] = useState(true); // Add loading state
@@ -24,8 +22,6 @@ const Events = (props) => {
 
   useEffect(() => {
     if((localStorage.getItem('email') !== null)) {
-      console.log(localStorage.getItem('email'));
-      setEmail(localStorage.getItem('email'));
       setLoggedIn(true);
       pullInfo(localStorage.getItem('email'));
     } else {
@@ -47,7 +43,6 @@ const Events = (props) => {
 
   const checkEvent = (event) => {
     const eventExists = savedData.some((dbEvent) => {
-      // Compare the dbEvent properties (title, date, location, etc.)
       return (
         dbEvent.eventname === event[0] &&
         dbEvent.eventdate === event[1] &&
@@ -58,6 +53,28 @@ const Events = (props) => {
     });
     return eventExists;
   }
+
+  const pullMore = async () => {
+    try {
+      await axios.post(`${process.env.REACT_APP_EEF_SERVER}/load`, { pageNum })
+      .then((response) => {
+        if(response.data.length % 50 !== 0 || response.data.length === 0) {
+          setCanPull(false);
+        }
+        setPageNum(pageNum + 1);
+        setFilteredData([...filteredData, ...response.data]);
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  useEffect(() => {
+    data = [...filteredData];
+  }, [filteredData])
 
   if(isLoading) {
     return (
@@ -73,26 +90,29 @@ const Events = (props) => {
     )
   }
 
-  console.log(email);
-  console.log(savedData);
   return (
     <Container className='events'>
       <div>
         <div xs={12} sm={4} className='filterCol'>
-          <Filter data={data.data} onDataFiltered={handleDataFiltered}/>
+          <Filter data={data} onDataFiltered={handleDataFiltered}/>
         </div>
         <div xs={12} sm={8} className='eventTable'>
           <Row>
             {filteredData.map((item, index) => {
               const event = [item.title, item.date, item.location, item.link, item.photo];
-              const check = checkEvent(event);
-              console.log(check);
+              let check = false;
+              if(loggedIn) {
+                check = checkEvent(event);
+              }
               return (
                 <Col key={index} xs={12} sm={6} md={4}>
-                  <Event data={event} inSaved={check}/>
+                  <Event data={event} inSaved={check} />
                 </Col>
               )
             })}
+            <div className='pullMore' xs={12} sm={6} md={4}>
+              {canPull ? <button onClick={pullMore}>Load More Events</button> : null}
+            </div>
           </Row>
         </div>
       </div>

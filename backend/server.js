@@ -6,16 +6,24 @@ const { Scraper } = require('./scraper.js');
 
 app.use(express.json()); //req.body
 app.use(express.urlencoded({ extended: true }));
-app.use(cors());
+app.use(cors({origin: `${process.env.EEF_HOME}`}));
+
 
 //initial load sequence that activates scraper, sends array of events back in JSON format.
 app.post('/load', async (req, res) => {
   try {
-    const events = await Scraper();
+    var events;
+    if(req.body.pageNum) {
+      const { pageNum } = req.body;
+      console.log('in scraper w/ data and pageNum');
+      events = await Scraper(pageNum);
+    } else {
+      events = await Scraper();
+    }
     res.json(events);
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({ error: error.message });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: err.message });
   }
 })
 
@@ -168,6 +176,25 @@ app.delete('/event/:email', async (req, res) => {
 {
   "eventID": 1
 }
+*/
+
+/*needs frontend implementation*/
+app.delete('/account', async (req, res) => {
+  try {
+    const { email } = req.body;
+    const deleteAccount = await pool.query(
+      'DELETE FROM accounts WHERE email = $1',
+      [email]
+    );
+    res.json('delete event success');
+  } catch (err) {
+    console.log(err.message);
+  }
+});
+
+/* JSON CONFIG INSERTION
+{
+    "email": "test@mail.com"
 */
 
 let PORT = process.env.PORT || 5000;

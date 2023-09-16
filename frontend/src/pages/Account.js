@@ -4,10 +4,9 @@ import Lottie from 'lottie-react';
 import loadingAnimation from '../assets/loadingAnimation.json';
 import { Row, Col } from 'react-bootstrap';
 import Event from '../components/Event';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 function Account() {
-  const location = useLocation();
   const history = useNavigate();
   const [saved, setSaved] = useState([]);
   const [email, setEmail] = useState(null);
@@ -29,7 +28,22 @@ function Account() {
     if(email !== null) {
       pullInfo();
     }
-  }, [email])
+  }, [email]);
+
+  useEffect(() => {
+    if(saved.length > 0) {
+      const currentDate = new Date();
+      saved.forEach((event) => {
+        const eventDate = new Date(event.eventdate);
+        //bind to backend to auto-delete past events
+        if (eventDate < currentDate) {
+          console.log("This event has passed");
+        } else {
+          console.log("This event has not passed");
+        }
+      })
+    }
+  }, [saved])
 
   const signOut = () => {
     localStorage.clear();
@@ -56,10 +70,10 @@ function Account() {
         <h2>{email}</h2>
         <Link onClick={signOut} to='/'>Log Out</Link>
       </div>
-      <h1>My Saved Events</h1>
       <div className="eventTable">
-        {saved ? 
+        {saved.length > 0 ? 
           <Row>
+            <h1>My Saved Events</h1>
             {saved.map((item, index) => {
               const event = [item.eventname, item.eventdate, item.eventlocation, item.eventlink, item.eventphoto];
               console.log(event);
@@ -71,9 +85,9 @@ function Account() {
             })}
           </Row>
         :
-          <div>
-            <Link to='/events'></Link>
-          </div>
+        <div className='eventsBtn'>
+          <Link to='/events'>Visit Events Page!</Link>
+        </div>
         }
       </div>
     </div>

@@ -18,7 +18,6 @@ const Event = (params) => {
     if(localStorage.getItem('email')) {
       setLoggedIn(true);
       if(inSaved) {
-        console.log(name);
         setSaved(true);
       }
     } else {
@@ -61,8 +60,7 @@ const Event = (params) => {
   if(isDeleted) {
     return null;
   }
-
-  console.log(saved);
+  
   return (
     <Card style={{ width: '100%', height: '100%', backgroundColor: 'black', color:'bisque' }}>
       <Card.Img variant="top" src={photo} loading='lazy'/>
@@ -73,7 +71,7 @@ const Event = (params) => {
           <br />
           {date}
         </Card.Text>
-        <div style={{ display: 'flex', alignItems: 'center' }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
           <Button className='ticketButton' variant="primary" href={link} target='_blank'>View Tickets</Button>
           {loggedIn ? (saved ? <BookmarkIcon style={{ margin: '0 0.5rem' }} onClick={toggleSaved} variant='primary'/> : <BookmarkBorderIcon style={{ margin: '0 0.5rem' }} onClick={toggleSaved} variant='primary'/>) : null}
         </div>
