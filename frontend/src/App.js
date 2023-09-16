@@ -23,7 +23,6 @@ function App() {
 
   useEffect(() => {
     try {
-      ////${process.env.REACT_APP_EEF_SERVER}
       axios.post(`${process.env.REACT_APP_EEF_SERVER}/load`)
       .then((response) => {
         setData(response);
