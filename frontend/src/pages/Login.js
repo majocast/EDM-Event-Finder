@@ -14,8 +14,6 @@ const Login = () => {
     console.log(email, password);
     e.preventDefault();
     try {
-      //we are posting the data to the server + '/login'
-      //${process.env.REACT_APP_EEF_SERVER}
       await axios.get(`${process.env.REACT_APP_EEF_SERVER}/account/${email}/${password}`)
       .then((res) => {
         console.log(res.data);
