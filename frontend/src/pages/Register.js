@@ -14,8 +14,6 @@ function Register() {
     e.preventDefault();
     console.log(email, password);
     try {
-      //${process.env.REACT_APP_EEF_SERVER}
-      //we are posting the data to the server + '/register'
       await axios.post(`${process.env.REACT_APP_EEF_SERVER}/account`, {
         email, password,
       })
