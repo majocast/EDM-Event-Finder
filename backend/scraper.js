@@ -16,9 +16,7 @@ const Scraper = async (pageNum) => {
       executablePath: process.env.PUPPETEER_EXECUTABLE_PATH,
     });
     const page = await browser.newPage();
-    console.log(`In Scraper: ${pageNum}`);
     url = pageNum !== undefined ? `${url}/${pageNum}` : url;
-    console.log(url);
 
     await page.goto(url, {
       waitUntil: 'domcontentloaded',
