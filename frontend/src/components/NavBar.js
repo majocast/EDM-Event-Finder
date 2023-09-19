@@ -6,7 +6,6 @@ const NavBar = () => {
   const [email, setEmail] = useState(false);
 
   useEffect(() => {
-    console.log(localStorage.getItem('email'));
     if(localStorage.getItem('email')) {
       setEmail(true);
     } else {

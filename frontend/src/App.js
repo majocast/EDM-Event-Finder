@@ -26,7 +26,6 @@ function App() {
     try {
       axios.post(`${process.env.REACT_APP_EEF_SERVER}/load`)
       .then((response) => {
-        console.log(response.data);
         setData(response);
       })
       .catch((error) => {
