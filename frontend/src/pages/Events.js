@@ -84,7 +84,6 @@ const Events = (props) => {
       <div className='loadingScreen'>
         <h1>loading events</h1>
         <Lottie
-          style={{width:'50px', height:'50px'}}
           id='loadingAnimation'
           animationData={loadingAnimation} 
           loop
@@ -116,6 +115,7 @@ const Events = (props) => {
             })}
             <div className='pullMore' xs={12} sm={6} md={4}>
               {canPull ? (loadingMore ? <Lottie
+                style={{width:'75px', height:'75px'}}
                 id='loadingAnimation'
                 animationData={loadingAnimation} 
                 loop
