@@ -16,7 +16,7 @@ https://concerts50.com/upcoming-concerts-in-california/g/dance-electronic
 
 ReactJS \
 HTML \
-Puppeteer\
+Cheerio\
 Express\
 SCSS\
 Bootstrap\
