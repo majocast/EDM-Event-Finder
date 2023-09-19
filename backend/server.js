@@ -21,46 +21,10 @@ app.post('/load', async (req, res) => {
       events = await Scraper();
     }
     res.json(events);
-    
-
-      /**
-       * var pulledEvents = await page.$$eval('.c50-table-row', (events) => {
-          return events.map((event) => {
-            const title = event.querySelector('.c50-title a').textContent;
-            const location = event.querySelector('.c50-description').textContent.replace(/\n/g, '').trim();
-            const date = event.querySelector('.c50-block-date').textContent.replace(/\n/g, '').trim();
-            const photo = event.querySelector('.c50-block-photo a img').src;
-            const link = event.querySelector('.c50-table-button div button').getAttribute('x-url');
-            return { title, location, date, photo, link };
-          });
-        });
-      */
   } catch (err) {
     console.log(err.message);
   }
 })
-
-
-//initial load sequence that activates scraper, sends array of events back in JSON format.
-//puppeteer server call original
-/*
-app.post('/load', async (req, res) => {
-  try {
-    var events;
-    if(req.body.pageNum) {
-      const { pageNum } = req.body;
-      console.log('in scraper w/ data and pageNum');
-      events = await Scraper(pageNum);
-    } else {
-      events = await Scraper();
-    }
-    res.json(events);
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: err.message });
-  }
-})
-*/
 
 //ROUTES
 
