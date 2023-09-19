@@ -14,7 +14,8 @@ const Events = (props) => {
   const [filteredData, setFilteredData] = useState(data);
   const [savedData, setSavedData] = useState([]);
   const [loggedIn, setLoggedIn] = useState(false);
-  const [isLoading, setIsLoading] = useState(true); // Add loading state
+  const [isLoading, setIsLoading] = useState(true); // add loading state
+  const [loadingMore, setLoadingMore] = useState(false); //add loading state for events
 
   const handleDataFiltered = (filteredData) => { 
     setFilteredData(filteredData);
@@ -56,6 +57,7 @@ const Events = (props) => {
 
   const pullMore = async () => {
     try {
+      setLoadingMore(true);
       await axios.post(`${process.env.REACT_APP_EEF_SERVER}/load`, { pageNum })
       .then((response) => {
         if(response.data.length % 50 !== 0 || response.data.length === 0) {
@@ -74,6 +76,7 @@ const Events = (props) => {
 
   useEffect(() => {
     data = [...filteredData];
+    setLoadingMore(false);
   }, [filteredData])
 
   if(isLoading) {
@@ -111,7 +114,13 @@ const Events = (props) => {
               )
             })}
             <div className='pullMore' xs={12} sm={6} md={4}>
-              {canPull ? <button onClick={pullMore}>Load More Events</button> : null}
+              {canPull ? (loadingMore ? <Lottie
+                style={{width:'75px', height:'75px'}}
+                id='loadingAnimation'
+                animationData={loadingAnimation} 
+                loop
+                autoplay
+              /> : <button onClick={pullMore}>Load More Events</button>) : null}
             </div>
           </Row>
         </div>

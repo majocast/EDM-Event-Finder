@@ -8,9 +8,8 @@ app.use(express.json()); //req.body
 app.use(express.urlencoded({ extended: true }));
 app.use(cors({origin: `${process.env.EEF_HOME}`}));
 
-
-//initial load sequence that activates scraper, sends array of events back in JSON format.
 app.post('/load', async (req, res) => {
+  console.log('called');
   try {
     var events;
     if(req.body.pageNum) {
@@ -22,8 +21,7 @@ app.post('/load', async (req, res) => {
     }
     res.json(events);
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: err.message });
+    console.log(err.message);
   }
 })
 
