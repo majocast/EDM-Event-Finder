@@ -1,6 +1,7 @@
 import React from 'react';
 import Card from 'react-bootstrap/Card';
-import HomeLanding from '../assets/homeLanding.jpg';
+import HomeLanding from '../assets/homeLanding.json';
+import Lottie from 'lottie-react';
 import Button from 'react-bootstrap/Button';
 import { Row, Col } from 'react-bootstrap';
 
@@ -9,30 +10,40 @@ const Home = (props) => {
   return (
     <div className='home'>
       <div className='imageContainer'>
-        <img src={HomeLanding} alt='Event'/>
-        <h1>Find Your Next California Event</h1>
+        <Lottie
+          id='homeLanding'
+          animationData={HomeLanding} 
+          loop
+          autoplay
+        />
+        <div>
+          <h1>EDM Event Scraper</h1>
+          <h2>Find Your Next Event</h2>
+        </div>
       </div>
-      <h2>Next 4 Events</h2>
-      <Row className='nextFour'>
-        {data.data.slice(0,4).map(item => {
-          return (
-            <Col>
-              <Card style={{ width: '100%', height: '100%', backgroundColor: 'black', color:'bisque' }}>
-                <Card.Img variant="top" src={item.photo} />
-                <Card.Body>
-                  <Card.Title>{item.title}</Card.Title>
-                    <Card.Text>
-                      {item.location}
-                      <br />
-                      {item.date}
-                  </Card.Text>
-                  <Button variant="primary" href={item.link} target='_blank'>View Tickets</Button>
-                </Card.Body>
-              </Card>
-            </Col>
-          )
-        })}
-      </Row>
+      <div className='next4Container'>
+        <h1>Next Up!</h1>
+        <Row className='nextFour'>
+          {data.data.slice(0,4).map(item => {
+            return (
+              <Col>
+                <Card style={{ width: '100%', height: '100%', backgroundColor: 'black', color:'bisque' }}>
+                  <Card.Img variant="top" src={item.photo} />
+                  <Card.Body>
+                    <Card.Title>{item.title}</Card.Title>
+                      <Card.Text>
+                        {item.location}
+                        <br />
+                        {item.date}
+                    </Card.Text>
+                    <Button variant="primary" href={item.link} target='_blank'>View Tickets</Button>
+                  </Card.Body>
+                </Card>
+              </Col>
+            )
+          })}
+        </Row>
+      </div>
     </div>
   )
 }
