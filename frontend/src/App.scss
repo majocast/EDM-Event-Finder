@@ -85,6 +85,7 @@
   width: 100vw;
   z-index: 10;
   background-color: #1a1a1a;
+  text-transform: uppercase !important;
 
   a {
     text-decoration: none !important;
@@ -93,6 +94,7 @@
 
   h1 {
     padding: 0 1rem;
+    font-weight: 700 !important;
   }
 
   div {
@@ -117,6 +119,7 @@
   }
 }
 
+//home page scss
 .home {
   display: flex;
   flex-direction: column;
@@ -125,45 +128,66 @@
   width: 90vw;
   animation: fadeUp 0.5s ease-in-out forwards;
 
-  .nextFour {
-    padding-bottom: 1rem;
-    width: 100%;
-    .col {
-      display: flex;
-      justify-content: center;
-      a {
-        color: bisque;
-        border: 2px solid bisque;
-        background-color: #0d0d0d;
-        transition: 0.1s ease-in-out;
-      }
-  
-      a:hover {
-        background-color: bisque;
-        color: #1a1a1a;
+  .next4Container {
+    background-color: #0d0d0d;
+    padding: 1rem 0.5rem;
+    width: 99vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    
+    h1 {
+      padding: 10px;
+    }
+    
+    .nextFour {
+      .col {
+        display: flex;
+        justify-content: center;
+        a {
+          color: bisque;
+          border: 2px solid bisque;
+          background-color: #0d0d0d;
+          transition: 0.1s ease-in-out;
+        }
+    
+        a:hover {
+          background-color: bisque;
+          color: #1a1a1a;
+        }
       }
     }
   }
 
   .imageContainer {
     position: relative;
-    width: 100%;
-    background-color: black;
+    width: 99vw;
+    height: 60vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
-    img {
-      max-width: 100%;
-      height: auto;
-      opacity: 0.5;
+    #homeLanding {
+      height: 100%;
     }
 
-    h1 {
-      width: 100%;
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background-color: rgba(0, 0, 0, 0.8);
-      padding: 10px;
+    div {
+      display: flex;
+      flex-direction: column;
+      gap: 0.1rem;
+      text-transform: uppercase;
+
+      h1 {
+        padding: 10px;
+        font-weight: 700 !important;
+        text-align: start !important;
+      }
+      h2 {
+        padding: 10px;
+        font-weight: 700 !important;
+        text-align: start !important;
+      }
     }
   }
   
@@ -181,6 +205,37 @@
         flex-direction: column;
         align-items: center;
         justify-content: center;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .home {
+    .imageContainer {
+      flex-direction: column;
+      height: 80vh;
+  
+      #homeLanding {
+        height: 100%;
+      }
+  
+      div {
+        display: flex;
+        flex-direction: column;
+        gap: 0.1rem;
+        text-transform: uppercase;
+  
+        h1 {
+          padding: 10px;
+          font-weight: 700 !important;
+          text-align: start !important;
+        }
+        h2 {
+          padding: 10px;
+          font-weight: 700 !important;
+          text-align: start !important;
+        }
       }
     }
   }
