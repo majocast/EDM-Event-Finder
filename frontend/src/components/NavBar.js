@@ -15,7 +15,7 @@ const NavBar = () => {
 
   return (
     <nav className='navBar'>
-      <Link to='/'><h1>Event Scraper</h1></Link>
+      <Link to='/'><h1>Event Finder</h1></Link>
       <div>
         <Link to='/events'><h1>Events</h1></Link>
         <Link to={email ? '/account' : '/login'}><h1>Account</h1></Link>
