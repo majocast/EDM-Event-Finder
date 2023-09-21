@@ -53,7 +53,7 @@ const Login = () => {
           Log In
         </Button>
       </Form>
-      <p className='py-2 font-bold'>OR</p>
+      <p className='py-2 font-weight-bold'>or</p>
       <Link to='/register'>Register</Link>
     </Container>
   )

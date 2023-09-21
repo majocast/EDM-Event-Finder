@@ -62,10 +62,10 @@ const Event = (params) => {
   }
   
   return (
-    <Card style={{ width: '100%', height: '100%', backgroundColor: 'black', color:'bisque' }}>
-      <Card.Img variant="top" src={photo} loading='lazy'/>
+    <Card style={{ width: '100%', height: '100%', backgroundColor: 'black', color:'bisque', border:'2px solid bisque', borderRadius: '25px'}}>
+      <Card.Img variant="top" src={photo} loading='lazy' style={{borderTopLeftRadius: '23px', borderTopRightRadius: '23px'}}/>
       <Card.Body>
-        <Card.Title>{name}</Card.Title>
+        <Card.Title style={{fontWeight: '700'}}>{name}</Card.Title>
         <Card.Text>
           {location}
           <br />

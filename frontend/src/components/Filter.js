@@ -6,8 +6,6 @@ const Filter = ( {data, onDataFiltered }) => {
   const handleFilterChange = (e) => {
     const searchText = e.target.value;
     setFilteredText(searchText);
-
-
     const filteredData = data.filter(item => 
       item.title.toLowerCase().includes(searchText.toLowerCase()) ||
       item.location.toLowerCase().includes(searchText.toLowerCase()) ||
@@ -21,7 +19,7 @@ const Filter = ( {data, onDataFiltered }) => {
 
   return (
     <div className="filter">
-      <h1>Type To Filter!</h1>
+      <h1>Filter</h1>
       <input
         type="text"
         className="form-control"

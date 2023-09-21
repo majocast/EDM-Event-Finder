@@ -36,13 +36,21 @@
   }
 }
 
+.background {
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+  opacity: 0.8;
+}
+
 .App {
   text-align: center;
   background-color: #1a1a1a;
   min-height: 100vh;
-  color:bisque;
+  color: bisque;
   display: flex;
   flex-direction: column;
+  font-weight: 700;
 
   h1 {
     color: bisque !important;
@@ -54,6 +62,7 @@
     flex-grow: 1;
     display: flex;
     justify-content: center;
+    z-index: 5;
   }
 }
 
@@ -93,7 +102,7 @@
   }
 
   h1 {
-    padding: 0 1rem;
+    padding: 0.5rem 1rem;
     font-weight: 700 !important;
   }
 
@@ -128,42 +137,10 @@
   width: 90vw;
   animation: fadeUp 0.5s ease-in-out forwards;
 
-  .next4Container {
-    background-color: #0d0d0d;
-    padding: 1rem 0.5rem;
-    width: 99vw;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    
-    h1 {
-      padding: 10px;
-    }
-    
-    .nextFour {
-      .col {
-        display: flex;
-        justify-content: center;
-        a {
-          color: bisque;
-          border: 2px solid bisque;
-          background-color: #0d0d0d;
-          transition: 0.1s ease-in-out;
-        }
-    
-        a:hover {
-          background-color: bisque;
-          color: #1a1a1a;
-        }
-      }
-    }
-  }
-
   .imageContainer {
     position: relative;
     width: 99vw;
-    height: 60vh;
+    height: 80vh;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -183,7 +160,7 @@
         font-weight: 700 !important;
         text-align: start !important;
       }
-      h2 {
+      h3 {
         padding: 10px;
         font-weight: 700 !important;
         text-align: start !important;
@@ -255,7 +232,6 @@
       width: 20%;
       padding: 10px;
       background-color: #1a1a1a;
-      border: 2px solid bisque;
       z-index: 1;
     }
 
@@ -264,6 +240,7 @@
       width: 80%;
       height: 80vh;
       overflow-y: auto;
+      border-top: 2px solid bisque;
       border-bottom: 2px solid bisque;
 
       .row {
@@ -284,6 +261,23 @@
 
     .filter {
       flex-direction: column !important;
+      text-transform: uppercase;
+
+      input {
+        background-color: #0d0d0d;
+        border: 2px solid bisque;
+        color: bisque;
+      }
+    
+      input:focus {
+        border: 2px solid bisque;
+        background-color: bisque;
+        color: #0d0d0d;
+      }
+    
+      input::placeholder {
+        color: bisque;
+      }
     }
   }
 }
@@ -423,11 +417,17 @@
   align-items: center;
   width: 80%;
 
+  h1 {
+    text-transform: uppercase;
+    font-weight: 700;
+  }
+
   form {
     animation: fadeUp 0.5s ease-in-out forwards;
 
     input {
       background-color: #0d0d0d;
+      border: 2px solid bisque;
       color: bisque;
     }
   
@@ -449,6 +449,8 @@
       color: bisque;
       border: 2px solid bisque;
       background-color: #0d0d0d;
+      font-weight: 700;
+      text-transform: uppercase;
       transition: 0.1s ease-in-out;
     }
   
@@ -456,6 +458,11 @@
       background-color: bisque;
       color: #1a1a1a;
     }
+  }
+  
+  p {
+    font-weight: 700;
+    text-transform: uppercase;
   }
 
   a {
@@ -466,6 +473,8 @@
     color: bisque;
     border: 2px solid bisque;
     background-color: #0d0d0d;
+    font-weight: 700;
+    text-transform: uppercase;
     transition: 0.1s ease-in-out;
   }
 
