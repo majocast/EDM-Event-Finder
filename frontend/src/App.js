@@ -4,6 +4,7 @@ import './App.scss';
 import axios from 'axios';
 import Lottie from 'lottie-react';
 import loadingAnimation from './assets/loadingAnimation.json';
+import waveHaikei from './assets/wave-haikei.svg';
 import NavBar from './components/NavBar';
 import Home from './pages/Home';
 import Login from './pages/Login';
@@ -52,6 +53,7 @@ function App() {
 
   return (
     <BrowserRouter>
+      <img className='background' src={waveHaikei} alt='Wave Haikei'/>
       <div className='App'>
         <NavBar />
         <div className='page'>
