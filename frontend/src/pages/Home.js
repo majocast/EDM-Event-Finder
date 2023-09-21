@@ -1,12 +1,8 @@
 import React from 'react';
-import Card from 'react-bootstrap/Card';
 import HomeLanding from '../assets/homeLanding.json';
 import Lottie from 'lottie-react';
-import Button from 'react-bootstrap/Button';
-import { Row, Col } from 'react-bootstrap';
 
-const Home = (props) => {
-  const data = props.myData.data;
+const Home = () => {
   return (
     <div className='home'>
       <div className='imageContainer'>
@@ -17,7 +13,7 @@ const Home = (props) => {
           autoplay
         />
         <div>
-          <h1>EDM Event Scraper</h1>
+          <h1>EDM Event Finder</h1>
           <h3>Find Your Next Event</h3>
         </div>
       </div>

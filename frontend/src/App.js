@@ -15,7 +15,7 @@ import Account from './pages/Account';
 function App() {
   const [data, setData] = useState();
   const routes = [
-    {path: '/', component: Home, myData: data},
+    {path: '/', component: Home, myData: null},
     {path: '/events', component: Events, myData: data},
     {path: '/account', component: Account, myData: data},
     {path: '/login', component: Login, myData: null},
