@@ -25,14 +25,16 @@ function App() {
 
   useEffect(() => {
     try {
+      console.time();
+      console.log(`${process.env.REACT_APP_EEF_SERVER}`);
       axios.post(`${process.env.REACT_APP_EEF_SERVER}/load`)
       .then((response) => {
-        console.log(response.data);
         setData(response);
       })
       .catch((error) => {
         console.log(error);
       })
+      console.timeEnd();
     } catch (error) {
       console.log(error);
     }

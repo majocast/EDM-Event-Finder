@@ -50,6 +50,20 @@ function Account() {
     history('/');
   }
 
+  const deleteAcct = async () => {
+    try {
+      await axios.delete(`${process.env.REACT_APP_EEF_SERVER}/account/${email}`)
+      .then((res) => {
+        console.log(`Account deleted: ${res.data}`);
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
   if(!email) {
     return (
       <div className='loadingScreen'>
@@ -69,6 +83,7 @@ function Account() {
       <div className='accountInfo'>
         <h2>{email}</h2>
         <Link onClick={signOut} to='/'>Log Out</Link>
+        <Link className='deleteAcct' onClick={deleteAcct} to='/'>Delete</Link>
       </div>
       <div className="eventTable">
         {saved.length > 0 ? 
@@ -76,7 +91,6 @@ function Account() {
             <h1>My Saved Events</h1>
             {saved.map((item, index) => {
               const event = [item.eventname, item.eventdate, item.eventlocation, item.eventlink, item.eventphoto];
-              console.log(event);
               return (
                 <Col key={index} xs={12} sm={6} md={4}>
                   <Event data={event} inSaved={true}/>
