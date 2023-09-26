@@ -55,6 +55,8 @@ function Account() {
       await axios.delete(`${process.env.REACT_APP_EEF_SERVER}/account/${email}`)
       .then((res) => {
         console.log(`Account deleted: ${res.data}`);
+        setEmail(null);
+        localStorage.clear();
       })
       .catch((err) => {
         console.log(err)
@@ -83,7 +85,7 @@ function Account() {
       <div className='accountInfo'>
         <h2>{email}</h2>
         <Link onClick={signOut} to='/'>Log Out</Link>
-        <Link className='deleteAcct' onClick={deleteAcct} to='/'>Delete</Link>
+        <Link className='deleteAcct' onClick={deleteAcct} to='/register'>Delete</Link>
       </div>
       <div className="eventTable">
         {saved.length > 0 ? 

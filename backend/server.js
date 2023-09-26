@@ -112,6 +112,34 @@ app.get('/accountInfo/:email', async (req, res) => {
 http://localhost:5000/accountInfo/test@mail.com
 */
 
+//DELETE AN ACCOUNT
+app.delete('/account/:email', async (req, res) => {
+  try {
+    const { email } = req.params;
+    await pool.query(
+      'DELETE FROM accounts WHERE email = $1',
+      [email]
+    )
+    .then(()=> {
+      res.json('delete account success');
+    })
+    .catch(err => {
+      console.log(err.message);
+    })
+  } catch (err) {
+    console.log(err.message);
+  }
+});
+
+/* JSON CONFIG INSERTION
+{
+    "email": "test@mail.com"
+*/
+
+/**
+ * EVENT ROUTES
+ */
+
 //add an event
 //fix add event to make sure that it adds the picture of the event and the link,
 //bind command to bookmark icon button press.
@@ -173,25 +201,6 @@ app.delete('/event/:email', async (req, res) => {
 {
   "eventID": 1
 }
-*/
-
-/*needs frontend implementation*/
-app.delete('/account', async (req, res) => {
-  try {
-    const { email } = req.body;
-    const deleteAccount = await pool.query(
-      'DELETE FROM accounts WHERE email = $1',
-      [email]
-    );
-    res.json('delete event success');
-  } catch (err) {
-    console.log(err.message);
-  }
-});
-
-/* JSON CONFIG INSERTION
-{
-    "email": "test@mail.com"
 */
 
 let PORT = process.env.PORT || 5000;
