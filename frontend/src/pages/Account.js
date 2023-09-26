@@ -87,10 +87,10 @@ function Account() {
         <Link onClick={signOut} to='/'>Log Out</Link>
         <Link className='deleteAcct' onClick={deleteAcct} to='/register'>Delete</Link>
       </div>
+      <h1>My Saved Events</h1>
       <div className="eventTable">
         {saved.length > 0 ? 
           <Row>
-            <h1>My Saved Events</h1>
             {saved.map((item, index) => {
               const event = [item.eventname, item.eventdate, item.eventlocation, item.eventlink, item.eventphoto];
               return (

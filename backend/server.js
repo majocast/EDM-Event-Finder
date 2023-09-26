@@ -86,7 +86,7 @@ app.get('/account/:email/:password', async (req, res) => {
 http://localhost:5000/account/test@mail.com/1234
 */
 
-//get an account's info such as events
+//get and clean account's info such as events
 app.get('/accountInfo/:email', async (req, res) => {
   try {
     const { email } = req.params;
@@ -97,10 +97,22 @@ app.get('/accountInfo/:email', async (req, res) => {
     );
     accountID = accountID ? accountID.rows[0].accountid : null;
     const allEvents = await pool.query(
-      'SELECT * FROM events WHERE accountID = $1', 
+      'SELECT * FROM events WHERE accountID = $1',
       [accountID]
     );
-    console.log(allEvents.rows);
+    allEvents.rows.forEach(async (event) => {
+      let eventDate = new Date(event.eventdate);
+      let currDate = new Date();
+      if(eventDate < currDate) {
+        console.log('event has passed: ' + event.eventname);
+        const deleteEvent = await pool.query(
+          'DELETE FROM events WHERE eventname = $1 AND eventdate = $2 AND accountid = $3',
+          [event.eventname, event.eventdate, accountID]
+        )
+      } else {
+        console.log('event is coming up');
+      }
+    })
     res.json(allEvents.rows);
   } catch (err) {
     console.log(err.message);
