@@ -85,7 +85,7 @@ function Account() {
       <div className='accountInfo'>
         <h2>{email}</h2>
         <Link onClick={signOut} to='/'>Log Out</Link>
-        <Link className='deleteAcct' onClick={deleteAcct} to='/register'>Delete</Link>
+        <Link className='deleteAcct' onClick={deleteAcct} to='/register'>Delete Account</Link>
       </div>
       <h1>My Saved Events</h1>
       <div className="eventTable">

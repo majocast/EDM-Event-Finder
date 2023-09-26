@@ -385,10 +385,11 @@
     justify-content: center;
     margin-left: 1rem;
     width: 90%;
-    max-height: 80vh;
+    max-height: 50vh;
     overflow-y: auto;
     padding: 1rem;
     border-bottom: 2px solid bisque;
+    border-top: 2px solid bisque;
 
     .eventsBtn {
       a {
