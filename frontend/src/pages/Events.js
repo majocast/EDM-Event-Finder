@@ -8,15 +8,33 @@ import { Row, Col } from 'react-bootstrap';
 import Container from 'react-bootstrap/Container';
 
 const Events = (props) => {
-  let data = props.myData.data;
+  const [baseData, setBaseData] = useState([]);
   const [pageNum, setPageNum] = useState(2);
   const [canPull, setCanPull] = useState(true);
-  const [filteredData, setFilteredData] = useState(data);
+  const [filteredData, setFilteredData] = useState([]);
   const [savedData, setSavedData] = useState([]);
   const [loggedIn, setLoggedIn] = useState(false);
   const [isLoading, setIsLoading] = useState(true); // add loading state
   const [loadingMore, setLoadingMore] = useState(false); //add loading state for events
 
+  useEffect(() => {
+    try {
+      console.time();
+      console.log(`${process.env.REACT_APP_EEF_SERVER}`);
+      axios.post(`${process.env.REACT_APP_EEF_SERVER}/load`)
+      .then((response) => {
+        setBaseData(response);
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+      console.timeEnd();
+    } catch (error) {
+      console.log(error);
+    }
+    setIsLoading(false);
+  }, [])
+  
   const handleDataFiltered = (filteredData) => { 
     setFilteredData(filteredData);
   }
@@ -75,7 +93,7 @@ const Events = (props) => {
   }
 
   useEffect(() => {
-    data = [...filteredData];
+    setBaseData([...filteredData]);
     setLoadingMore(false);
   }, [filteredData])
 
@@ -97,7 +115,7 @@ const Events = (props) => {
     <Container className='events'>
       <div>
         <div xs={12} sm={4} className='filterCol'>
-          <Filter data={data} onDataFiltered={handleDataFiltered}/>
+          <Filter data={baseData} onDataFiltered={handleDataFiltered}/>
         </div>
         <div xs={12} sm={8} className='eventTable'>
           <Row>

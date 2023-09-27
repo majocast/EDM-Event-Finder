@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, lazy } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import './App.scss';
 import axios from 'axios';
@@ -17,11 +17,10 @@ function App() {
   const routes = [
     {path: '/', component: Home, myData: null},
     {path: '/events', component: Events, myData: data},
-    {path: '/account', component: Account, myData: data},
+    {path: '/account', component: Account, myData: null},
     {path: '/login', component: Login, myData: null},
     {path: '/register', component: Register, myData: null},
   ];
-
 
   useEffect(() => {
     try {
