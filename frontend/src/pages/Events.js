@@ -7,7 +7,7 @@ import Filter from '../components/Filter';
 import { Row, Col } from 'react-bootstrap';
 import Container from 'react-bootstrap/Container';
 
-const Events = (props) => {
+const Events = () => {
   const [baseData, setBaseData] = useState([]);
   const [pageNum, setPageNum] = useState(2);
   const [canPull, setCanPull] = useState(true);
@@ -19,16 +19,15 @@ const Events = (props) => {
 
   useEffect(() => {
     try {
-      console.time();
-      console.log(`${process.env.REACT_APP_EEF_SERVER}`);
+      console.log('triggering initial load')
       axios.post(`${process.env.REACT_APP_EEF_SERVER}/load`)
       .then((response) => {
         setBaseData(response);
+        setFilteredData(response);
       })
       .catch((error) => {
         console.log(error);
       })
-      console.timeEnd();
     } catch (error) {
       console.log(error);
     }

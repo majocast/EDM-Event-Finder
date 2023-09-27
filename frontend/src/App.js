@@ -1,7 +1,6 @@
 import React, { useState, useEffect, lazy } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import './App.scss';
-import axios from 'axios';
 import Lottie from 'lottie-react';
 import loadingAnimation from './assets/loadingAnimation.json';
 import waveHaikei from './assets/wave-haikei.svg';
@@ -13,45 +12,13 @@ import Register from './pages/Register';
 import Account from './pages/Account';
 
 function App() {
-  const [data, setData] = useState();
   const routes = [
-    {path: '/', component: Home, myData: null},
-    {path: '/events', component: Events, myData: data},
-    {path: '/account', component: Account, myData: null},
-    {path: '/login', component: Login, myData: null},
-    {path: '/register', component: Register, myData: null},
+    {path: '/', component: Home},
+    {path: '/events', component: Events},
+    {path: '/account', component: Account},
+    {path: '/login', component: Login},
+    {path: '/register', component: Register},
   ];
-
-  useEffect(() => {
-    try {
-      console.time();
-      console.log(`${process.env.REACT_APP_EEF_SERVER}`);
-      axios.post(`${process.env.REACT_APP_EEF_SERVER}/load`)
-      .then((response) => {
-        setData(response);
-      })
-      .catch((error) => {
-        console.log(error);
-      })
-      console.timeEnd();
-    } catch (error) {
-      console.log(error);
-    }
-  }, [])
-
-  if(!data) {
-    return (
-      <div className='loadingScreen'>
-        <h1>event scraper</h1>
-        <Lottie
-          id='loadingAnimation'
-          animationData={loadingAnimation} 
-          loop
-          autoplay
-        />
-      </div>
-    )
-  }
 
   return (
     <BrowserRouter>
@@ -61,7 +28,7 @@ function App() {
         <div className='page'>
           <Routes>
             {routes.map((route, index) => {
-              return (<Route key={route.path} path={route.path} element={<route.component myData={route.myData}/>} />)
+              return (<Route key={route.path} path={route.path} element={<route.component />} />)
             })}
           </Routes>
         </div>
