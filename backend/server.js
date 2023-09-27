@@ -86,7 +86,7 @@ app.get('/account/:email/:password', async (req, res) => {
 http://localhost:5000/account/test@mail.com/1234
 */
 
-//get an account's info such as events
+//get and clean account's info such as events
 app.get('/accountInfo/:email', async (req, res) => {
   try {
     const { email } = req.params;
@@ -97,10 +97,22 @@ app.get('/accountInfo/:email', async (req, res) => {
     );
     accountID = accountID ? accountID.rows[0].accountid : null;
     const allEvents = await pool.query(
-      'SELECT * FROM events WHERE accountID = $1', 
+      'SELECT * FROM events WHERE accountID = $1',
       [accountID]
     );
-    console.log(allEvents.rows);
+    allEvents.rows.forEach(async (event) => {
+      let eventDate = new Date(event.eventdate);
+      let currDate = new Date();
+      if(eventDate < currDate) {
+        console.log('event has passed: ' + event.eventname);
+        const deleteEvent = await pool.query(
+          'DELETE FROM events WHERE eventname = $1 AND eventdate = $2 AND accountid = $3',
+          [event.eventname, event.eventdate, accountID]
+        )
+      } else {
+        console.log('event is coming up');
+      }
+    })
     res.json(allEvents.rows);
   } catch (err) {
     console.log(err.message);
@@ -111,6 +123,34 @@ app.get('/accountInfo/:email', async (req, res) => {
 /*
 http://localhost:5000/accountInfo/test@mail.com
 */
+
+//DELETE AN ACCOUNT
+app.delete('/account/:email', async (req, res) => {
+  try {
+    const { email } = req.params;
+    await pool.query(
+      'DELETE FROM accounts WHERE email = $1',
+      [email]
+    )
+    .then(()=> {
+      res.json('delete account success');
+    })
+    .catch(err => {
+      console.log(err.message);
+    })
+  } catch (err) {
+    console.log(err.message);
+  }
+});
+
+/* JSON CONFIG INSERTION
+{
+    "email": "test@mail.com"
+*/
+
+/**
+ * EVENT ROUTES
+ */
 
 //add an event
 //fix add event to make sure that it adds the picture of the event and the link,
@@ -173,25 +213,6 @@ app.delete('/event/:email', async (req, res) => {
 {
   "eventID": 1
 }
-*/
-
-/*needs frontend implementation*/
-app.delete('/account', async (req, res) => {
-  try {
-    const { email } = req.body;
-    const deleteAccount = await pool.query(
-      'DELETE FROM accounts WHERE email = $1',
-      [email]
-    );
-    res.json('delete event success');
-  } catch (err) {
-    console.log(err.message);
-  }
-});
-
-/* JSON CONFIG INSERTION
-{
-    "email": "test@mail.com"
 */
 
 let PORT = process.env.PORT || 5000;
