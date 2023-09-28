@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Event from '../components/Event';
 import axios from 'axios';
+import { useQuery } from 'react-query';
 import Lottie from 'lottie-react';
 import loadingAnimation from '../assets/loadingAnimation.json';
 import Filter from '../components/Filter';
@@ -8,55 +9,78 @@ import { Row, Col } from 'react-bootstrap';
 import Container from 'react-bootstrap/Container';
 
 const Events = () => {
-  const [baseData, setBaseData] = useState([]);
   const [pageNum, setPageNum] = useState(2);
   const [canPull, setCanPull] = useState(true);
   const [filteredData, setFilteredData] = useState([]);
   const [savedData, setSavedData] = useState([]);
   const [loggedIn, setLoggedIn] = useState(false);
-  const [isLoading, setIsLoading] = useState(true); // add loading state
   const [loadingMore, setLoadingMore] = useState(false); //add loading state for events
 
-  useEffect(() => {
+  const pullInfo = async (currEmail) => {
     try {
-      console.log('triggering initial load')
-      axios.post(`${process.env.REACT_APP_EEF_SERVER}/load`)
-      .then((response) => {
-        setBaseData(response);
-        setFilteredData(response);
-      })
-      .catch((error) => {
-        console.log(error);
-      })
+      const res = await axios.get(`${process.env.REACT_APP_EEF_SERVER}/accountInfo/${currEmail}`);
+      setSavedData(res.data);
     } catch (error) {
-      console.log(error);
+      console.error("error fetching data: ", error);
     }
-    setIsLoading(false);
-  }, [])
-  
-  const handleDataFiltered = (filteredData) => { 
-    setFilteredData(filteredData);
   }
-
+  
   useEffect(() => {
     if((localStorage.getItem('email') !== null)) {
       setLoggedIn(true);
       pullInfo(localStorage.getItem('email'));
     } else {
       setLoggedIn(false);
-      setIsLoading(false);
     }
   }, [])
 
-  const pullInfo = async (currEmail) => {
+  useEffect(() => {
+    setLoadingMore(false);
+  }, [filteredData])
+
+  const {data: baseData, isLoading, isError} = useQuery('loadData', async () => {
+    const response = await axios.post(`${process.env.REACT_APP_EEF_SERVER}/load`);
+    console.log(response.data);
+    return response.data
+  })
+
+  if(isLoading) {
+    return (
+      <div className='loadingScreen'>
+        <h1>loading events</h1>
+        <Lottie
+          id='loadingAnimation'
+          animationData={loadingAnimation} 
+          loop
+          autoplay
+        />
+      </div>
+    )
+  }
+
+  if(isError) {
+    return <div>Error loading data</div>
+  }
+  /*
+  useEffect(() => {
     try {
-      const res = await axios.get(`${process.env.REACT_APP_EEF_SERVER}/accountInfo/${currEmail}`);
-      setSavedData(res.data);
-      setIsLoading(false);
-    } catch (error) {
-      console.error("error fetching data: ", error);
-      setIsLoading(false);
+      axios.post(`${process.env.REACT_APP_EEF_SERVER}/load`)
+      .then((response) => {
+        setBaseData(response.data);
+        setFilteredData(response.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+    } catch (err) {
+      console.log(err);
     }
+    setIsLoading(false);
+  }, [])
+  */
+  
+  const handleDataFiltered = (filteredData) => { 
+    setFilteredData(filteredData);
   }
 
   const checkEvent = (event) => {
@@ -91,25 +115,7 @@ const Events = () => {
     }
   }
 
-  useEffect(() => {
-    setBaseData([...filteredData]);
-    setLoadingMore(false);
-  }, [filteredData])
-
-  if(isLoading) {
-    return (
-      <div className='loadingScreen'>
-        <h1>loading events</h1>
-        <Lottie
-          id='loadingAnimation'
-          animationData={loadingAnimation} 
-          loop
-          autoplay
-        />
-      </div>
-    )
-  }
-
+  console.log(baseData);
   return (
     <Container className='events'>
       <div>

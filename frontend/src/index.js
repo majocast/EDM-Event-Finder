@@ -1,17 +1,16 @@
 import React from 'react';
-import ReactDOM from 'react-dom/client';
+import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
+import { QueryClient, QueryClientProvider } from 'react-query';
+import { ReactQueryDevtools } from 'react-query/devtools';
 
 // comment this and react query dev tools when in prod
 const queryClient = new QueryClient();
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(
-  <QueryClientProvider client={queryClient}>
+ReactDOM.render(
+  <QueryClientProvider client={queryClient} contextSharing={true}>
     <App />
-    <ReactQueryDevtools />
-  </QueryClientProvider>
+  </QueryClientProvider>,
+  document.getElementById('root')
 );
