@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Event from '../components/Event';
 import axios from 'axios';
-import { useQuery } from 'react-query';
+import { useQuery, useMutation } from 'react-query';
 import Lottie from 'lottie-react';
 import loadingAnimation from '../assets/loadingAnimation.json';
 import Filter from '../components/Filter';
@@ -38,10 +38,45 @@ const Events = () => {
     setLoadingMore(false);
   }, [filteredData])
 
+  const pullMore = async () => {
+    try {
+      setLoadingMore(true);
+      const response = await axios.post(`${process.env.REACT_APP_EEF_SERVER}/load`, { pageNum })
+      if(response.data.length % 50 !== 0 || response.data.length === 0) {
+        setCanPull(false);
+      }
+      setPageNum(pageNum + 1);
+      setFilteredData((prevData) => [...prevData, ...response.data]);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   const {data, isLoading, isError} = useQuery('loadData', async () => {
     const response = await axios.post(`${process.env.REACT_APP_EEF_SERVER}/load`);
     setFilteredData(response.data);
     return response.data
+  })
+
+  //mutation using useMutation to add more data
+  const { isLoadingMore, isError: isMoreError } = useMutation(pullMore, {
+    onMutate: () => {
+      <div className='loadingScreen'>
+        <h1>loading events</h1>
+        <Lottie
+          id='loadingAnimation'
+          animationData={loadingAnimation} 
+          loop
+          autoplay
+        />
+      </div>
+    },
+    onError:(error) => {
+      console.error('Error loading more data: ', error);
+    },
+    onSettled: () => {
+      
+    }
   })
 
   if(isLoading) {
@@ -61,23 +96,6 @@ const Events = () => {
   if(isError) {
     return <div>Error loading data</div>
   }
-  /*
-  useEffect(() => {
-    try {
-      axios.post(`${process.env.REACT_APP_EEF_SERVER}/load`)
-      .then((response) => {
-        setBaseData(response.data);
-        setFilteredData(response.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      })
-    } catch (err) {
-      console.log(err);
-    }
-    setIsLoading(false);
-  }, [])
-  */
   
   const handleDataFiltered = (filteredData) => { 
     setFilteredData(filteredData);
@@ -96,24 +114,7 @@ const Events = () => {
     return eventExists;
   }
 
-  const pullMore = async () => {
-    try {
-      setLoadingMore(true);
-      await axios.post(`${process.env.REACT_APP_EEF_SERVER}/load`, { pageNum })
-      .then((response) => {
-        if(response.data.length % 50 !== 0 || response.data.length === 0) {
-          setCanPull(false);
-        }
-        setPageNum(pageNum + 1);
-        setFilteredData([...filteredData, ...response.data]);
-      })
-      .catch((error) => {
-        console.log(error);
-      })
-    } catch (error) {
-      console.log(error);
-    }
-  }
+
 
   return (
     <Container className='events'>
