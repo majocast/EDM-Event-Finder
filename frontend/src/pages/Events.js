@@ -9,12 +9,11 @@ import { Row, Col } from 'react-bootstrap';
 import Container from 'react-bootstrap/Container';
 
 const Events = () => {
-  const [pageNum, setPageNum] = useState(2);
+  const [pageNum, setPageNum] = useState(0);
   const [canPull, setCanPull] = useState(true);
   const [filteredData, setFilteredData] = useState([]);
   const [savedData, setSavedData] = useState([]);
   const [loggedIn, setLoggedIn] = useState(false);
-  const [loadingMore, setLoadingMore] = useState(false); //add loading state for events
 
   const pullInfo = async (currEmail) => {
     try {
@@ -32,23 +31,16 @@ const Events = () => {
     } else {
       setLoggedIn(false);
     }
+    setPageNum(2);
   }, [])
-
-  useEffect(() => {
-    setLoadingMore(false);
-  }, [filteredData])
 
   const pullMore = async () => {
     try {
-      setLoadingMore(true);
       const response = await axios.post(`${process.env.REACT_APP_EEF_SERVER}/load`, { pageNum })
-      if(response.data.length % 50 !== 0 || response.data.length === 0) {
-        setCanPull(false);
-      }
-      setPageNum(pageNum + 1);
+      response.data.length % 50 !== 0 || response.data.length === 0 ? setCanPull(false) : setPageNum(pageNum + 1);
       setFilteredData((prevData) => [...prevData, ...response.data]);
-    } catch (error) {
-      console.log(error);
+    } catch (err) {
+      console.log(err);
     }
   }
 
@@ -75,7 +67,7 @@ const Events = () => {
       console.error('Error loading more data: ', error);
     },
     onSettled: () => {
-      
+
     }
   })
 
@@ -136,14 +128,21 @@ const Events = () => {
                 </Col>
               )
             })}
-            <div className='pullMore' xs={12} sm={6} md={4}>
-              {canPull ? (loadingMore ? <Lottie
-                style={{width:'75px', height:'75px'}}
-                id='loadingAnimation'
-                animationData={loadingAnimation} 
-                loop
-                autoplay
-              /> : <button onClick={pullMore}>Load More Events</button>) : null}
+            <div className='pullMore' disabled={isLoadingMore} xs={12} sm={6} md={4}>
+              {canPull ? 
+                (isLoadingMore ? 
+                  <Lottie
+                    style={{width:'75px', height:'75px'}}
+                    id='loadingAnimation'
+                    animationData={loadingAnimation} 
+                    loop
+                    autoplay
+                  /> 
+                    :
+                  <button onClick={pullMore}>Load More Events</button>) 
+                : 
+                null
+              }
             </div>
           </Row>
         </div>
