@@ -38,9 +38,9 @@ const Events = () => {
     setLoadingMore(false);
   }, [filteredData])
 
-  const {data: baseData, isLoading, isError} = useQuery('loadData', async () => {
+  const {data, isLoading, isError} = useQuery('loadData', async () => {
     const response = await axios.post(`${process.env.REACT_APP_EEF_SERVER}/load`);
-    console.log(response.data);
+    setFilteredData(response.data);
     return response.data
   })
 
@@ -115,12 +115,11 @@ const Events = () => {
     }
   }
 
-  console.log(baseData);
   return (
     <Container className='events'>
       <div>
         <div xs={12} sm={4} className='filterCol'>
-          <Filter data={baseData} onDataFiltered={handleDataFiltered}/>
+          <Filter data={data} onDataFiltered={handleDataFiltered}/>
         </div>
         <div xs={12} sm={8} className='eventTable'>
           <Row>
