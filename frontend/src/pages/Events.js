@@ -15,6 +15,7 @@ const Events = () => {
   const [savedData, setSavedData] = useState([]);
   const [loggedIn, setLoggedIn] = useState(false);
 
+  /*
   const pullInfo = async (currEmail) => {
     try {
       const res = await axios.get(`${process.env.REACT_APP_EEF_SERVER}/accountInfo/${currEmail}`);
@@ -23,17 +24,30 @@ const Events = () => {
       console.error("error fetching data: ", error);
     }
   }
+  */
   
   useEffect(() => {
     if((localStorage.getItem('email') !== null)) {
       setLoggedIn(true);
-      pullInfo(localStorage.getItem('email'));
     } else {
       setLoggedIn(false);
     }
     setPageNum(2);
   }, [])
 
+  const { acctData } = useQuery('loadingAcct', async () => {
+    const response = await axios.get(`${process.env.REACT_APP_EEF_SERVER}/accountInfo/${localStorage.getItem('email')}`);
+    if(response.data.length > 0) setSavedData(response.data);
+    return response.data;
+  })
+
+  const {data, isLoading, isError} = useQuery('loadData', async () => {
+    const response = await axios.post(`${process.env.REACT_APP_EEF_SERVER}/load`);
+    setFilteredData(response.data);
+    return response.data;
+  })
+
+  //pull more events from other pages in scraping process
   const pullMore = async () => {
     try {
       const response = await axios.post(`${process.env.REACT_APP_EEF_SERVER}/load`, { pageNum })
@@ -44,32 +58,8 @@ const Events = () => {
     }
   }
 
-  const {data, isLoading, isError} = useQuery('loadData', async () => {
-    const response = await axios.post(`${process.env.REACT_APP_EEF_SERVER}/load`);
-    setFilteredData(response.data);
-    return response.data
-  })
-
   //mutation using useMutation to add more data
-  const { isLoadingMore, isError: isMoreError } = useMutation(pullMore, {
-    onMutate: () => {
-      <div className='loadingScreen'>
-        <h1>loading events</h1>
-        <Lottie
-          id='loadingAnimation'
-          animationData={loadingAnimation} 
-          loop
-          autoplay
-        />
-      </div>
-    },
-    onError:(error) => {
-      console.error('Error loading more data: ', error);
-    },
-    onSettled: () => {
-
-    }
-  })
+  const { isLoading: isLoadingMore, isError: isMoreError, mutate: pullMoreMutation } = useMutation(pullMore)
 
   if(isLoading) {
     return (
@@ -106,8 +96,6 @@ const Events = () => {
     return eventExists;
   }
 
-
-
   return (
     <Container className='events'>
       <div>
@@ -139,7 +127,7 @@ const Events = () => {
                     autoplay
                   /> 
                     :
-                  <button onClick={pullMore}>Load More Events</button>) 
+                  <button onClick={pullMoreMutation}>Load More Events</button>) 
                 : 
                 null
               }
