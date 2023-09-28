@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Event from '../components/Event';
 import axios from 'axios';
-import { useQuery, useMutation } from 'react-query';
+import { useQuery, useMutation, useQueryClient } from 'react-query';
 import Lottie from 'lottie-react';
 import loadingAnimation from '../assets/loadingAnimation.json';
 import Filter from '../components/Filter';
@@ -9,6 +9,7 @@ import { Row, Col } from 'react-bootstrap';
 import Container from 'react-bootstrap/Container';
 
 const Events = () => {
+  const queryClient = useQueryClient();
   const [pageNum, setPageNum] = useState(0);
   const [canPull, setCanPull] = useState(true);
   const [filteredData, setFilteredData] = useState([]);
@@ -45,13 +46,26 @@ const Events = () => {
       const response = await axios.post(`${process.env.REACT_APP_EEF_SERVER}/load`, { pageNum })
       response.data.length % 50 !== 0 || response.data.length === 0 ? setCanPull(false) : setPageNum(pageNum + 1);
       setFilteredData((prevData) => [...prevData, ...response.data]);
+      return response.data;
     } catch (err) {
       console.log(err);
     }
   }
 
   //mutation using useMutation to add more data
-  const { isLoading: isLoadingMore, isError: isMoreError, mutate: pullMoreMutation } = useMutation(pullMore)
+  const { isLoading: isLoadingMore, isError: isMoreError, mutate: pullMoreMutation } = useMutation(
+    pullMore,
+    {
+      onSuccess: (newData) => {
+        queryClient.setQueryData('loadData', (prevData) => {
+          if(prevData) {
+            return [...prevData, ...newData];
+          }
+          return newData;
+        });
+      },
+    }
+  );
 
   if(isLoading) {
     return (
