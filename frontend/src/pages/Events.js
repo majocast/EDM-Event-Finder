@@ -12,19 +12,7 @@ const Events = () => {
   const [pageNum, setPageNum] = useState(0);
   const [canPull, setCanPull] = useState(true);
   const [filteredData, setFilteredData] = useState([]);
-  const [savedData, setSavedData] = useState([]);
   const [loggedIn, setLoggedIn] = useState(false);
-
-  /*
-  const pullInfo = async (currEmail) => {
-    try {
-      const res = await axios.get(`${process.env.REACT_APP_EEF_SERVER}/accountInfo/${currEmail}`);
-      setSavedData(res.data);
-    } catch (error) {
-      console.error("error fetching data: ", error);
-    }
-  }
-  */
   
   useEffect(() => {
     if((localStorage.getItem('email') !== null)) {
@@ -35,11 +23,15 @@ const Events = () => {
     setPageNum(2);
   }, [])
 
-  const { acctData } = useQuery('loadingAcct', async () => {
-    const response = await axios.get(`${process.env.REACT_APP_EEF_SERVER}/accountInfo/${localStorage.getItem('email')}`);
-    if(response.data.length > 0) setSavedData(response.data);
-    return response.data;
-  })
+  const { data: acctData = [] } = useQuery('loadingAcct', 
+    async () => {
+      const response = await axios.get(`${process.env.REACT_APP_EEF_SERVER}/accountInfo/${localStorage.getItem('email')}`);
+      return response.data;
+    },
+    {
+      initialData: [],
+    }
+  )
 
   const {data, isLoading, isError} = useQuery('loadData', async () => {
     const response = await axios.post(`${process.env.REACT_APP_EEF_SERVER}/load`);
@@ -79,12 +71,17 @@ const Events = () => {
     return <div>Error loading data</div>
   }
   
+
+  /*
+  Helped functions for handling the data filtered and checking
+  if the event is saved in the profile
+  */
   const handleDataFiltered = (filteredData) => { 
     setFilteredData(filteredData);
   }
 
   const checkEvent = (event) => {
-    const eventExists = savedData.some((dbEvent) => {
+    const eventExists = acctData.some((dbEvent) => {
       return (
         dbEvent.eventname === event[0] &&
         dbEvent.eventdate === event[1] &&
