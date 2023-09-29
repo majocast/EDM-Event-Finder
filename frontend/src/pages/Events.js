@@ -53,7 +53,7 @@ const Events = () => {
   }
 
   //mutation using useMutation to add more data
-  const { isLoading: isLoadingMore, isError: isMoreError, mutate: pullMoreMutation } = useMutation(
+  const { isLoading: isLoadingMore, mutate: pullMoreMutation } = useMutation(
     pullMore,
     {
       onSuccess: (newData) => {
