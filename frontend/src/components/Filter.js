@@ -15,8 +15,6 @@ const Filter = ( {data, onDataFiltered }) => {
     onDataFiltered(filteredData);
   };
 
-
-
   return (
     <div className="filter">
       <h1>Filter</h1>

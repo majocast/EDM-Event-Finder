@@ -28,7 +28,6 @@ const Event = (params) => {
   const toggleSaved = async () => {
     const email = localStorage.getItem('email');
     if(!saved) {
-      console.log('in false saved');
       await axios.post(`${process.env.REACT_APP_EEF_SERVER}/event/${email}`,{ 
         name, location, date, link, photo 
       })
