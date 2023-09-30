@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import { BiSolidUserAccount } from 'react-icons/bi';
 
 const NavBar = () => {
   const location = useLocation();
@@ -19,7 +20,7 @@ const NavBar = () => {
       <Link to='/'><h1>Event Finder</h1></Link>
       <div>
         <Link to='/events'><h1>Events</h1></Link>
-        <Link to={email ? '/account' : '/login'}><h1>Account</h1></Link>
+        <Link to={email ? '/account' : '/login'}><h1><BiSolidUserAccount /></h1></Link>
       </div>
     </nav>
   )

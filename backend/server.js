@@ -10,15 +10,19 @@ app.use(cors({origin: `${process.env.EEF_HOME}`}));
 //app.use(cors({origin: `http://localhost:3000`}));
 
 app.post('/load', async (req, res) => {
+  console.log('loading')
   try {
     var events;
     if(req.body.pageNum) {
       const { pageNum } = req.body;
+      console.log('in page num load');
       events = await Scraper(pageNum);
     } else {
+      console.log('in first page load');
       events = await Scraper();
     }
     res.json(events);
+    console.log(events);
   } catch (err) {
     console.log(err.message);
   }

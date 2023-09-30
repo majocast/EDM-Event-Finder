@@ -10,7 +10,6 @@ const pool = new Pool({
   ssl: {
     rejectedUnauthorized: false,
   },
-
 });
 
 /*

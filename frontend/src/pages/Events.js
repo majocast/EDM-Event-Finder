@@ -1,83 +1,71 @@
 import React, { useState, useEffect } from 'react';
 import Event from '../components/Event';
 import axios from 'axios';
+import { useQuery, useMutation, useQueryClient } from 'react-query';
 import Lottie from 'lottie-react';
 import loadingAnimation from '../assets/loadingAnimation.json';
 import Filter from '../components/Filter';
 import { Row, Col } from 'react-bootstrap';
 import Container from 'react-bootstrap/Container';
 
-const Events = (props) => {
-  let data = props.myData.data;
-  const [pageNum, setPageNum] = useState(2);
+const Events = () => {
+  const queryClient = useQueryClient();
+  const [pageNum, setPageNum] = useState(0);
   const [canPull, setCanPull] = useState(true);
-  const [filteredData, setFilteredData] = useState(data);
-  const [savedData, setSavedData] = useState([]);
+  const [filteredData, setFilteredData] = useState([]);
   const [loggedIn, setLoggedIn] = useState(false);
-  const [isLoading, setIsLoading] = useState(true); // add loading state
-  const [loadingMore, setLoadingMore] = useState(false); //add loading state for events
-
-  const handleDataFiltered = (filteredData) => { 
-    setFilteredData(filteredData);
-  }
-
+  
   useEffect(() => {
     if((localStorage.getItem('email') !== null)) {
       setLoggedIn(true);
-      pullInfo(localStorage.getItem('email'));
     } else {
       setLoggedIn(false);
-      setIsLoading(false);
     }
+    setPageNum(2);
   }, [])
 
-  const pullInfo = async (currEmail) => {
-    try {
-      const res = await axios.get(`${process.env.REACT_APP_EEF_SERVER}/accountInfo/${currEmail}`);
-      setSavedData(res.data);
-      setIsLoading(false);
-    } catch (error) {
-      console.error("error fetching data: ", error);
-      setIsLoading(false);
+  const { data: acctData = [] } = useQuery('loadingAcct', 
+    async () => {
+      const response = await axios.get(`${process.env.REACT_APP_EEF_SERVER}/accountInfo/${localStorage.getItem('email')}`);
+      return response.data;
+    },
+    {
+      initialData: [],
     }
-  }
+  )
 
-  const checkEvent = (event) => {
-    const eventExists = savedData.some((dbEvent) => {
-      return (
-        dbEvent.eventname === event[0] &&
-        dbEvent.eventdate === event[1] &&
-        dbEvent.eventlocation === event[2] &&
-        dbEvent.eventlink === event[3] &&
-        dbEvent.eventphoto === event[4]
-      );
-    });
-    return eventExists;
-  }
+  const {data, isLoading, isError} = useQuery('loadData', async () => {
+    const response = await axios.post(`${process.env.REACT_APP_EEF_SERVER}/load`);
+    setFilteredData(response.data);
+    return response.data;
+  })
 
+  //pull more events from other pages in scraping process
   const pullMore = async () => {
     try {
-      setLoadingMore(true);
-      await axios.post(`${process.env.REACT_APP_EEF_SERVER}/load`, { pageNum })
-      .then((response) => {
-        if(response.data.length % 50 !== 0 || response.data.length === 0) {
-          setCanPull(false);
-        }
-        setPageNum(pageNum + 1);
-        setFilteredData([...filteredData, ...response.data]);
-      })
-      .catch((error) => {
-        console.log(error);
-      })
-    } catch (error) {
-      console.log(error);
+      const response = await axios.post(`${process.env.REACT_APP_EEF_SERVER}/load`, { pageNum })
+      response.data.length % 50 !== 0 || response.data.length === 0 ? setCanPull(false) : setPageNum(pageNum + 1);
+      setFilteredData((prevData) => [...prevData, ...response.data]);
+      return response.data;
+    } catch (err) {
+      console.log(err);
     }
   }
 
-  useEffect(() => {
-    data = [...filteredData];
-    setLoadingMore(false);
-  }, [filteredData])
+  //mutation using useMutation to add more data
+  const { isLoading: isLoadingMore, mutate: pullMoreMutation } = useMutation(
+    pullMore,
+    {
+      onSuccess: (newData) => {
+        queryClient.setQueryData('loadData', (prevData) => {
+          if(prevData) {
+            return [...prevData, ...newData];
+          }
+          return newData;
+        });
+      },
+    }
+  );
 
   if(isLoading) {
     return (
@@ -91,6 +79,32 @@ const Events = (props) => {
         />
       </div>
     )
+  }
+
+  if(isError) {
+    return <div>Error loading data</div>
+  }
+  
+
+  /*
+  Helped functions for handling the data filtered and checking
+  if the event is saved in the profile
+  */
+  const handleDataFiltered = (filteredData) => { 
+    setFilteredData(filteredData);
+  }
+
+  const checkEvent = (event) => {
+    const eventExists = acctData.some((dbEvent) => {
+      return (
+        dbEvent.eventname === event[0] &&
+        dbEvent.eventdate === event[1] &&
+        dbEvent.eventlocation === event[2] &&
+        dbEvent.eventlink === event[3] &&
+        dbEvent.eventphoto === event[4]
+      );
+    });
+    return eventExists;
   }
 
   return (
@@ -113,14 +127,21 @@ const Events = (props) => {
                 </Col>
               )
             })}
-            <div className='pullMore' xs={12} sm={6} md={4}>
-              {canPull ? (loadingMore ? <Lottie
-                style={{width:'75px', height:'75px'}}
-                id='loadingAnimation'
-                animationData={loadingAnimation} 
-                loop
-                autoplay
-              /> : <button onClick={pullMore}>Load More Events</button>) : null}
+            <div className='pullMore' disabled={isLoadingMore} xs={12} sm={6} md={4}>
+              {canPull ? 
+                (isLoadingMore ? 
+                  <Lottie
+                    style={{width:'75px', height:'75px'}}
+                    id='loadingAnimation'
+                    animationData={loadingAnimation} 
+                    loop
+                    autoplay
+                  /> 
+                    :
+                  <button onClick={pullMoreMutation}>Load More Events</button>) 
+                : 
+                null
+              }
             </div>
           </Row>
         </div>

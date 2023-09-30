@@ -12,8 +12,11 @@ function Account() {
   const [email, setEmail] = useState(null);
 
   useEffect(() => {
-    setEmail(localStorage.getItem('email'));
-  }, []);
+    if(email !== null || localStorage.getItem('email')) {
+      setEmail(localStorage.getItem('email'));
+      pullInfo();
+    }
+  }, [email]);
 
   const pullInfo = async () => {
     try {
@@ -23,12 +26,6 @@ function Account() {
       console.error("error fetching data: ", error);
     }
   }
-
-  useEffect(() => {
-    if(email !== null) {
-      pullInfo();
-    }
-  }, [email]);
 
   useEffect(() => {
     if(saved.length > 0) {
@@ -88,8 +85,8 @@ function Account() {
         <Link className='deleteAcct' onClick={deleteAcct} to='/register'>Delete Account</Link>
       </div>
       <h1>My Saved Events</h1>
-      <div className="eventTable">
-        {saved.length > 0 ? 
+      {saved.length > 0 ? 
+        <div className="eventTable">
           <Row>
             {saved.map((item, index) => {
               const event = [item.eventname, item.eventdate, item.eventlocation, item.eventlink, item.eventphoto];
@@ -100,12 +97,12 @@ function Account() {
               )
             })}
           </Row>
-        :
-        <div className='eventsBtn'>
-          <Link to='/events'>Visit Events Page!</Link>
         </div>
-        }
+      :
+      <div className='eventsBtn'>
+        <Link to='/events'>View Events Page!</Link>
       </div>
+    }
     </div>
   )
 }
