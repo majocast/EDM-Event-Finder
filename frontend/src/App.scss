@@ -116,8 +116,25 @@
 
   div {
     display: flex;
-    gap: 1rem;
-    padding: 0 1rem;
+    align-items: center;
+    text-align: center !important;
+    margin: 0 0.5rem;
+
+    a {
+      height: 100%;
+      display: flex;
+      text-align: center !important;
+      justify-content: center;
+      align-items: center;
+      text-decoration: none !important;
+      color:bisque !important;
+  
+      h1 {
+        margin: 0;
+        padding: 0.5rem 1rem;
+        font-weight: 700 !important;
+      }
+    }
   }
 }
 
