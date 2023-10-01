@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { MdSwitchAccount } from 'react-icons/md';
 
 const NavBar = () => {
   const location = useLocation();
