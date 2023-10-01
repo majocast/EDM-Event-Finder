@@ -15,14 +15,11 @@ app.post('/load', async (req, res) => {
     var events;
     if(req.body.pageNum) {
       const { pageNum } = req.body;
-      console.log('in page num load');
       events = await Scraper(pageNum);
     } else {
-      console.log('in first page load');
       events = await Scraper();
     }
     res.json(events);
-    console.log(events);
   } catch (err) {
     console.log(err.message);
   }
