@@ -17,11 +17,12 @@
 ::-webkit-scrollbar-thumb {
   background: bisque; /* Background color of the thumb */
   border-radius: 6px; /* Rounded corners of the thumb */
+  border: 2px solid #00FFFF;
 }
 
 /* On hover, style the thumb */
 ::-webkit-scrollbar-thumb:hover {
-  background: #555; /* Background color of the thumb on hover */
+  border: 2px solid #8B00D1; /* Background color of the thumb on hover */
 }
 
 
@@ -58,7 +59,7 @@
   
   .page {
     height: 100%;
-    padding-top: 5rem;
+    padding-top: 6rem;
     flex-grow: 1;
     display: flex;
     justify-content: center;
@@ -121,21 +122,12 @@
     margin-bottom: 0.5rem;
 
     h1 {
-      font-weight: 700 !important;
-      transition: color 0.1s ease-in-out;
-/*
-      &:hover {
-        color: # !important;
-      }
-      */
-    }
-
-    h1 {
       margin: 0;
       font-weight: 700 !important;
       padding: 0.5rem 1rem;
       cursor: pointer;
       position: relative;
+      letter-spacing: 2px;
       text-shadow:
         -6px 6px 0 #8B00D1,
         -9px 9px 0 #00FFFF;
@@ -224,7 +216,6 @@
       text-transform: uppercase;
       -webkit-text-stroke: 2px bisque;
       text-align: start !important;
-
       text-shadow:
         -6px 6px 0 #8B00D1,
         -9px 9px 0 #00FFFF;
@@ -236,11 +227,11 @@
       }
 
       h1 {
-        font-size: 8vmin;
+        font-size: 10vmin;
       }
 
       h3 {
-        font-size: 4vmin;
+        font-size: 5vmin;
       }
     }
   }
@@ -340,6 +331,16 @@
       flex-direction: column !important;
       text-transform: uppercase;
 
+      h1 {
+        font-weight: 700;
+        -webkit-text-stroke: 2px bisque;
+        letter-spacing: 2px;
+        margin-bottom: 0.5rem;
+        text-shadow:
+          -6px 6px 0 #8B00D1,
+          -9px 9px 0 #00FFFF;
+      }
+
       input {
         background-color: #0d0d0d;
         border: 2px solid bisque;
@@ -419,19 +420,23 @@
   flex-direction: column;
   width: 80vw;
   height: 80vh;
-  align-items: center;
-  justify-content: center;
   animation: fadeUp 0.5s ease-in-out forwards;
 
   h1 {
-    margin: 1rem 0;
+    margin: 2rem 0;
+    text-transform: uppercase;
+    font-weight: 700;
+    letter-spacing: 2px;
+    -webkit-text-stroke: 2px bisque;
+    text-shadow:
+      -6px 6px 0 #8B00D1,
+      -9px 9px 0 #00FFFF;
   }
 
   .accountInfo {
     display: flex;
     width: 100%;
     justify-content: space-between;
-    align-items: center;
     gap: 1rem;
 
     a {
