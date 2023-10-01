@@ -20,7 +20,7 @@ const NavBar = () => {
       <Link to='/'><h1>Event Finder</h1></Link>
       <div>
         <Link to='/events'><h1>Events</h1></Link>
-        <Link to={email ? '/account' : '/login'}><h1><MdSwitchAccount size={50}/></h1></Link>
+        <Link to={email ? '/account' : '/login'}><h1>Profile</h1></Link>
       </div>
     </nav>
   )

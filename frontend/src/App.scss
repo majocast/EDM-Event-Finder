@@ -93,10 +93,23 @@
   justify-content: space-between;
   width: 100vw;
   z-index: 10;
+  padding: 0.5rem 0.5rem;
   background-color: #1a1a1a;
   text-transform: uppercase !important;
   align-items: center;
   text-align: center !important;
+  -webkit-text-stroke: 2px;
+
+  &::before {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(90deg, transparent, bisque, transparent); /* Gradient for the glowing effect */
+    opacity: 1;
+  }
 
   a {
     height: 100%;
@@ -105,12 +118,48 @@
     justify-content: center;
     align-items: center;
     text-decoration: none !important;
-    color:bisque !important;
+    margin-bottom: 0.5rem;
+
+    h1 {
+      font-weight: 700 !important;
+      transition: color 0.1s ease-in-out;
+/*
+      &:hover {
+        color: # !important;
+      }
+      */
+    }
 
     h1 {
       margin: 0;
-      padding: 0.5rem 1rem;
       font-weight: 700 !important;
+      padding: 0.5rem 1rem;
+      cursor: pointer;
+      position: relative;
+      text-shadow:
+        -6px 6px 0 #8B00D1,
+        -9px 9px 0 #00FFFF;
+    }
+    
+    h1:after {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 5px;
+      bottom: -2px;
+      left: -4px;
+      transform: scaleX(0);
+      box-shadow:
+        0 3px 0 #8B00D1,
+        0 6px 0 #00FFFF;
+      background: bisque;
+      transform-origin: bottom right;
+      transition: transform 0.5s ease-out;
+    }
+    
+    h1:hover:after {
+      transform: scaleX(1);
+      transform-origin: bottom left;
     }
   }
 
@@ -127,13 +176,6 @@
       justify-content: center;
       align-items: center;
       text-decoration: none !important;
-      color:bisque !important;
-  
-      h1 {
-        margin: 0;
-        padding: 0.5rem 1rem;
-        font-weight: 700 !important;
-      }
     }
   }
 }
@@ -179,15 +221,21 @@
       flex-direction: column;
       gap: 0.1rem;
       text-transform: uppercase;
+      text-shadow:
+        -6px 6px 0 #8B00D1,
+        -9px 9px 0 #00FFFF;
 
       h1 {
         padding: 10px;
         font-weight: 700 !important;
+        -webkit-text-stroke: 1px bisque;
         text-align: start !important;
       }
+      
       h3 {
         padding: 10px;
         font-weight: 700 !important;
+        -webkit-text-stroke: 1px bisque;
         text-align: start !important;
       }
     }
