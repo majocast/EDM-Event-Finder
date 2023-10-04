@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const Filter = ( {data, onDataFiltered }) => {
+const Filter = ( {data, onDataFiltered } ) => {
   const [filterText, setFilteredText] = useState('');
 
   const handleFilterChange = (e) => {

@@ -11,7 +11,6 @@ const Event = (params) => {
   const [saved, setSaved] = useState(false);
   const [loggedIn, setLoggedIn] = useState(false);
   const [name, date, location, link, photo] = params.data;
-  const [isDeleted, setIsDeleted] = useState(false);
   const inSaved = params.inSaved;
 
   useEffect(() => {
@@ -32,10 +31,9 @@ const Event = (params) => {
         name, location, date, link, photo 
       })
       .then((res) => {
-        if(res.data !== 'added') {
+        //checking if add was successful
+        if(res.status !== 200) {
           console.log('error in saving event');
-        } else {
-          console.log('successfully added');
         }
       })
     } else {
@@ -43,12 +41,11 @@ const Event = (params) => {
         data: { name, location, date, link, photo }
       })
       .then((res) => {
-        if(res.data !== 'deleted') {
-          console.log('error in removing event');
+        if(res.status !== 200) {
+          alert('error in removing event');
         } else {
-          console.log('successfully removed');
           if(pageLocation.pathname === '/account') {
-            setIsDeleted(true);
+            setSaved(false);
           }
         }
       })
@@ -56,7 +53,7 @@ const Event = (params) => {
     setSaved(!saved);
   }
 
-  if(isDeleted) {
+  if(!saved && pageLocation.pathname === '/account') {
     return null;
   }
   
