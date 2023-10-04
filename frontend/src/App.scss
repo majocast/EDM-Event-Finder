@@ -37,6 +37,16 @@
   }
 }
 
+h1 {
+  font-weight: 700 !important;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  text-shadow:
+    -6px 6px 0 #8B00D1,
+    -9px 9px 0 #00FFFF;
+  -webkit-text-stroke: 2px bisque;
+}
+
 .background {
   width: 100%;
   position: absolute;
@@ -122,15 +132,10 @@
     margin-bottom: 0.5rem;
 
     h1 {
-      margin: 0;
-      font-weight: 700 !important;
+      position: relative;
       padding: 0.5rem 1rem;
       cursor: pointer;
-      position: relative;
-      letter-spacing: 2px;
-      text-shadow:
-        -6px 6px 0 #8B00D1,
-        -9px 9px 0 #00FFFF;
+      margin: 0;
     }
     
     h1:after {
@@ -200,7 +205,6 @@
     position: relative;
     width: 99vw;
     height: 80vh;
-    transform: translateX(-1rem);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -216,15 +220,6 @@
       text-transform: uppercase;
       -webkit-text-stroke: 2px bisque;
       text-align: start !important;
-      text-shadow:
-        -6px 6px 0 #8B00D1,
-        -9px 9px 0 #00FFFF;
-
-      h1, h3 {
-        padding: 10px;
-        font-weight: 700;
-        letter-spacing: 2px;
-      }
 
       h1 {
         font-size: 10vmin;
@@ -332,13 +327,7 @@
       text-transform: uppercase;
 
       h1 {
-        font-weight: 700;
-        -webkit-text-stroke: 2px bisque;
-        letter-spacing: 2px;
         margin-bottom: 0.5rem;
-        text-shadow:
-          -6px 6px 0 #8B00D1,
-          -9px 9px 0 #00FFFF;
       }
 
       input {
@@ -424,13 +413,6 @@
 
   h1 {
     margin: 2rem 0;
-    text-transform: uppercase;
-    font-weight: 700;
-    letter-spacing: 2px;
-    -webkit-text-stroke: 2px bisque;
-    text-shadow:
-      -6px 6px 0 #8B00D1,
-      -9px 9px 0 #00FFFF;
   }
 
   .accountInfo {
@@ -575,6 +557,7 @@
 
 .ticketButton {
   text-decoration: none;
+  font-weight: 700;
   padding: 0.5rem 1rem;
   border-radius: 10px;
   max-width: 10rem;
@@ -598,6 +581,7 @@
     margin-top: 0.5rem;
     margin-bottom: 2rem;
     border-radius: 10px;
+    font-weight: 700;
     transition: 0.1s ease-in-out;
   }
 
