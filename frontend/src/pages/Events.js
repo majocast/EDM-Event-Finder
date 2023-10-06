@@ -45,7 +45,7 @@ const Events = () => {
     try {
       const response = await axios.post(`${process.env.REACT_APP_EEF_SERVER}/load`, { pageNum })
       response.data.length % 50 !== 0 || response.data.length === 0 ? setCanPull(false) : setPageNum(pageNum + 1);
-      setFilteredData((prevData) => [...prevData, ...response.data]);
+      setFilteredData([...data, ...response.data]);
       return response.data;
     } catch (err) {
       console.log(err);

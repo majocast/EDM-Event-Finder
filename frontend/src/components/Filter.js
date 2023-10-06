@@ -11,7 +11,6 @@ const Filter = ( {data, onDataFiltered } ) => {
       item.location.toLowerCase().includes(searchText.toLowerCase()) ||
       item.date.toLowerCase().includes(searchText.toLowerCase()) 
     );
-
     onDataFiltered(filteredData);
   };
 
