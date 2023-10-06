@@ -11,19 +11,16 @@ const Login = () => {
   const [password, setPassword] = useState('');
 
   async function submit(e) {
-    console.log(email, password);
     e.preventDefault();
     try {
       await axios.get(`${process.env.REACT_APP_EEF_SERVER}/account/${email}/${password}`)
       .then((res) => {
-        console.log(res.data);
         if(res.data === 'invalid') {
           alert('invalid email or password');
         } else if(res.data === 'not exist') {
           alert('login does not exist, redirecting to register');
           history('/register');
         } else {
-          console.log(res.data);
           localStorage.setItem('email', res.data[0].email);
           history('/account');
         }

@@ -488,6 +488,7 @@ h1 {
   flex-direction: column;
   align-items: center;
   width: 80%;
+  animation: fadeUp 0.5s ease-in-out forwards;
 
   h1 {
     text-transform: uppercase;
@@ -495,8 +496,6 @@ h1 {
   }
 
   form {
-    animation: fadeUp 0.5s ease-in-out forwards;
-
     input {
       background-color: #0d0d0d;
       border: 2px solid bisque;
