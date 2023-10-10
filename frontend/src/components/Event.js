@@ -14,6 +14,7 @@ const Event = (params) => {
   const inSaved = params.inSaved;
 
   useEffect(() => {
+    
     if(localStorage.getItem('email')) {
       setLoggedIn(true);
       if(inSaved) {
