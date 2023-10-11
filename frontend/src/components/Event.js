@@ -14,7 +14,6 @@ const Event = (params) => {
   const inSaved = params.inSaved;
 
   useEffect(() => {
-    
     if(localStorage.getItem('email')) {
       setLoggedIn(true);
       if(inSaved) {
@@ -33,18 +32,15 @@ const Event = (params) => {
       })
       .then((res) => {
         //checking if add was successful
-        if(res.status !== 200) {
-          console.log('error in saving event');
-        }
+        if(res.status !== 200) console.log('error in saving event');
       })
     } else {
       await axios.delete(`${process.env.REACT_APP_EEF_SERVER}/event/${email}`,{
         data: { name, location, date, link, photo }
       })
       .then((res) => {
-        if(res.status !== 200) {
-          alert('error in removing event');
-        } else {
+        if(res.status !== 200) alert('error in removing event');
+        else {
           if(pageLocation.pathname === '/account') {
             setSaved(false);
           }
@@ -54,9 +50,7 @@ const Event = (params) => {
     setSaved(!saved);
   }
 
-  if(!saved && pageLocation.pathname === '/account') {
-    return null;
-  }
+  if(!saved && pageLocation.pathname === '/account') return null;
   
   return (
     <Card style={{ width: '100%', height: '100%', backgroundColor: 'black', color:'bisque', border:'2px solid bisque', borderRadius: '25px'}}>

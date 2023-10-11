@@ -16,11 +16,7 @@ const Events = () => {
   const [loggedIn, setLoggedIn] = useState(false);
   
   useEffect(() => {
-    if((localStorage.getItem('email') !== null)) {
-      setLoggedIn(true);
-    } else {
-      setLoggedIn(false);
-    }
+    localStorage.getItem('email') !== null ? setLoggedIn(true) : setLoggedIn(false)
     setPageNum(2);
   }, [])
 
@@ -81,11 +77,8 @@ const Events = () => {
     )
   }
 
-  if(isError) {
-    return <div>Error loading data</div>
-  }
+  if(isError) return <div>Error loading data</div>
   
-
   /*
   Helped functions for handling the data filtered and checking
   if the event is saved in the profile
