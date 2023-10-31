@@ -11,7 +11,6 @@ const Event = (params) => {
   const [saved, setSaved] = useState(false);
   const [loggedIn, setLoggedIn] = useState(false);
   const [name, date, location, link, photo] = params.data;
-  const [isDeleted, setIsDeleted] = useState(false);
   const inSaved = params.inSaved;
 
   useEffect(() => {
@@ -32,23 +31,18 @@ const Event = (params) => {
         name, location, date, link, photo 
       })
       .then((res) => {
-        if(res.data !== 'added') {
-          console.log('error in saving event');
-        } else {
-          console.log('successfully added');
-        }
+        //checking if add was successful
+        if(res.status !== 200) console.log('error in saving event');
       })
     } else {
       await axios.delete(`${process.env.REACT_APP_EEF_SERVER}/event/${email}`,{
         data: { name, location, date, link, photo }
       })
       .then((res) => {
-        if(res.data !== 'deleted') {
-          console.log('error in removing event');
-        } else {
-          console.log('successfully removed');
+        if(res.status !== 200) alert('error in removing event');
+        else {
           if(pageLocation.pathname === '/account') {
-            setIsDeleted(true);
+            setSaved(false);
           }
         }
       })
@@ -56,9 +50,7 @@ const Event = (params) => {
     setSaved(!saved);
   }
 
-  if(isDeleted) {
-    return null;
-  }
+  if(!saved && pageLocation.pathname === '/account') return null;
   
   return (
     <Card style={{ width: '100%', height: '100%', backgroundColor: 'black', color:'bisque', border:'2px solid bisque', borderRadius: '25px'}}>

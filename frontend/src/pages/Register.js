@@ -9,10 +9,18 @@ function Register() {
   const history = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
 
   async function submit(e) {
     e.preventDefault();
-    console.log(email, password);
+    
+    //base case for checking if passwords match
+    if(password !== confirmPassword) {
+      alert('ERROR: Passwords Do Not Match');
+      return;
+    }
+
+    //input new email into DB and rerouting to account page
     try {
       await axios.post(`${process.env.REACT_APP_EEF_SERVER}/account`, {
         email, password,
@@ -23,8 +31,8 @@ function Register() {
           history('/login');
         }
         else {
-          alert('successfully registered, please log in');
-          history('/login');
+          localStorage.setItem('email', email);
+          history('/account');
         }
       })
       .catch((error) => {
@@ -47,6 +55,10 @@ function Register() {
         <Form.Group className="mb-3" controlId="formBasicPassword">
           <Form.Label>Password</Form.Label>
           <Form.Control type="password" placeholder="Password" onChange={(e) => { setPassword(e.target.value) }}/>
+        </Form.Group>
+        <Form.Group className="mb-3" controlId="formBasicPassword">
+          <Form.Label>Confirm Password</Form.Label>
+          <Form.Control type="password" placeholder="Confirm Password" onChange={(e) => { setConfirmPassword(e.target.value) }}/>
         </Form.Group>
         <Button variant="primary" type="submit" onClick={submit}>
           Register

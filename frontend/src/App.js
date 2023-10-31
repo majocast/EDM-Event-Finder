@@ -1,8 +1,6 @@
-import React, { useState, useEffect, lazy } from 'react';
+import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import './App.scss';
-import Lottie from 'lottie-react';
-import loadingAnimation from './assets/loadingAnimation.json';
 import waveHaikei from './assets/wave-haikei.svg';
 import NavBar from './components/NavBar';
 import Home from './pages/Home';

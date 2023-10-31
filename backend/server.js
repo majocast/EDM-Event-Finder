@@ -4,7 +4,7 @@ const app = express();
 const pool = require('./db');
 const { Scraper } = require('./scraper.js');
 
-app.use(express.json()); //req.body
+app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors({origin: `${process.env.EEF_HOME}`}));
 //app.use(cors({origin: `http://localhost:3000`}));
@@ -15,14 +15,11 @@ app.post('/load', async (req, res) => {
     var events;
     if(req.body.pageNum) {
       const { pageNum } = req.body;
-      console.log('in page num load');
       events = await Scraper(pageNum);
     } else {
-      console.log('in first page load');
       events = await Scraper();
     }
     res.json(events);
-    console.log(events);
   } catch (err) {
     console.log(err.message);
   }
@@ -175,7 +172,7 @@ app.post('/event/:email', async (req, res) => {
       'INSERT INTO events (eventName, eventLocation, eventDate, eventLink, eventPhoto, accountID) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *',
       [name, location, date, link, photo, accountID]
     );
-    res.json('added');
+    res.status(200).send('Success');
   } catch (error) {
     console.log(error.message);
   }
@@ -195,9 +192,7 @@ app.post('/event/:email', async (req, res) => {
 app.delete('/event/:email', async (req, res) => {
   try {
     const { email } = req.params;
-    console.log(email);
     const { name, location, date, link, photo } = req.body;
-    console.log(req.body);
     let accountID = await pool.query(
       'SELECT * FROM accounts WHERE email = $1',
       [email]
@@ -208,7 +203,7 @@ app.delete('/event/:email', async (req, res) => {
       'DELETE FROM events WHERE eventname = $1 AND eventlocation = $2 AND eventdate = $3 AND eventlink = $4 AND eventphoto = $5 AND accountid = $6',
       [name, location, date, link, photo, accountID]
     );
-    res.json('deleted');
+    res.status(200).send('Success');
   } catch (err) {
     console.log(err.message);
   }

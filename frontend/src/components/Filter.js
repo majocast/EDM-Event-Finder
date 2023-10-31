@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const Filter = ( {data, onDataFiltered }) => {
+const Filter = ( {data, onDataFiltered } ) => {
   const [filterText, setFilteredText] = useState('');
 
   const handleFilterChange = (e) => {
@@ -11,7 +11,6 @@ const Filter = ( {data, onDataFiltered }) => {
       item.location.toLowerCase().includes(searchText.toLowerCase()) ||
       item.date.toLowerCase().includes(searchText.toLowerCase()) 
     );
-
     onDataFiltered(filteredData);
   };
 

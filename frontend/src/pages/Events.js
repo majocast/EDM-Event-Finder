@@ -16,11 +16,7 @@ const Events = () => {
   const [loggedIn, setLoggedIn] = useState(false);
   
   useEffect(() => {
-    if((localStorage.getItem('email') !== null)) {
-      setLoggedIn(true);
-    } else {
-      setLoggedIn(false);
-    }
+    localStorage.getItem('email') !== null ? setLoggedIn(true) : setLoggedIn(false)
     setPageNum(2);
   }, [])
 
@@ -45,7 +41,7 @@ const Events = () => {
     try {
       const response = await axios.post(`${process.env.REACT_APP_EEF_SERVER}/load`, { pageNum })
       response.data.length % 50 !== 0 || response.data.length === 0 ? setCanPull(false) : setPageNum(pageNum + 1);
-      setFilteredData((prevData) => [...prevData, ...response.data]);
+      setFilteredData([...data, ...response.data]);
       return response.data;
     } catch (err) {
       console.log(err);
@@ -81,11 +77,8 @@ const Events = () => {
     )
   }
 
-  if(isError) {
-    return <div>Error loading data</div>
-  }
+  if(isError) return <div>Error loading data</div>
   
-
   /*
   Helped functions for handling the data filtered and checking
   if the event is saved in the profile
