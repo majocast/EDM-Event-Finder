@@ -67,6 +67,27 @@
   }
 }
 
+@keyframes riseUp {
+  0% {
+    transform: translateY(100%)
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+@keyframes fallDown {
+  0% {
+    transform: translateY(-100%)
+  }
+  75% {
+    transform: translateY(-100%)
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
 h1 {
   font-weight: 700 !important;
   letter-spacing: 2px;
@@ -82,6 +103,7 @@ h1 {
   position: absolute;
   bottom: 0;
   opacity: 0.8;
+  animation: riseUp 2s ease-in-out forwards 1;
 }
 
 .App {
@@ -140,6 +162,7 @@ h1 {
   align-items: center;
   text-align: center !important;
   -webkit-text-stroke: 2px;
+  animation: fallDown 2s ease-in-out forwards;
 
   &::before {
     content: "";
