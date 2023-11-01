@@ -22,7 +22,6 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cors({origin: `http://localhost:3000`}));
 
 app.post('/load', async (req, res) => {
-  console.log('loading')
   try {
     var events;
     if(req.body.pageNum) {
@@ -66,7 +65,7 @@ app.post('/account', async (req, res) => {
       res.json(newAccount.rows[0]);
     }
   } catch (err) {
-    console.log(err);
+    console.log(err.message);
   }
 })
 
@@ -99,7 +98,7 @@ app.get('/account/:email/:password', async (req, res) => {
       }
     }
   } catch (err) {
-    console.log(err);
+    console.log(err.message);
   }
 })
 
@@ -112,7 +111,6 @@ http://localhost:5000/account/test@mail.com/1234
 app.get('/accountInfo/:email', async (req, res) => {
   try {
     const { email } = req.params;
-    console.log(email);
     let accountID = await pool.query(
       'SELECT * FROM accounts WHERE email = $1',
       [email]
