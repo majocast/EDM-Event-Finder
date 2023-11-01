@@ -3,6 +3,18 @@ const cors = require('cors');
 const app = express();
 const pool = require('./db');
 const { Scraper } = require('./scraper.js');
+const crypto = require('crypto');
+require('dotenv').config();
+
+//encryption algorithm
+const algorithm = 'aes-256-cbc';
+
+//private key
+const key = `${process.env.ENCRYPTKEY}`;
+
+//initialization vector
+const initVector = crypto.randomBytes(16);
+
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -10,7 +22,6 @@ app.use(cors({origin: `${process.env.EEF_HOME}`}));
 //app.use(cors({origin: `http://localhost:3000`}));
 
 app.post('/load', async (req, res) => {
-  console.log('loading')
   try {
     var events;
     if(req.body.pageNum) {
@@ -41,9 +52,15 @@ app.post('/account', async (req, res) => {
     if(exists.rows.length !== 0) {
       res.json('exists');
     } else {
+      const cipher = crypto.createCipheriv(algorithm, key, initVector);
+      let encryptedData = cipher.update(password, 'utf-8', 'hex');
+      encryptedData += cipher.final('hex');
+      const base64data = Buffer.from(initVector, 'binary').toString('base64');
+      let encryptedPass = encryptedData;
+      const userInitVector = base64data;
       const newAccount = await pool.query(
-        "INSERT INTO accounts (email, pass) VALUES($1, $2) RETURNING *",
-        [email, password]
+        "INSERT INTO accounts (email, pass, initVector) VALUES($1, $2, $3) RETURNING *",
+        [email, encryptedPass, userInitVector]
       );
       res.json(newAccount.rows[0]);
     }
@@ -63,7 +80,6 @@ app.post('/account', async (req, res) => {
 app.get('/account/:email/:password', async (req, res) => {
   try {
     const { email, password } = req.params;
-    console.log(email, password);
     const account = await pool.query(
       'SELECT * FROM accounts WHERE email = $1', 
       [email]
@@ -71,7 +87,11 @@ app.get('/account/:email/:password', async (req, res) => {
     if(account.rows.length === 0) {
       res.json('not exist');
     } else {
-      if(account.rows[0].pass === password) {
+      const encryptedData = Buffer.from(account.rows[0].initvector, 'base64');
+      const decipher = crypto.createDecipheriv(algorithm, key, encryptedData);
+      let decryptedData = decipher.update(account.rows[0].pass, 'hex', 'utf-8');
+      decryptedData += decipher.final('utf-8');
+      if(decryptedData === password) {
         res.json(account.rows);
       } else {
         res.json('invalid');
@@ -91,7 +111,6 @@ http://localhost:5000/account/test@mail.com/1234
 app.get('/accountInfo/:email', async (req, res) => {
   try {
     const { email } = req.params;
-    console.log(email);
     let accountID = await pool.query(
       'SELECT * FROM accounts WHERE email = $1',
       [email]
