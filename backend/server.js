@@ -18,8 +18,8 @@ const initVector = crypto.randomBytes(16);
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cors({origin: `${process.env.EEF_HOME}`}));
-//app.use(cors({origin: `http://localhost:3000`}));
+//app.use(cors({origin: `${process.env.EEF_HOME}`}));
+app.use(cors({origin: `http://localhost:3000`}));
 
 app.post('/load', async (req, res) => {
   console.log('loading')
@@ -56,9 +56,7 @@ app.post('/account', async (req, res) => {
       const cipher = crypto.createCipheriv(algorithm, key, initVector);
       let encryptedData = cipher.update(password, 'utf-8', 'hex');
       encryptedData += cipher.final('hex');
-
       const base64data = Buffer.from(initVector, 'binary').toString('base64');
-
       let encryptedPass = encryptedData;
       const userInitVector = base64data;
       const newAccount = await pool.query(
@@ -91,12 +89,9 @@ app.get('/account/:email/:password', async (req, res) => {
       res.json('not exist');
     } else {
       const encryptedData = Buffer.from(account.rows[0].initvector, 'base64');
-      console.log(encryptedData)
       const decipher = crypto.createDecipheriv(algorithm, key, encryptedData);
-      console.log(decipher)
-      let decryptedData = decipher.update(account.rows[0].password, 'hex', 'utf-8');
+      let decryptedData = decipher.update(account.rows[0].pass, 'hex', 'utf-8');
       decryptedData += decipher.final('utf-8');
-
       if(decryptedData === password) {
         res.json(account.rows);
       } else {
