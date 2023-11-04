@@ -18,7 +18,6 @@ const key = `${process.env.ENCRYPTKEY}`;
 //initialization vector
 const initVector = crypto.randomBytes(16);
 var events = null;
-var freshScrapeCount = 0;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -26,10 +25,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cors({origin: `http://localhost:3000`}));
 
 const dailyScrape = async () => {
-  console.log('running daily scrape');
   events = await Scraper();
-  freshScrapeCount++;
-  console.log(freshScrapeCount);
 }
 
 cron.schedule('0 3 * * *', dailyScrape, {
@@ -45,11 +41,7 @@ app.post('/load', async (req, res) => {
     } else {
       if(events === null) {
         events = await Scraper();
-        freshScrapeCount++;
-        console.log(freshScrapeCount);
-        console.log('in "if(events === null)"')
       }
-      console.log('out of "if(events === null)"')
     }
     res.json(events);
   } catch (err) {
