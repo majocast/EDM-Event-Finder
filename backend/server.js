@@ -5,6 +5,9 @@ const pool = require('./db');
 const { Scraper } = require('./scraper.js');
 const crypto = require('crypto');
 require('dotenv').config();
+//scheduling library
+const cron = require('node-cron');
+
 
 //encryption algorithm
 const algorithm = 'aes-256-cbc';
@@ -14,23 +17,33 @@ const key = `${process.env.ENCRYPTKEY}`;
 
 //initialization vector
 const initVector = crypto.randomBytes(16);
-
+var events = null;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 //app.use(cors({origin: `${process.env.EEF_HOME}`}));
 app.use(cors({origin: `http://localhost:3000`}));
 
+const dailyScrape = async () => {
+  events = await Scraper();
+}
+
+cron.schedule('0 3 * * *', dailyScrape, {
+  scheduled: true,
+  timezone: "America/Sao_Paulo"
+});
+
 
 //ROUTES
 app.post('/load', async (req, res) => {
   try {
-    var events;
     if(req.body.pageNum) {
       const { pageNum } = req.body;
       events = await Scraper(pageNum);
     } else {
-      events = await Scraper();
+      if(events === null) {
+        events = await Scraper();
+      }
     }
     res.json(events);
   } catch (err) {
