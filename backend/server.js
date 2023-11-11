@@ -21,8 +21,8 @@ var events = null;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-//app.use(cors({origin: `${process.env.EEF_HOME}`}));
-app.use(cors({origin: `http://localhost:3000`}));
+app.use(cors({origin: `${process.env.EEF_HOME}`}));
+//app.use(cors({origin: `http://localhost:3000`}));
 
 const dailyScrape = async () => {
   events = await Scraper();
