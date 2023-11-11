@@ -5,6 +5,9 @@ const pool = require('./db');
 const { Scraper } = require('./scraper.js');
 const crypto = require('crypto');
 require('dotenv').config();
+//scheduling library
+const cron = require('node-cron');
+
 
 //encryption algorithm
 const algorithm = 'aes-256-cbc';
@@ -14,29 +17,39 @@ const key = `${process.env.ENCRYPTKEY}`;
 
 //initialization vector
 const initVector = crypto.randomBytes(16);
-
+var events = null;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors({origin: `${process.env.EEF_HOME}`}));
 //app.use(cors({origin: `http://localhost:3000`}));
 
+const dailyScrape = async () => {
+  events = await Scraper();
+}
+
+cron.schedule('0 3 * * *', dailyScrape, {
+  scheduled: true,
+  timezone: "America/Sao_Paulo"
+});
+
+
+//ROUTES
 app.post('/load', async (req, res) => {
   try {
-    var events;
     if(req.body.pageNum) {
       const { pageNum } = req.body;
       events = await Scraper(pageNum);
     } else {
-      events = await Scraper();
+      if(events === null) {
+        events = await Scraper();
+      }
     }
     res.json(events);
   } catch (err) {
     console.log(err.message);
   }
 })
-
-//ROUTES
 
 //create an unique account
 app.post('/account', async (req, res) => {
@@ -111,23 +124,19 @@ http://localhost:5000/account/test@mail.com/1234
 app.get('/accountInfo/:email', async (req, res) => {
   try {
     const { email } = req.params;
-    let accountID = await pool.query(
-      'SELECT * FROM accounts WHERE email = $1',
-      [email]
-    );
-    accountID = accountID ? accountID.rows[0].accountid : null;
+    //the account with that email should always exist
     const allEvents = await pool.query(
-      'SELECT * FROM events WHERE accountID = $1',
-      [accountID]
+      'SELECT * FROM accounts a JOIN events e ON a.accountID = e.accountID WHERE a.email = $1',
+      [email]
     );
     allEvents.rows.forEach(async (event) => {
       let eventDate = new Date(event.eventdate);
       let currDate = new Date();
       if(eventDate < currDate) {
         console.log('event has passed: ' + event.eventname);
-        const deleteEvent = await pool.query(
-          'DELETE FROM events WHERE eventname = $1 AND eventdate = $2 AND accountid = $3',
-          [event.eventname, event.eventdate, accountID]
+        await pool.query(
+          'DELETE FROM events e USING accounts a WHERE e.accountID = a.accountID AND eventdate = $1 AND a.email = $2',
+          [event.eventdate, email]
         )
       } else {
         console.log('event is coming up');
@@ -180,14 +189,14 @@ app.post('/event/:email', async (req, res) => {
     const { email } = req.params;
     const { name, location, date, link, photo } = req.body;
     console.log(req.body);
-    
+    //account ID should never be null anyways
     let accountID = await pool.query(
       'SELECT * FROM accounts WHERE email = $1',
       [email]
     );
     accountID = accountID ? accountID.rows[0].accountid : null;
 
-    const newEvent = await pool.query(
+    await pool.query(
       'INSERT INTO events (eventName, eventLocation, eventDate, eventLink, eventPhoto, accountID) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *',
       [name, location, date, link, photo, accountID]
     );
