@@ -21,8 +21,8 @@ var events = null;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cors({origin: `${process.env.EEF_HOME}`}));
-//app.use(cors({origin: `http://localhost:3000`}));
+//app.use(cors({origin: `${process.env.EEF_HOME}`}));
+app.use(cors({origin: `http://localhost:3000`}));
 
 const dailyScrape = async () => {
   events = await Scraper();
@@ -221,15 +221,24 @@ app.delete('/event/:email', async (req, res) => {
   try {
     const { email } = req.params;
     const { name, location, date, link, photo } = req.body;
-    let accountID = await pool.query(
-      'SELECT * FROM accounts WHERE email = $1',
-      [email]
-    );
-    accountID = accountID ? accountID.rows[0].accountid : null;
-
-    const deleteEvent = await pool.query(
-      'DELETE FROM events WHERE eventname = $1 AND eventlocation = $2 AND eventdate = $3 AND eventlink = $4 AND eventphoto = $5 AND accountid = $6',
-      [name, location, date, link, photo, accountID]
+    await pool.query(
+      `
+        WITH account AS (
+          SELECT accountid
+          FROM accounts
+          WHERE email = $1
+        )
+        DELETE FROM events
+        USING account
+        WHERE
+          eventname = $2 AND
+          eventlocation = $3 AND
+          eventdate = $4 AND
+          eventlink = $5 AND
+          eventphoto = $6 AND
+          events.accountid = account.accountid
+      `,
+      [email, name, location, date, link, photo]
     );
     res.status(200).send('Success');
   } catch (err) {
