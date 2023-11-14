@@ -15,12 +15,8 @@ const Events = () => {
   const [filteredData, setFilteredData] = useState([]);
   const [loggedIn, setLoggedIn] = useState(false);
 
-  useEffect(()=> {
-    console.log(canPull);
-  }, [canPull])
-  
   useEffect(() => {
-    localStorage.getItem('email') !== null ? setLoggedIn(true) : setLoggedIn(false)
+    localStorage.getItem('email') !== null ? setLoggedIn(true) : setLoggedIn(false);
     setPageNum(2);
     setCanPull(true);
   }, [])
