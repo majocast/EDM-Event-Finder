@@ -14,10 +14,15 @@ const Events = () => {
   const [canPull, setCanPull] = useState(true);
   const [filteredData, setFilteredData] = useState([]);
   const [loggedIn, setLoggedIn] = useState(false);
+
+  useEffect(()=> {
+    console.log(canPull);
+  }, [canPull])
   
   useEffect(() => {
     localStorage.getItem('email') !== null ? setLoggedIn(true) : setLoggedIn(false)
     setPageNum(2);
+    setCanPull(true);
   }, [])
 
   const { data: acctData = [] } = useQuery('loadingAcct', 
@@ -40,7 +45,7 @@ const Events = () => {
   const pullMore = async () => {
     try {
       const response = await axios.post(`${process.env.REACT_APP_EEF_SERVER}/load`, { pageNum })
-      response.data.length % 50 !== 0 || response.data.length === 0 ? setCanPull(false) : setPageNum(pageNum + 1);
+      response.data.length % 40 !== 0 || response.data.length === 0 ? setCanPull(false) : setPageNum(pageNum + 1);
       setFilteredData([...data, ...response.data]);
       return response.data;
     } catch (err) {
