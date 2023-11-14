@@ -188,17 +188,14 @@ app.post('/event/:email', async (req, res) => {
   try {
     const { email } = req.params;
     const { name, location, date, link, photo } = req.body;
-    console.log(req.body);
-    //account ID should never be null anyways
-    let accountID = await pool.query(
-      'SELECT * FROM accounts WHERE email = $1',
-      [email]
-    );
-    accountID = accountID ? accountID.rows[0].accountid : null;
-
     await pool.query(
-      'INSERT INTO events (eventName, eventLocation, eventDate, eventLink, eventPhoto, accountID) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *',
-      [name, location, date, link, photo, accountID]
+      `
+        INSERT INTO events (eventName, eventLocation, eventDate, eventLink, eventPhoto, accountID)
+        SELECT $1, $2, $3, $4, $5, a.accountid
+        FROM accounts a
+        WHERE a.email = $6
+      `,
+      [name, location, date, link, photo, email]
     );
     res.status(200).send('Success');
   } catch (error) {
